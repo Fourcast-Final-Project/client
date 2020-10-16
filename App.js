@@ -18,17 +18,26 @@ export default function App() {
        <Stack.Navigator>
 
        <Stack.Screen
+             screenOptions={{
+              headerShown: false
+            }} 
             name= "Login"
             component={Login}
-            options={{title: "Login"}}
+            
           />
 
        <Stack.Screen
+            screenOptions={{
+              headerShown: false
+            }} 
             name= "Register"
             component={Register}
             options={{title: "Register"}}
           />
           <Stack.Screen
+            screenOptions={{
+              headerShown: false
+            }} 
             name= "MainMenu"
             component={MainMenu}
             options={{title: "MainMenu"}}
