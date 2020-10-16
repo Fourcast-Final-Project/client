@@ -13,9 +13,6 @@ export default function MainMenu() {
     return (
         <Tab.Navigator>
             <Tab.Screen 
-            screenOptions={{
-            headerShown: false
-          }}
            name="Home" component={Home}  options={{
             title: 'Home',
             tabBarIcon: ({size,focused,color}) => {
@@ -26,9 +23,6 @@ export default function MainMenu() {
           }} />
 
             <Tab.Screen 
-                screenOptions={{
-                headerShown: false
-                }} 
                 name="Search" component={Search} options={{
                 title: 'Search',
                 tabBarIcon: ({size,focused,color}) => {
@@ -40,9 +34,6 @@ export default function MainMenu() {
             />
 
             <Tab.Screen
-                screenOptions={{
-                    headerShown: false
-                }} 
                 name="Report" component={Report} options={{
                 title: 'Report',
                 tabBarIcon: ({size,focused,color}) => {
@@ -54,9 +45,6 @@ export default function MainMenu() {
             /> 
 
             <Tab.Screen 
-            screenOptions={{
-                    headerShown: false
-                }} 
              name="History" component={History} options={{
             title: 'History',
             tabBarIcon: ({size,focused,color}) => {
@@ -66,9 +54,6 @@ export default function MainMenu() {
             },
           }} />
             <Tab.Screen
-            screenOptions={{
-                headerShown: false
-            }} 
              name="Account" component={Account} options={{
             title: 'My Account',
             tabBarIcon: ({size,focused,color}) => {

@@ -15,29 +15,24 @@ const Stack = createStackNavigator()
 export default function App() {
   return (
     <NavigationContainer>
-       <Stack.Navigator>
+       <Stack.Navigator 
+          screenOptions={{
+          headerShown: false
+          }} 
+        >
 
        <Stack.Screen
-             screenOptions={{
-              headerShown: false
-            }} 
             name= "Login"
             component={Login}
             
           />
 
        <Stack.Screen
-            screenOptions={{
-              headerShown: false
-            }} 
             name= "Register"
             component={Register}
             options={{title: "Register"}}
           />
           <Stack.Screen
-            screenOptions={{
-              headerShown: false
-            }} 
             name= "MainMenu"
             component={MainMenu}
             options={{title: "MainMenu"}}
