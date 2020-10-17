@@ -1,9 +1,11 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED } from '../actions/types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from '../actions/types';
 
 const initialState = {
   token: '',
   user: {},
-  subscribed: []
+  subscribed: [],
+  location: {}
+
 }
 
 export default (state = initialState, action) => {
@@ -14,6 +16,8 @@ export default (state = initialState, action) => {
       return { ...state, user: action.payload };
     case SET_SUBSCRIBED:
       return { ...state, subscribed: action.payload };
+    case SET_LOCATION:
+      return { ...state, location: action.payload };
     default:
       return state;
   }

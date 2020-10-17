@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
 import axios from 'axios';
 
 export const setToken = (token) => {
@@ -19,6 +19,13 @@ export const setSubscribed = (places) => {
   return {
     type: SET_SUBSCRIBED,
     payload: places
+  }
+}
+
+export const setUserLocation = (place) =>{
+  return {
+    type: SET_LOCATION,
+    payload: place
   }
 }
 
@@ -80,3 +87,28 @@ export const getAllSubscribed = (id) => {
     });
   }
 }
+
+export const getUserLocation = (place) => {
+  let url =  `http://localhost:3000/locations/search/${place}`
+  console.log(url)
+  return (dispatch) => {
+    // dispatch(setLoading(true))
+    let url = `http://localhost:3000/locations/search/${place}`;
+      fetch(url)
+      .then((res) => res.json())
+      .then(({data}) => {
+        console.log(data,`<<<<<`)
+          dispatch(setUserLocation(data))
+       })
+       .catch((err) => {
+          // setError(err)
+          console.log(err)
+      })
+      // .finally(() => {
+      // //   setLoading(false)
+      //     dispatch(setUserLocation(false))
+      // })
+  }  
+
+}
+
