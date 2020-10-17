@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import MainMenu from './pages/MainMenu'
-import Register from './pages/Register'
-import Login from './pages/Login'
+import MainMenu from './src/pages/MainMenu'
+import Register from './src/pages/Register'
+import Login from './src/pages/Login'
 
 
 const Stack = createStackNavigator()
