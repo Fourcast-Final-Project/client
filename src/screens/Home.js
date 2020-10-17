@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity,Button } from 'react-native'
+import CardComponent from '../components/CardComponent'
 
 export default function Home({navigation}) {
 
@@ -22,6 +23,8 @@ export default function Home({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 />
                 </TouchableOpacity>
+
+                <CardComponent/>
             </View>
         </View>
     )
