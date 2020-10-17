@@ -1,10 +1,22 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, TouchableOpacity, Button } from 'react-native'
 
 export default function History() {
+    function onPress(){
+
+    }
     return (
         <View>
-            <Text>History</Text>
+           <View style={{marginTop:20}}>
+                <TouchableOpacity style={{borderRadius:25}}>
+                <Button
+                    onPress={() => onPress()}
+                    title="History"
+                    color=""
+                    accessibilityLabel="Learn more about this purple button"
+                />
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
