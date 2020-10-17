@@ -1,11 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
-import Search from '../components/Search'
-import Account from '../components/Account'
-import Home from '../components/Home'
-import Report from '../components/Report'
-import History from '../components/History'
+import Search from '../screens/Search'
+import Account from '../screens/Account'
+import Home from '../screens/Home'
+import Report from '../screens/Report'
+import History from '../screens/History'
 
 const Tab = createBottomTabNavigator();
 
