@@ -81,18 +81,63 @@ export const register = (user) => {
   }
 }
 
-export const getAllSubscribed = (id) => {
+export const getAllSubscribed = () => {
   return (dispatch, getState) => {
     axios({
       method: 'get',
-      url: `http://localhost:3000/subscribed/${id}`
+      url: `${baseUrl}/subscribes`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
     })
     .then(({ data }) => {
-      dispatch(setSubscribed(data));
+      console.log(data, 'INI SUBSCRIBED');
+      dispatch(setSubscribed(data.results));
     })
     .catch(err => {
       console.log(err);
     });
+  }
+}
+
+export const addToSubscribed = (LocationId) => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/subscribes`,
+      data: {
+        UserId: getState().usersReducer.user.id,
+        LocationId
+      },
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(_ => {
+      dispatch(getAllSubscribed());
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
+
+export const removeFromSubscribed = (id) => {
+  console.log('yay masuk remove')
+  return (dispatch, getState) => {
+    axios({
+      method: 'delete',
+      url: `${baseUrl}/subscribes/${id}`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(_ => {
+      dispatch(getAllSubscribed());
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 }
 
