@@ -1,6 +1,6 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.13:3000'
+const baseUrl = 'http://192.168.1.172:3000'
 
 export const setToken = (token) => {
   return {
@@ -35,7 +35,7 @@ export const getToken = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/login',
+      url: BASE_URL + '/login',
       data: {
         email,
         password
@@ -59,7 +59,7 @@ export const register = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/register',
+      url: BASE_URL + '/register',
       data: {
         email,
         password
@@ -69,7 +69,7 @@ export const register = (user) => {
       console.log('User successfully registered');
     })
     .catch(err => {
-      console.log(err);
+      console.log(err, '<<<<<<<<<<<<<<<<<<<,err');
     });
   }
 }
