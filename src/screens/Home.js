@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, TouchableOpacity,Button } from 'react-native'
+import { View, TouchableOpacity,Button,Text } from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
 import CardComponent from '../components/CardComponent'
 import firebase from 'firebase'
@@ -17,17 +17,18 @@ export default function Home({navigation}) {
     }
 
         useEffect(()=>{
-            // if (!firebase.apps.length) {
-            //     firebase.initializeApp(firebaseConfig);
-            //  }
-
-            // database.ref('location/002').orderByKey().on('value',snapshoot =>{
-            // // console.log(snapshoot.val())
-            // setData(snapshoot.val())
-            // })
             dispatch(getUserLocation("jakarta"))
+
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+             }
+
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot =>{
+            // console.log(snapshoot.val())
+            setData(snapshoot.val())  
+            })
+            
         },[])
-console.log(location, '<<<<<< location')
     return (
         <View>
              <View style={{marginTop:20}}>
@@ -39,6 +40,8 @@ console.log(location, '<<<<<< location')
                     accessibilityLabel="Learn more about this purple button"
                 />
                 </TouchableOpacity>
+                <Text> Location Firebase: {data.name}  </Text>
+                <Text> waterLevel: {data.waterLevel}  </Text>
 
                 <CardComponent/>
             </View>
