@@ -93,17 +93,28 @@ export const getUserLocation = (place) => {
   console.log(url)
   return (dispatch) => {
     // dispatch(setLoading(true))
-    let url = `http://localhost:3000/locations/search/${place}`;
-      fetch(url)
-      .then((res) => res.json())
-      .then(({data}) => {
-        console.log(data,`<<<<<`)
-          dispatch(setUserLocation(data))
-       })
-       .catch((err) => {
-          // setError(err)
-          console.log(err)
-      })
+    console.log('halooooooooooooooooooooooooooooooooooo', place)
+    axios({
+      method: 'get',
+      url: `http://localhost:3000/locations/search/${place}`
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    // let url = `http://localhost:3000/locations/search/${place}`;
+    //   fetch(url)
+    //   .then((res) => res.json())
+    //   .then(({data}) => {
+    //     console.log(data,`<<<<<`)
+    //       dispatch(setUserLocation(data))
+    //    })
+    //    .catch((err) => {
+    //       // setError(err)
+    //       console.log(err)
+    //   })
       // .finally(() => {
       // //   setLoading(false)
       //     dispatch(setUserLocation(false))

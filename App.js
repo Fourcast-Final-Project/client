@@ -23,29 +23,23 @@ export default function App() {
             headerShown: false
             }} 
           >
-
-        <Stack.Screen
-              name= "Login"
-              component={Login}
-              
-            />
-
-        <Stack.Screen
-              name= "Register"
-              component={Register}
-              options={{title: "Register"}}
-            />
-            <Stack.Screen
-              name= "MainMenu"
-              component={MainMenu}
-              options={{title: "MainMenu"}}
-            />
-          
-
-        </Stack.Navigator>
-        
-        </NavigationContainer>
-      </Provider>
+          <Stack.Screen
+            name= "Login"
+            component={Login}
+          />
+          <Stack.Screen
+            name= "Register"
+            component={Register}
+            options={{title: "Register"}}
+          />
+          <Stack.Screen
+            name= "MainMenu"
+            component={MainMenu}
+            options={{title: "MainMenu"}}
+          />          
+        </Stack.Navigator>  
+      </NavigationContainer>
+    </Provider>
   );
 }
 
