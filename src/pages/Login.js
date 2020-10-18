@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Button, TextInput, TouchableOpacity, Dimensions } from 'react-native'
+
+const windowWidth = Dimensions.get("window").width;
 
 export default function Login({navigation}) {
     const [username, setUsername] = useState("")
@@ -63,9 +65,9 @@ export default function Login({navigation}) {
             <View style={{marginTop:20}}>
                 <Text>Don't Have an account ? </Text>
             </View>
-            <TouchableOpacity onPress={handelOnPressTextRegister}>
+            <TouchableOpacity styles={{fontSize:20}} onPress={handelOnPressTextRegister}>
                 <View>
-                    <Text styles={{textSize:20}}>Register</Text>
+                    <Text styles={{fontSize:20}}>Register</Text>
                 </View>
             </TouchableOpacity>
         </View>

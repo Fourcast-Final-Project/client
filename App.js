@@ -3,10 +3,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {Provider} from 'react-redux'
+import store from './src/store'
 
-import MainMenu from './pages/MainMenu'
-import Register from './pages/Register'
-import Login from './pages/Login'
+import MainMenu from './src/pages/MainMenu'
+import Register from './src/pages/Register'
+import Login from './src/pages/Login'
 
 
 const Stack = createStackNavigator()
@@ -14,20 +16,18 @@ const Stack = createStackNavigator()
 
 export default function App() {
   return (
-    <NavigationContainer>
-       <Stack.Navigator 
-          screenOptions={{
-          headerShown: false
-          }} 
-        >
-
-       <Stack.Screen
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator 
+            screenOptions={{
+            headerShown: false
+            }} 
+          >
+          <Stack.Screen
             name= "Login"
             component={Login}
-            
           />
-
-       <Stack.Screen
+          <Stack.Screen
             name= "Register"
             component={Register}
             options={{title: "Register"}}
@@ -36,12 +36,10 @@ export default function App() {
             name= "MainMenu"
             component={MainMenu}
             options={{title: "MainMenu"}}
-          />
-         
-
-      </Stack.Navigator>
-      
+          />          
+        </Stack.Navigator>  
       </NavigationContainer>
+    </Provider>
   );
 }
 
