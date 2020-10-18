@@ -34,7 +34,7 @@ export default function Register({navigation}) {
                 <Text style={ styles.header }>Register</Text>
             </View>
 
-            <View style={ styles.subContainer }>
+            {/* <View style={ styles.subContainer }>
                 <Text style={ styles.subHeader }>USERNAME</Text>
             </View>
 
@@ -42,7 +42,7 @@ export default function Register({navigation}) {
                 style={styles.textInput}
                 value={username}
                 onChangeText={handleOnChangeUsername}
-            />
+            /> */}
 
             <View style={ styles.subContainer }>
                 <Text style={ styles.subHeader }>EMAIL</Text>
