@@ -1,11 +1,63 @@
-import React, {useState} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, CheckBox, Dimensions } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable } from 'react-native'
+import { CheckBox } from 'react-native-elements'
+import { Camera } from 'expo-camera';
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Report() {
-    const [isSelected, setSelection] = useState(false);
+    const [ city, setCity ] = useState('')
+    const [ zipCode, setZipCode ] = useState('')
+    const [ waterLevel, setWaterLevel ] = useState('')
+    const [ checkBox, setCheckBox ] = useState(false);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
 
+    useEffect(() => {
+        (async () => {
+          const { status } = await Camera.requestPermissionsAsync();
+          setHasPermission(status === 'granted');
+        })();
+      }, []);
+    
+      if (hasPermission === null) {
+        return <View />;
+      }
+      if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+      }
+
+    function handleOnchangeCity (city) {
+        setCity(city)
+    }
+
+    function handleOnChangeZipCode (zipCode) {
+        setZipCode(zipCode)
+    }
+
+    function handleOnChangeWaterLevel (waterLevel) {
+        setWaterLevel(waterLevel)
+    }
+
+    function onPressCheckBox () {
+        if(checkBox === true) {
+            setCheckBox(false)
+        }else {
+            setCheckBox(true)
+        }
+    }
+
+    function uploadImageButton () {
+
+    }
+
+    function onPressButtonAlert () {
+
+    }
+
+    useEffect(() => {
+    },[])
     return (
         <>
             <View style={ styles.container }>
@@ -20,8 +72,8 @@ export default function Report() {
                 </View>
                 <TextInput 
                     style={styles.textInput}
-                    // value={username}
-                    // onChangeText={handleOnChangeUsername}
+                    value={city}
+                    onChangeText={handleOnchangeCity}
                     placeholder='Enter City'
                     placeholderTextColor='#C4C4C4'
                 />
@@ -32,55 +84,88 @@ export default function Report() {
 
                 <TextInput 
                     style={styles.textInput}
-                    // value={username}
-                    // onChangeText={handleOnChangeUsername}
+                    value={zipCode}
+                    onChangeText={handleOnChangeZipCode}
                     placeholder='Enter ZIP Code'
+                    keyboardType= 'numeric'
                     placeholderTextColor='#C4C4C4'
                 />    
 
                 <View style={ styles.subContainer }>
-                    <Text style={ styles.subHeader }>Water Level</Text>
+                    <Text style={ styles.text }>Water Level</Text>
                 </View>
 
                 <TextInput 
                     style={styles.textInput}
-                    // value={username}
-                    // onChangeText={handleOnChangeUsername}
+                    keyboardType= 'numeric'
+                    value={waterLevel}
+                    onChangeText={handleOnChangeWaterLevel}
                     placeholder='in cm'
                     placeholderTextColor='#C4C4C4'
                 />  
                 
                 <View style={ styles.subContainer }>
-                    <Text style={ styles.subHeader }>Supporting Image</Text>
+                    <Text style={ styles.text }>Supporting Image</Text>
                 </View>
 
-                <View style={{marginTop:5}}>
-                    <Button
-                        title="Upload Image"
-                        color="#302c2d"
-                        accessibilityLabel="Learn more about this purple button"
-                    />
+                <View style={ styles.subContainer }>
+                <Pressable onPress={() => uploadImageButton()} style={ styles.button }>
+                    <Text style={ styles.buttonText }>Upload Image</Text>
+                </Pressable>
                 </View>
+
+                <View style={{ flex: 1 }}>
+                    <Camera style={{ flex: 1 }} type={type}>
+                        <View
+                        style={{
+                            flex: 1,
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                        }}>
+                        <TouchableOpacity
+                            style={{
+                            flex: 0.1,
+                            alignSelf: 'flex-end',
+                            alignItems: 'center',
+                            }}
+                            onPress={() => {
+                            setType(
+                                type === Camera.Constants.Type.back
+                                ? Camera.Constants.Type.front
+                                : Camera.Constants.Type.back
+                            );
+                            }}>
+                            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+                        </TouchableOpacity>
+                        </View>
+                    </Camera>
+                </View>
+
                 <View style={styles.inputName}>
                     <Text>Image.png</Text>
                 </View>
-                <View style={styles.checkboxContainer}>
-                    <CheckBox
-                    value={isSelected}
-                    onValueChange={setSelection}
-                    style={styles.checkbox}
-                    />
-                    <Text style={styles.label}>I hereby confirm that the information above is true as agreed through the code of conduct.</Text>
-                </View>
-                    {/* <Text>Is CheckBox selected: {isSelected ? "👍" : "👎"}</Text> */}
-                <View style={{marginTop:20}}>
+
+                    <View style={styles.checkboxContainer}>
+                        <CheckBox
+                            title='I hereby confirm that the information above is true as agreed through the code of conduct.'
+                            onPress={onPressCheckBox}
+                            checked={checkBox}
+                        />
+                    </View>
+
+                {/* <View style={{marginTop:20}}>
                     <Button
                         // onPress={() => onPress()}
                         title="Alert Danger"
                         color="#FF6363"
                         accessibilityLabel="Learn more about this purple button"
-                    />
-                </View>
+                    /> </View> */}
+                     <View style={ styles.subContainer }>
+                        <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
+                            <Text style={ styles.buttonText }>Alert Danger</Text>
+                        </Pressable>
+                    </View>
+                
             </View>
         </>
     )
@@ -88,12 +173,14 @@ export default function Report() {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: windowHeight * 1 / 10,
     },
     subContainer: {
+        marginTop: 5,
         alignSelf: 'center',
         width: windowWidth * 8.5 / 10,
     },
@@ -111,20 +198,14 @@ const styles = StyleSheet.create({
     },
     text: {
         alignSelf: 'flex-start',
-        color: '#A1A1A1',
+        color: '#393939',
         fontWeight: 'bold',
+        marginTop: '2%',
+        marginBottom: '1%',
         fontSize: 18
     },
-    // inputContainer: {
-    //   width: "100%",
-    //   borderLeftWidth: 1,
-    //   borderRightWidth: 1,
-    //   borderTopWidth: 1,
-    //   borderBottomWidth: 1,
-    //   marginBottom: 10
-    // },
     inputName: {
-        marginBottom: 10
+        margin: "2%"
     },
     textInput: {
         height: 40, 
@@ -146,6 +227,25 @@ const styles = StyleSheet.create({
     label: {
         paddingLeft: 8,
     },
-
+    button: {
+        backgroundColor: '#63B3FD',
+        width: windowWidth * 8.5 / 10,
+        marginTop: '2%',
+        padding: '3%',
+        borderRadius: 15
+    },
+    buttonText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        fontSize: 18
+    },
+    buttonAlert: {
+        backgroundColor: '#FF6363',
+        width: windowWidth * 8.5 / 10,
+        marginTop: '2%',
+        padding: '3%',
+        borderRadius: 15
+    }
   });
 
