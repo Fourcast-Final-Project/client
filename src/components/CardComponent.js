@@ -7,7 +7,8 @@ const windowHeight = Dimensions.get("window").height;
 
 
 export default function CardComponent(props) {
-    console.log(props, '<<<<<<<<<<<<<<<<<<<<<<<<')
+    console.log(props)
+    if (!props.city) return <View><Text>Please Wait...</Text></View>
     return (
         <>
             <View style={ styles.infoContainer }>

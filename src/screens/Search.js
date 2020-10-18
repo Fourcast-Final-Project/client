@@ -57,13 +57,9 @@ export default function Search({navigation}) {
                         }
                     </Text>
                     {
-                        isZero === false ? <>
-                            {
-                                searchResults.map((city) => {
-                                    return <CardComponent city={ city } key={ city.id } /> 
-                                }) 
-                            }
-                        </> : <Text>input city name</Text>
+                        searchResults.map((city) => {
+                            return <CardComponent city={ city } key={ city.id } /> 
+                        }) 
                     }
                 <CardComponent/>
             </View>
