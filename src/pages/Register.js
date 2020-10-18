@@ -35,7 +35,7 @@ export default function Register({navigation}) {
             </View>
 
             <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>Usename</Text>
+                <Text style={ styles.subHeader }>USERNAME</Text>
             </View>
 
             <TextInput 
@@ -45,7 +45,7 @@ export default function Register({navigation}) {
             />
 
             <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>Email</Text>
+                <Text style={ styles.subHeader }>EMAIL</Text>
             </View>
 
             <TextInput 
@@ -55,7 +55,7 @@ export default function Register({navigation}) {
             />
 
             <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>Password</Text>
+                <Text style={ styles.subHeader }>PASSWORD</Text>
             </View>
 
             <TextInput 
