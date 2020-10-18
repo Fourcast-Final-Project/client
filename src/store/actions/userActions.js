@@ -1,5 +1,6 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
 import axios from 'axios';
+const baseUrl = 'http://192.168.0.13:3000'
 
 export const setToken = (token) => {
   return {
@@ -89,37 +90,17 @@ export const getAllSubscribed = (id) => {
 }
 
 export const getUserLocation = (place) => {
-  let url =  `http://localhost:3000/locations/search/${place}`
-  console.log(url)
-  return (dispatch) => {
-    // dispatch(setLoading(true))
-    console.log('halooooooooooooooooooooooooooooooooooo', place)
-    axios({
-      method: 'get',
-      url: `http://localhost:3000/locations/search/${place}`
-    })
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    // let url = `http://localhost:3000/locations/search/${place}`;
-    //   fetch(url)
-    //   .then((res) => res.json())
-    //   .then(({data}) => {
-    //     console.log(data,`<<<<<`)
-    //       dispatch(setUserLocation(data))
-    //    })
-    //    .catch((err) => {
-    //       // setError(err)
-    //       console.log(err)
-    //   })
-      // .finally(() => {
-      // //   setLoading(false)
-      //     dispatch(setUserLocation(false))
-      // })
-  }  
-
-}
+    console.log ("masuk userAction: getUserLocation")
+    return (dispatch) => {
+      fetch(`${baseUrl}/locations/search/${place}`)
+        .then((res) => res.json())
+        .then(({data}) => {
+            //  console.log(data)
+            dispatch(setUserLocation(data))
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }    
+  }
 
