@@ -1,23 +1,29 @@
-import React, {useState} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Pressable, Dimensions } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, View, Text, TextInput, Pressable, Dimensions } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { getToken } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Login({navigation}) {
-    const [username, setUsername] = useState("")
+    const dispatch = useDispatch()
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const token = useSelector(state => state.usersReducer.token)
 
+    useEffect(() => {
+        if (token) {
+            navigation.navigate("MainMenu")
+        }
+    }, [token])
 
     function onPress(){
-    
-        navigation.navigate("MainMenu")
-
-        
+        dispatch(getToken({ email, password }))
     }
 
-    function handleOnChangeUsername(username){
-        setUsername(username)
+    function handleOnChangeEmail(email){
+        setEmail(email)
     }
 
     function handleOnChangePassword(password){
@@ -34,13 +40,13 @@ export default function Login({navigation}) {
             </View>
 
             <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>USERNAME</Text>
+                <Text style={ styles.subHeader }>EMAIL</Text>
             </View>
 
             <TextInput 
                 style={styles.textInput}
-                value={username}
-                onChangeText={handleOnChangeUsername}
+                value={email}
+                onChangeText={handleOnChangeEmail}
             />
 
             <View style={styles.subContainer}>
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#63B3FD',
         width: windowWidth * 8.5 / 10,
-        marginTop: '10%',
+        marginTop: '15%',
         padding: '3%',
         borderRadius: 15
     }, 

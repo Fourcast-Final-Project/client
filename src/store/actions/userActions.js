@@ -1,6 +1,8 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
 import axios from 'axios';
 
+const BASE_URL = 'http://192.168.1.172:3000'
+
 export const setToken = (token) => {
   return {
     type: SET_TOKEN,
@@ -34,7 +36,7 @@ export const getToken = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/login',
+      url: BASE_URL + '/login',
       data: {
         email,
         password
@@ -58,7 +60,7 @@ export const register = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/register',
+      url: BASE_URL + '/register',
       data: {
         email,
         password
@@ -68,7 +70,7 @@ export const register = (user) => {
       console.log('User successfully registered');
     })
     .catch(err => {
-      console.log(err);
+      console.log(err, '<<<<<<<<<<<<<<<<<<<,err');
     });
   }
 }
@@ -89,17 +91,14 @@ export const getAllSubscribed = (id) => {
 }
 
 export const getUserLocation = (place) => {
-  let url =  `http://localhost:3000/locations/search/${place}`
-  console.log(url)
   return (dispatch) => {
     // dispatch(setLoading(true))
-    console.log('halooooooooooooooooooooooooooooooooooo', place)
     axios({
       method: 'get',
-      url: `http://localhost:3000/locations/search/${place}`
+      url: BASE_URL + `/locations/search/${place}`
     })
     .then(res => {
-      console.log(res)
+      console.log(res.data)
     })
     .catch(err => {
       console.log(err)

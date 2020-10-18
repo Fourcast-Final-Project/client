@@ -1,16 +1,20 @@
 import React, {useState} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Dimensions, Pressable } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { register } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Register({navigation}) {
+    const dispatch = useDispatch()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
 
 
     function onPress(){
-        
+        dispatch(register({ email, password }))
         navigation.navigate("Login")   
     }
 
@@ -18,7 +22,7 @@ export default function Register({navigation}) {
         navigation.navigate("Login")
     }
 
-    function handleOnChangeUsername(username){
+    function handleOnChangeUsername (username) {
         setUsername(username)
     }
 
@@ -26,7 +30,9 @@ export default function Register({navigation}) {
         setPassword(password)
     }
 
-   
+    function handleOnChangeEmail(email){
+        setEmail(email)
+    }
 
     return (
         <View style={ styles.container }>
@@ -50,8 +56,8 @@ export default function Register({navigation}) {
 
             <TextInput 
                 style={styles.textInput}
-                value={username}
-                onChangeText={handleOnChangeUsername}
+                value={email}
+                onChangeText={handleOnChangeEmail}
             />
 
             <View style={ styles.subContainer }>
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
     subContainer: {
         alignSelf: 'center',
         width: windowWidth * 8.5 / 10,
-        marginTop: '2%'
+        marginTop: '5%'
     },
     header: {
         alignSelf: 'flex-start',
