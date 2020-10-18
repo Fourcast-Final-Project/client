@@ -168,6 +168,8 @@ const styles = StyleSheet.create({
         height: 40, 
         fontWeight: 'bold',
         backgroundColor: '#EAEAEA',
+        paddingLeft: 20,
+        paddingRight: 20,
         borderRadius:15,
         width: windowWidth * 8.5 / 10,
     },

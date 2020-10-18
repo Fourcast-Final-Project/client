@@ -35,7 +35,7 @@ export const getToken = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: BASE_URL + '/login',
+      url: baseUrl + '/login',
       data: {
         email,
         password
@@ -59,7 +59,7 @@ export const register = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: BASE_URL + '/register',
+      url: baseUrl + '/register',
       data: {
         email,
         password
