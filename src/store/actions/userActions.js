@@ -1,6 +1,6 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.172:3000'
+const baseUrl = 'http://192.168.0.30:3000'
 
 export const setToken = (token) => {
   return {
@@ -27,6 +27,13 @@ export const setUserLocation = (place) =>{
   return {
     type: SET_LOCATION,
     payload: place
+  }
+}
+
+export const setWeather = (weather) => {
+  return {
+    type: SET_WEATHER,
+    payload: weather
   }
 }
 
@@ -90,17 +97,38 @@ export const getAllSubscribed = (id) => {
 }
 
 export const getUserLocation = (place) => {
-    console.log ("masuk userAction: getUserLocation")
-    return (dispatch) => {
-      fetch(`${baseUrl}/locations/search/${place}`)
-        .then((res) => res.json())
-        .then(({data}) => {
-            //  console.log(data)
-            dispatch(setUserLocation(data))
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }    
-  }
+  console.log ("masuk userAction: getUserLocation")
+  return (dispatch) => {
+    fetch(`${baseUrl}/locations/search/${place}`)
+      .then((res) => res.json())
+      .then(({data}) => {
+           console.log(data, 'INI DI USERLOC')
+          dispatch(setUserLocation(data))
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }    
+}
 
+export const getWeather = (location) => {
+  return (dispatch, getState) => {
+    console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
+    const token = getState().usersReducer.token;
+    fetch(`${baseUrl}/weather/${location}`, {
+      method: 'GET',
+      headers: {
+        access_token: token
+      },
+      redirect: 'follow'
+    })
+    .then((res) => res.json())
+    .then(data => {
+      console.log(data, 'INI WEATHERRRRRRRRR');
+      dispatch(setWeather(data));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+}
