@@ -19,24 +19,27 @@ export default function Home({navigation}) {
         
     }
 
-    // useEffect(() => {
-    //     if (data) {
-    //         dispatch(getUserLocation("jakarta"));
-    //         dispatch(getWeather(data.name));
-    //         // console.log(data.name, 'HAHAH INI DATA')
-    //     }
-    // }, [data])
+    useEffect(() => {
+        dispatch(getUserLocation("jakarta"));
+    }, [])
 
-    // useEffect(() => {
-    //     if (!firebase.apps.length) {
-    //         firebase.initializeApp(firebaseConfig);
-    //     }
-    //     if (location.length > 0) {
-    //         database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
-    //             setData(snapshoot.val())  
-    //         })
-    //     }
-    // }, [location])
+    useEffect(() => {
+        if (location.length > 0) {
+            console.log('masuk kok')
+            dispatch(getWeather(location[0].name));
+        }
+    }, [location]);
+
+    useEffect(() => {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        if (location.length > 0) {
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())  
+            })
+        }
+    }, [data])
     return (
         <View style={ styles.pageContainer }>
              <View>
@@ -48,20 +51,21 @@ export default function Home({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 /> */}
                 {/* </TouchableOpacity> */}
-                {/* {location.length > 0 && weather.main &&
+                {location.length > 0 && weather.main &&
                     <View style={ styles.containerRounded }>
-                        <Text>{ data.name }, Indonesia</Text>
+                        <Text>{ location[0].name }, Indonesia</Text>
                         <Text>{ weather.main.temp }</Text>
+                        <Text>{ weather.weather[0].main }</Text>
                     </View>
-                } */}
-                <View style={ styles.containerRounded }>
+                }
+                {/* <View style={ styles.containerRounded }>
                         <Text>Jakarta, Indonesia</Text>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>26</Text>
                         <Text>Sunny</Text>
                     </View>
-                </View>
-                {/* <Text>waterLevel: { data.waterLevel }</Text> */}
+                </View> */}
+                <Text>waterLevel: { data.waterLevel }</Text>
                 {/* <CardComponent/> */}
             </View>
         </View>
