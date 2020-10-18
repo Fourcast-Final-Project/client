@@ -115,14 +115,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18
     },
-    inputContainer: {
-      width: "100%",
-      borderLeftWidth: 1,
-      borderRightWidth: 1,
-      borderTopWidth: 1,
-      borderBottomWidth: 1,
-      marginBottom: 10
-    },
+    // inputContainer: {
+    //   width: "100%",
+    //   borderLeftWidth: 1,
+    //   borderRightWidth: 1,
+    //   borderTopWidth: 1,
+    //   borderBottomWidth: 1,
+    //   marginBottom: 10
+    // },
     inputName: {
         marginBottom: 10
     },
