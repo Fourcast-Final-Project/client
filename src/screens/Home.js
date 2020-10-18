@@ -16,19 +16,19 @@ export default function Home({navigation}) {
         
     }
 
-        useEffect(()=>{
-            dispatch(getUserLocation("jakarta"))
+    useEffect(()=>{
+        dispatch(getUserLocation("jakarta"))
 
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-             }
+        // if (!firebase.apps.length) {
+        //     firebase.initializeApp(firebaseConfig);
+        //     }
 
-            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot =>{
-            // console.log(snapshoot.val())
-            setData(snapshoot.val())  
-            })
-            
-        },[])
+        // database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot =>{
+        // console.log(snapshoot.val())
+        // setData(snapshoot.val())  
+        // })
+        
+    },[])
     return (
         <View>
              <View style={{marginTop:20}}>
@@ -43,7 +43,7 @@ export default function Home({navigation}) {
                 <Text> Location Firebase: {data.name}  </Text>
                 <Text> waterLevel: {data.waterLevel}  </Text>
 
-                <CardComponent/>
+                {/* <CardComponent/> */}
             </View>
         </View>
     )
