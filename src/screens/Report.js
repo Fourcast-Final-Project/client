@@ -1,26 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity } from 'react-native'
 import { CheckBox } from 'react-native-elements'
-import { Camera } from 'expo-camera';
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function Report() {
+export default function Report({navigation}) {
     const [ city, setCity ] = useState('')
     const [ zipCode, setZipCode ] = useState('')
     const [ waterLevel, setWaterLevel ] = useState('')
     const [ checkBox, setCheckBox ] = useState(false);
-    const [hasPermission, setHasPermission] = useState(null);
-    const [type, setType] = useState(Camera.Constants.Type.back);
-
-    useEffect(() => {
-        (async () => {
-          const { status } = await Camera.requestPermissionsAsync();
-          setHasPermission(status === 'granted');
-        })();
-      }, []);
-    
+  
 
     function handleOnchangeCity (city) {
         setCity(city)
@@ -43,73 +34,7 @@ export default function Report() {
     }
 
     function uploadImageButton () {
-
-      if (hasPermission === null) {
-      
-    //   return <Text>No access to camera</Text>;
-        return alert('null')
-        }
-      if (hasPermission === false) {
-          return alert('false')
-    //     return  <View style={{ flex: 1 }}>
-    //     <Camera style={{ flex: 1 }} type={type}>
-    //         <View
-    //         style={{
-    //             flex: 1,
-    //             backgroundColor: 'transparent',
-    //             flexDirection: 'row',
-    //         }}>
-    //         <TouchableOpacity
-    //             style={{
-    //             flex: 0.1,
-    //             alignSelf: 'flex-end',
-    //             alignItems: 'center',
-    //             }}
-    //             onPress={() => {
-    //             setType(
-    //                 type === Camera.Constants.Type.back
-    //                 ? Camera.Constants.Type.front
-    //                 : Camera.Constants.Type.back
-    //             );
-    //             }}>
-    //             <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-    //         </TouchableOpacity>
-    //         </View>
-    //     </Camera>
-    // </View>
-      
-      }
-      if(hasPermission){
-          return alert('ada')
-        // return<View style={{ flex: 1 }}>
-        //     <Camera style={{ flex: 1 }} type={type}>
-        //          <View
-        //         style={{
-        //             flex: 1,
-        //             backgroundColor: 'transparent',
-        //             flexDirection: 'row',
-        //         }}>
-        //         <TouchableOpacity
-        //             style={{
-        //             flex: 0.1,
-        //             alignSelf: 'flex-end',
-        //             alignItems: 'center',
-        //             }}
-        //             onPress={() => {
-        //             setType(
-        //                 type === Camera.Constants.Type.back
-        //                 ? Camera.Constants.Type.front
-        //                 : Camera.Constants.Type.back
-        //             );
-        //             }}>
-        //             <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-        //         </TouchableOpacity>
-        //         </View>
-        //     </Camera>
-        // </View>
-      }
-       
-
+        navigation.navigate("CameraScreen")
     }
 
     function onPressButtonAlert () {
@@ -180,6 +105,7 @@ export default function Report() {
                 <View style={styles.inputName}>
                     <Text>Image.png</Text>
                 </View>
+
 
                     <View style={styles.checkboxContainer}>
                         <CheckBox
