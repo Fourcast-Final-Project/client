@@ -10,6 +10,7 @@ import MainMenu from './src/pages/MainMenu'
 import Register from './src/pages/Register'
 import Login from './src/pages/Login'
 import CameraScreen from './src/screens/CameraScreen'
+import Report from './src/pages/MainMenu'
 
 
 const Stack = createStackNavigator()
@@ -44,6 +45,12 @@ export default function App() {
             component={CameraScreen}
             options={{title: "CameraScreen"}}
           />     
+
+          {/* <Stack.Screen
+            name= "Report"
+            component={Report}
+            options={{title: "Report"}}
+          />      */}
 
                
         </Stack.Navigator>  
