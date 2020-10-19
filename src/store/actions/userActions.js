@@ -1,6 +1,6 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_PHOTO } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.30:3000'
+const baseUrl = 'http://192.168.0.27:3000'
 
 export const setToken = (token) => {
   return {
@@ -35,6 +35,7 @@ export const setWeather = (weather) => {
     type: SET_WEATHER,
     payload: weather
   }
+}
 
 export const setPhoto = (photo) =>{
     return {
