@@ -1,5 +1,6 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
 import axios from 'axios';
+const baseUrl = 'http://192.168.0.27:3000'
 
 export const setToken = (token) => {
   return {
@@ -29,12 +30,33 @@ export const setUserLocation = (place) =>{
   }
 }
 
+export const setWeather = (weather) => {
+  return {
+    type: SET_WEATHER,
+    payload: weather
+  }
+}
+
+export const setRawPhoto = (photo) =>{
+    return {
+      type: SET_RAW_PHOTO,
+      payload: photo
+    }
+}
+
+export const setPhotoName = (name) => {
+  return {
+    type: SET_PHOTO_NAME,
+    payload: name
+  }
+}
+
 export const getToken = (user) => {
   const { email, password } = user;
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/login',
+      url: baseUrl + '/login',
       data: {
         email,
         password
@@ -58,7 +80,7 @@ export const register = (user) => {
   return (dispatch, getState) => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/register',
+      url: baseUrl + '/register',
       data: {
         email,
         password
@@ -68,19 +90,23 @@ export const register = (user) => {
       console.log('User successfully registered');
     })
     .catch(err => {
-      console.log(err);
+      console.log(err, '<<<<<<<<<<<<<<<<<<<,err');
     });
   }
 }
 
-export const getAllSubscribed = (id) => {
+export const getAllSubscribed = () => {
   return (dispatch, getState) => {
     axios({
       method: 'get',
-      url: `http://localhost:3000/subscribed/${id}`
+      url: `${baseUrl}/subscribes`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
     })
     .then(({ data }) => {
-      dispatch(setSubscribed(data));
+      console.log(data, 'INI SUBSCRIBED');
+      dispatch(setSubscribed(data.results));
     })
     .catch(err => {
       console.log(err);
@@ -88,27 +114,115 @@ export const getAllSubscribed = (id) => {
   }
 }
 
-export const getUserLocation = (place) => {
-  let url =  `http://localhost:3000/locations/search/${place}`
-  console.log(url)
-  return (dispatch) => {
-    // dispatch(setLoading(true))
-    let url = `http://localhost:3000/locations/search/${place}`;
-      fetch(url)
-      .then((res) => res.json())
-      .then(({data}) => {
-        console.log(data,`<<<<<`)
-          dispatch(setUserLocation(data))
-       })
-       .catch((err) => {
-          // setError(err)
-          console.log(err)
-      })
-      // .finally(() => {
-      // //   setLoading(false)
-      //     dispatch(setUserLocation(false))
-      // })
-  }  
-
+export const addToSubscribed = (LocationId) => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/subscribes`,
+      data: {
+        LocationId
+      },
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(_ => {
+      dispatch(getAllSubscribed());
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 }
 
+export const removeFromSubscribed = (id) => {
+  console.log('yay masuk remove')
+  return (dispatch, getState) => {
+    axios({
+      method: 'delete',
+      url: `${baseUrl}/subscribes/${id}`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(_ => {
+      dispatch(getAllSubscribed());
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
+
+export const getUserLocation = (place) => {
+  console.log ("masuk userAction: getUserLocation")
+  return (dispatch) => {
+    fetch(`${baseUrl}/locations/search/${place}`)
+      .then((res) => res.json())
+      .then(({data}) => {
+           console.log(data, 'INI DI USERLOC')
+          dispatch(setUserLocation(data))
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }    
+}
+
+export const getWeather = (location) => {
+  return (dispatch, getState) => {
+    console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
+    const token = getState().usersReducer.token;
+    fetch(`${baseUrl}/weather/${location}`, {
+      method: 'GET',
+      headers: {
+        access_token: token
+      },
+      redirect: 'follow'
+    })
+    .then((res) => res.json())
+    .then(data => {
+      console.log(data, 'INI WEATHERRRRRRRRR');
+      const newData = JSON.parse(JSON.stringify(data));
+      console.log(newData.main, "NEW")
+      newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
+      dispatch(setWeather(newData));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+}
+
+export const getRawPhoto = (photo) => {
+  return(dispatch) =>{
+    dispatch(setRawPhoto(photo))
+  }
+}
+
+export const reportDanger = (waterLevel) => {
+  return (dispatch, getState) => {
+    const id = getState().usersReducer.location[0].id
+    console.log(getState().usersReducer.location, 'INI DRI REPORT DANGER')
+    axios({
+      method: 'put',
+      url: `${baseUrl}/locations/${id}`,
+      data: { 
+        image: getState().usersReducer.photoName,
+        waterLevel: Number(waterLevel)
+      },
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(({ data }) => {
+      console.log('MUAHAHAHAHAHHAHAHAHAHAHA', data);
+      const result = [];
+      result.push(data.result);
+      dispatch(setUserLocation(result));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
