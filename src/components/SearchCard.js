@@ -10,12 +10,12 @@ const windowHeight = Dimensions.get("window").height;
 
 
 export default function CardComponent(props) {
+    console.log(props)
     const dispatch = useDispatch()
 
     function subscribe () {
         dispatch(addToSubscribed(props.location.id))
     }
-
     if (!props.location) return <></>
     return (
         <>
