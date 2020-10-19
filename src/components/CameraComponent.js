@@ -162,7 +162,7 @@ export default function CameraComponent({navigation}) {
             photo ? <Modal animationType="slide" transparent={false} visible={open}>
                     
                     <Image
-                        style={{width:"100%", height:700, borderRadius:20}}
+                        style={{width:"100%", height:"50%", borderRadius:20}}
                         source={{ uri: photo }}
                     />
                     <View style={{flexDirection:"row"}}>
