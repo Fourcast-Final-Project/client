@@ -57,8 +57,8 @@ export default function Search({navigation}) {
                         } */}
                     </Text>
                     {
-                        searchResults.map((city) => {
-                            return <SearchCard city={ city } key={ city.id } /> 
+                        searchResults.map((location) => {
+                            return <SearchCard location={ location } key={ location.id } /> 
                         }) 
                     }
                 {/* <CardComponent/> */}

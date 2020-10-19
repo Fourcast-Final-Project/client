@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import CardComponent from '../components/CardComponent'
 // import firebase from 'firebase'
 import database from '../config/firebase'
-import { getUserLocation, getWeather } from '../store/actions/userActions'
+import { getUserLocation, getWeather, setWeather } from '../store/actions/userActions'
+import publicIP from 'react-native-public-ip'
+import axios from 'axios'
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Home({navigation}) {
     const dispatch = useDispatch();
@@ -20,7 +23,22 @@ export default function Home({navigation}) {
     }
 
     useEffect(() => {
-        dispatch(getUserLocation("malioboro"));
+        publicIP()
+            .then(ip => {    
+                console.log(ip);
+                return axios({
+                    method: 'get',
+                    url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                })
+            })
+            .then(data => {
+                console.log(data.data.city_name)
+                dispatch(getUserLocation(data.data.city_name));
+            })
+            .catch(error => {
+                console.log(error);
+                // 'Unable to get IP address.'
+            });
     }, [])
 
     useEffect(() => {
