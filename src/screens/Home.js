@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import CardComponent from '../components/CardComponent'
 import firebase from 'firebase'
 import database from '../config/firebase'
 import { getUserLocation, getWeather, setWeather } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
 import axios from 'axios'
+// import firebase from 'firebase'
+import { getUserLocation, getWeather } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -41,20 +44,18 @@ export default function Home({navigation}) {
 
     useEffect(() => {
         if (location.length > 0) {
-            console.log('masuk kok')
-            dispatch(getWeather(location[0].name));
-        }
-    }, [location]);
-
-    useEffect(() => {
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        if (location.length > 0) {
+            console.log(location, 'masuk kok')
+            dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())  
             })
         }
+    }, [location]);
+
+    useEffect(() => {
+        // if (!firebase.apps.length) {
+        //     firebase.initializeApp(firebaseConfig);
+        // }
     }, [data])
 
     return (
@@ -70,7 +71,8 @@ export default function Home({navigation}) {
                 {/* </TouchableOpacity> */}
                 {location.length > 0 && weather.main &&
                     <View style={ styles.containerRounded }>
-                        <Text>{ location[0].city }, Indonesia</Text>
+                        <Text>{ location[0].area }, Indonesia</Text>
+                        <Text>{ location[0].name }</Text>
                         <Text>{ weather.main.temp }</Text>
                         <Text>{ weather.weather[0].main }</Text>
                     </View>

@@ -2,8 +2,9 @@ import React, {useState, useEffect, useRef} from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, Modal , Image} from 'react-native';
 import { Camera } from 'expo-camera';
 import { FontAwesome, Ionicons,MaterialCommunityIcons,AntDesign } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux'
-import { getPhoto } from '../store/actions/userActions'
+import { useDispatch, useSelector } from 'react-redux'
+import { getRawPhoto, setPhotoName } from '../store/actions/userActions'
+import { Storage } from '../config/firebase';
 
 
 export default function CameraComponent({navigation}) {
@@ -12,10 +13,10 @@ export default function CameraComponent({navigation}) {
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [photo, setPhoto] = useState("")
     const [open, setOpen] = useState(false)
+    const user = useSelector(state => state.usersReducer.user);
+    const location = useSelector(state => state.usersReducer.location);
 
     const camRef = useRef(null)
-
-
 
     useEffect(() => {
         (async () => {
@@ -48,15 +49,39 @@ export default function CameraComponent({navigation}) {
        if(camRef){
            const data = await camRef.current.takePictureAsync()
            setPhoto(data.uri)
+           console.log(data, 'uriiiii')
            setOpen(true)
        }else{
            alert("Kamera bermasalah")
        }
     }
 
-    function onHandleOk(event){
-       dispatch(getPhoto(photo))
-    //    navigation.navigate("Report")
+    function onHandleOk(){
+        // const photoFromCamera = await 
+        const newDate = JSON.stringify(new Date());
+        const photoName = `${user.id}_${location[0].id}_${newDate.split(`"`).join('')}`
+        dispatch(getRawPhoto(photo))
+        dispatch(setPhotoName(photoName))
+        if (photo.length > 0) {
+            console.log(photo, 'INI STORAGE')
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                Storage.ref('images/' + `${photoName}`).put(xhr.response)
+            }
+            xhr.onerror = function() {
+                console.log('error')
+            }
+            xhr.responseType = 'blob';
+            xhr.open('GET', photo, true);
+            xhr.send(null);
+            
+            navigation.navigate('MainMenu', { screen: 'Report' });
+        }
+    }
+
+    const toReport = () => {
+        console.log(navigation, 'INI DRI HANDLEEEEE')
+        navigation.navigate('MainMenu', { screen: 'Report' });
     }
 
     return (
@@ -83,6 +108,19 @@ export default function CameraComponent({navigation}) {
                 </TouchableOpacity>
                 </View>
                 <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
+                    <TouchableOpacity
+                        style={{
+                        alignSelf: 'flex-end',
+                        alignItems: 'center',
+                        backgroundColor: 'transparent',                  
+                        }}
+                        onPress={toReport}
+                        >
+                        <Ionicons
+                            name="ios-photos"
+                            style={{ color: "#fff", fontSize: 40}}
+                        />
+                    </TouchableOpacity>
                     <TouchableOpacity
                         style={{
                         alignSelf: 'flex-end',
