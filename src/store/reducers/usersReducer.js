@@ -1,11 +1,12 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER } from '../actions/types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_PHOTO, SET_WEATHER } from '../actions/types';
 
 const initialState = {
   token: '',
   user: {},
   subscribed: [],
   location: [],
-  weather: {}
+  weather: {},
+  photo:''
 }
 
 export default (state = initialState, action) => {
@@ -20,6 +21,8 @@ export default (state = initialState, action) => {
       return { ...state, location: action.payload };
     case SET_WEATHER:
       return { ...state, weather: action.payload };
+    case SET_PHOTO:
+      return { ...state, photo: action.payload };
     default:
       return state;
   }

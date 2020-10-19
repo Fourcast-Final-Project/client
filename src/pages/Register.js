@@ -8,7 +8,6 @@ const windowHeight = Dimensions.get("window").height;
 
 export default function Register({navigation}) {
     const dispatch = useDispatch()
-    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
 
@@ -16,14 +15,14 @@ export default function Register({navigation}) {
     function onPress(){
         dispatch(register({ email, password }))
         navigation.navigate("Login")   
+        setEmail('')
+        setPassword('')
     }
 
     function toLogin(){
         navigation.navigate("Login")
-    }
-
-    function handleOnChangeUsername (username) {
-        setUsername(username)
+        setEmail('')
+        setPassword('')
     }
 
     function handleOnChangePassword(password){
@@ -39,16 +38,6 @@ export default function Register({navigation}) {
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Register</Text>
             </View>
-
-            {/* <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>USERNAME</Text>
-            </View>
-
-            <TextInput 
-                style={styles.textInput}
-                value={username}
-                onChangeText={handleOnChangeUsername}
-            /> */}
 
             <View style={ styles.subContainer }>
                 <Text style={ styles.subHeader }>EMAIL</Text>
@@ -67,31 +56,9 @@ export default function Register({navigation}) {
             <TextInput 
                 style={styles.textInput}
                 value={password}
+                secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
             />
-
-            {/* <View style={ styles.subContainer }>
-                <Text style={ styles.address }>Address</Text>
-            </View>
-
-            <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>City</Text>
-            </View>
-            <TextInput 
-                style={styles.textInput}
-                value={username}
-                onChangeText={handleOnChangeUsername}
-            />
-
-            <View style={ styles.subContainer }>
-                <Text style={ styles.subHeader }>ZIP code</Text>
-            </View>
-
-            <TextInput 
-                style={styles.textInput}
-                value={username}
-                onChangeText={handleOnChangeUsername}
-            />           */}
 
             <View>
                 <Pressable onPress={() => onPress()} style={ styles.button }>
