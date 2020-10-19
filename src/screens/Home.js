@@ -40,6 +40,7 @@ export default function Home({navigation}) {
             })
         }
     }, [data])
+
     return (
         <View style={ styles.pageContainer }>
              <View>
