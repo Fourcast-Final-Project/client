@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Dimensions, TextInput, Text } from 'react-native'
 import { SearchBar} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
-import CardComponent from '../components/CardComponent'
+import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 
 import { searchLocation } from '../store/actions/dataActions'
 
@@ -52,16 +52,16 @@ export default function Search({navigation}) {
                     />
                 </View>
                     <Text>
-                        {
+                        {/* {
                             JSON.stringify(searchResults)
-                        }
+                        } */}
                     </Text>
                     {
                         searchResults.map((city) => {
-                            return <CardComponent city={ city } key={ city.id } /> 
+                            return <SearchCard city={ city } key={ city.id } /> 
                         }) 
                     }
-                <CardComponent/>
+                {/* <CardComponent/> */}
             </View>
         </>
     )
