@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CardComponent from '../components/CardComponent'
 // import firebase from 'firebase'
 import database from '../config/firebase'
-import { getUserLocation, getWeather, setWeather } from '../store/actions/userActions'
+import { getUserLocationSearch, getWeather, setWeather } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
 import axios from 'axios'
 
@@ -28,12 +28,12 @@ export default function Home({navigation}) {
                 console.log(ip);
                 return axios({
                     method: 'get',
-                    url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
                 })
             })
             .then(data => {
                 console.log(data.data.city_name)
-                dispatch(getUserLocation(data.data.city_name));
+                dispatch(getUserLocationSearch(data.data.city_name));
             })
             .catch(error => {
                 console.log(error);
@@ -68,6 +68,7 @@ export default function Home({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 /> */}
                 {/* </TouchableOpacity> */}
+                {/* <Text>{JSON.stringify(location)}</Text> */}
                 {location.length > 0 && weather.main &&
                     <View style={ styles.containerRounded }>
                         <Text>{ location[0].area }, Indonesia</Text>

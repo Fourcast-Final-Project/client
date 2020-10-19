@@ -170,6 +170,22 @@ export const getUserLocation = (place) => {
   }    
 }
 
+export const getUserLocationSearch = (place) => {
+  console.log ("masuk userAction: getUserLocation")
+  return (dispatch) => {
+    fetch(`${baseUrl}/locations/find/${place}`)
+      .then((res) => res.json())
+      .then(({data}) => {
+           console.log(data, 'INI DI FIND')
+          const result = data.filter(location => location.name === 'Kebon Jeruk');
+          dispatch(setUserLocation(result))
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }    
+}
+
 export const getWeather = (location) => {
   return (dispatch, getState) => {
     console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
