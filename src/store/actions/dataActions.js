@@ -19,7 +19,7 @@ export const setSearch = (payload) => {
 export const searchLocation = (place) => {
   console.log ("masuk userAction: ini search")
   return (dispatch) => {
-    fetch(`${baseUrl}/locations/search/${place}`)
+    fetch(`${baseUrl}/locations/find/${place}`)
       .then((res) => res.json())
       .then(({data}) => {
            console.log(data, 'INI DRI SEARCH LOC')
