@@ -1,12 +1,84 @@
-import React, {useState, useEffect} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity } from 'react-native'
+import React, {useState, useEffect, useRef} from 'react'
+import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 import { CheckBox } from 'react-native-elements'
 import { reportDanger } from '../store/actions/userActions';
 
-
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+});
+
+async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+        content: {
+        title: "You've got mail! 📬",
+        body: 'Here is the notification body',
+        data: { data: 'goes here' },
+        },
+        trigger: { seconds: 8 },
+    });
+}
+
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+        });
+    }
+
+    return token;
+}
+
+async function sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'DANGER',
+      body: 'Flooding in your area!',
+      data: { data: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+}
 
 export default function Report({navigation}) {
     const dispatch = useDispatch();
@@ -17,7 +89,29 @@ export default function Report({navigation}) {
     const [ checkcheck, setCheckCheck ] = useState(false);
     const image = useSelector(state => state.usersReducer.rawPhoto);
     const location = useSelector(state => state.usersReducer.location);
+
+    // Expo
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
   
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          setNotification(notification);
+        });
+    
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log(response);
+        });
+    
+        return () => {
+          Notifications.removeNotificationSubscription(notificationListener);
+          Notifications.removeNotificationSubscription(responseListener);
+        };
+    }, []);
 
     function handleOnchangeCity (city) {
         setCity(city)
@@ -43,13 +137,14 @@ export default function Report({navigation}) {
         navigation.navigate("CameraScreen")
     }
 
-    function onPressButtonAlert () {
+    async function onPressButtonAlert () {
         // alert("Press")
         if (checkBox === false) {
             setCheckCheck(true);
         } else {
             console.log(waterLevel, "INI DRI REPORT GUYS WATER")
             dispatch(reportDanger(waterLevel));
+            await sendPushNotification(expoPushToken);
             navigation.navigate('MainMenu', { screen: 'Home' })
         }
 
@@ -59,6 +154,8 @@ export default function Report({navigation}) {
     },[])
     return (
         <>
+        <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
             <View style={ styles.container }>
                 <View style={ styles.subContainer }>
                     <Text style={ styles.header }>Report</Text>
@@ -146,6 +243,8 @@ export default function Report({navigation}) {
                     </View>
                 
             </View>
+            </ScrollView>
+            </SafeAreaView>
         </>
     )
 }
@@ -225,6 +324,11 @@ const styles = StyleSheet.create({
         marginTop: '2%',
         padding: '3%',
         borderRadius: 15
-    }
+    },
+    
+  scrollView: {
+    backgroundColor: 'pink',
+    marginHorizontal: 20,
+  }
   });
 
