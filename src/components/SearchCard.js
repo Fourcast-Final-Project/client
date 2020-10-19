@@ -1,25 +1,35 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native'
 import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
+import { AntDesign } from '@expo/vector-icons'; 
+import { useDispatch } from 'react-redux'
+import  { addToSubscribed } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 
 export default function CardComponent(props) {
-    console.log(props)
-    if (!props.city) return <View><Text>Please Wait...</Text></View>
+    const dispatch = useDispatch()
+
+    function subscribe () {
+        dispatch(addToSubscribed(props.location.id))
+    }
+
+    if (!props.location) return <></>
     return (
         <>
             <View style={ styles.infoContainer }>
                 <View style={ styles.cityContainer }>
-                    <Text style={ styles.city }> {props.city.name} </Text>
-                    <Text style={ styles.subscribe }>Subscribe</Text>
+                    <Text style={ styles.city }> {props.location.city} </Text>
+                    <View style={ styles.pinContainer }>
+                        <Pressable style={ styles.pin } onPress={ () => subscribe() }>
+                            <AntDesign name='pushpino' size={ 32 } color='#686868' />
+                        </Pressable>
+                    </View>
                 </View>
                 <View style={ styles.waterLevel }>
-                    <View>
-                        <Text style={ styles.value }> {props.city.waterLevel} </Text>
-                    </View>
+                    <Text style={ styles.value }>{props.location.waterLevel}</Text>
                     <View style={ styles.unitContainer }>
                         <Text style={ styles.unit }> cm</Text>
                     </View>
@@ -103,5 +113,10 @@ const styles = StyleSheet.create({
         color: '#5F5F5F',
         fontSize: 30
     },
-    subscribe: {}
+    pinContainer: {
+        alignItems: 'flex-end'
+    },
+    pin: {
+        alignSelf: 'flex-end'
+    }
 })
