@@ -1,6 +1,6 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_PHOTO } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.172:3000'
+const baseUrl = 'http://192.168.100.28:3000'
 
 export const setToken = (token) => {
   return {
@@ -28,6 +28,13 @@ export const setUserLocation = (place) =>{
     type: SET_LOCATION,
     payload: place
   }
+}
+
+export const setPhoto = (photo) =>{
+    return {
+      type: SET_PHOTO,
+      payload: photo
+    }
 }
 
 export const getToken = (user) => {
@@ -102,5 +109,11 @@ export const getUserLocation = (place) => {
             console.log(err)
         })
     }    
+  }
+
+  export const getPhoto = (photo) => {
+    return(dispatch) =>{
+      dispatch(setPhoto(photo))
+    }
   }
 

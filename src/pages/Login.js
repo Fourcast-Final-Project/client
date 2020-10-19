@@ -16,10 +16,14 @@ export default function Login({navigation}) {
         if (token) {
             navigation.navigate("MainMenu")
         }
+        setEmail('')
+        setPassword('')
     }, [token])
 
     function onPress(){
         dispatch(getToken({ email, password }))
+        setEmail('')
+        setPassword('')
     }
 
     function handleOnChangeEmail(email){
@@ -32,6 +36,8 @@ export default function Login({navigation}) {
 
     function handelOnPressTextRegister(){
         navigation.navigate("Register")
+        setEmail('')
+        setPassword('')
     }
     return (
         <View style={ styles.container }>
@@ -57,6 +63,7 @@ export default function Login({navigation}) {
             <TextInput 
                 style={styles.textInput}
                 value={password}
+                secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
             />
 
