@@ -21,7 +21,7 @@ export default function CardComponent(props) {
         <>
             <View style={ styles.infoContainer }>
                 <View style={ styles.cityContainer }>
-                    <Text style={ styles.city }> {props.location.city} </Text>
+                    <Text style={ styles.city }> {props.location.name} </Text>
                     <View style={ styles.pinContainer }>
                         <Pressable style={ styles.pin } onPress={ () => subscribe() }>
                             <AntDesign name='pushpino' size={ 32 } color='#686868' />
