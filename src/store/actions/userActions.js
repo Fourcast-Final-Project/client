@@ -1,6 +1,6 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_PHOTO } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.175:3000'
+const baseUrl = 'http://192.168.1.176:3000'
 
 export const setToken = (token) => {
   return {

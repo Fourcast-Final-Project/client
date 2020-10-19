@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, TouchableOpacity, Button, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import CardComponent from '../components/CardComponent'
 import firebase from 'firebase'
 import database from '../config/firebase'
 import { getUserLocation, getWeather, setWeather } from '../store/actions/userActions'
+import publicIP from 'react-native-public-ip'
+import axios from 'axios'
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Home({navigation}) {
     const dispatch = useDispatch();
@@ -16,11 +18,25 @@ export default function Home({navigation}) {
     
     function onPress(){
         navigation.navigate("Login")
-        
     }
 
     useEffect(() => {
-        dispatch(getUserLocation("jakarta"));
+        publicIP()
+            .then(ip => {    
+                console.log(ip);
+                return axios({
+                    method: 'get',
+                    url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                })
+            })
+            .then(data => {
+                console.log(data.data.city_name)
+                dispatch(getUserLocation(data.data.city_name));
+            })
+            .catch(error => {
+                console.log(error);
+                // 'Unable to get IP address.'
+            });
     }, [])
 
     useEffect(() => {
@@ -42,8 +58,8 @@ export default function Home({navigation}) {
     }, [data])
 
     return (
-        <View style={ styles.pageContainer }>
-             <View>
+        <>
+            <View style={ styles.container }>
                 {/* <TouchableOpacity style={{ borderRadius:25 }}> */}
                 {/* <Button
                     onPress={() => onPress()}
@@ -54,7 +70,7 @@ export default function Home({navigation}) {
                 {/* </TouchableOpacity> */}
                 {location.length > 0 && weather.main &&
                     <View style={ styles.containerRounded }>
-                        <Text>{ location[0].name }, Indonesia</Text>
+                        <Text>{ location[0].city }, Indonesia</Text>
                         <Text>{ weather.main.temp }</Text>
                         <Text>{ weather.weather[0].main }</Text>
                     </View>
@@ -66,22 +82,29 @@ export default function Home({navigation}) {
                         <Text>Sunny</Text>
                     </View>
                 </View> */}
-                <Text>waterLevel: { data.waterLevel }</Text>
                 {/* <CardComponent/> */}
+                <View style={ styles.levContainer }>
+                    <Text>Water Level</Text>
+                    <View style ={{ flexDirection: 'row' }}>
+                        <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
+                        <Text>cm</Text>
+                    </View>
+                    <View>
+                        <Text>SAFE</Text>
+                    </View>
+                </View>
             </View>
-        </View>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    pageContainer: {
-        marginTop: 70,
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 50,
-        display: 'flex',
-        flexDirection: 'column',
-        alignContent: 'center'
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: windowHeight * 1 / 10,
     },
     containerRounded: {
         backgroundColor: 'gray',
@@ -90,5 +113,8 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 20,
         paddingRight: 20
+    },
+    levContainer: {
+        backgroundColor: '#EAEAEA'
     }
 })

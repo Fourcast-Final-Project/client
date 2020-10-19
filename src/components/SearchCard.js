@@ -13,15 +13,15 @@ export default function CardComponent(props) {
     const dispatch = useDispatch()
 
     function subscribe () {
-        dispatch(addToSubscribed(props.city.id))
+        dispatch(addToSubscribed(props.location.id))
     }
 
-    if (!props.city) return <></>
+    if (!props.location) return <></>
     return (
         <>
             <View style={ styles.infoContainer }>
                 <View style={ styles.cityContainer }>
-                    <Text style={ styles.city }> {props.city.name} </Text>
+                    <Text style={ styles.city }> {props.location.city} </Text>
                     <View style={ styles.pinContainer }>
                         <Pressable style={ styles.pin } onPress={ () => subscribe() }>
                             <AntDesign name='pushpino' size={ 32 } color='#686868' />
@@ -29,7 +29,7 @@ export default function CardComponent(props) {
                     </View>
                 </View>
                 <View style={ styles.waterLevel }>
-                    <Text style={ styles.value }>{props.city.waterLevel}</Text>
+                    <Text style={ styles.value }>{props.location.waterLevel}</Text>
                     <View style={ styles.unitContainer }>
                         <Text style={ styles.unit }> cm</Text>
                     </View>
