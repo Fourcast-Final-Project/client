@@ -8,7 +8,6 @@ import { getUserLocation, getWeather, setWeather } from '../store/actions/userAc
 import publicIP from 'react-native-public-ip'
 import axios from 'axios'
 // import firebase from 'firebase'
-import { getUserLocation, getWeather } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
