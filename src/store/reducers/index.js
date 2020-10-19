@@ -6,5 +6,5 @@ import dataReducer from './dataReducer';
 export default combineReducers({
   usersReducer,
   arduinoReducer,
-  dataReducer
+  dataReducer,
 });
