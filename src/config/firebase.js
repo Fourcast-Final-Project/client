@@ -1,4 +1,7 @@
-import firebase from 'firebase'
+// import firebase from 'firebase'
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/database'
 
 var config = {
     apiKey: "AIzaSyCKJBEtmZAU1B3sEWJ9FdT0ks8Q3uIJX9o",
@@ -13,5 +16,7 @@ var config = {
 
   // Get a reference to the database service
   var database = firebase.database();
-
+  var storage = firebase.storage();
+  // console.log(storage, 'INI STORAGE CONFIG')
+  export const Storage = firebase.storage()
   export default database

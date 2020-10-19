@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import { CheckBox } from 'react-native-elements'
+import { reportDanger } from '../store/actions/userActions';
 
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Report({navigation}) {
-    const [ city, setCity ] = useState('')
-    const [ zipCode, setZipCode ] = useState('')
+    const dispatch = useDispatch();
+    // const [ city, setCity ] = useState('')
+    // const [ zipCode, setZipCode ] = useState('')
     const [ waterLevel, setWaterLevel ] = useState('')
     const [ checkBox, setCheckBox ] = useState(false);
+    const [ checkcheck, setCheckCheck ] = useState(false);
+    const image = useSelector(state => state.usersReducer.rawPhoto);
+    const location = useSelector(state => state.usersReducer.location);
   
 
     function handleOnchangeCity (city) {
@@ -38,7 +44,14 @@ export default function Report({navigation}) {
     }
 
     function onPressButtonAlert () {
-        alert("Press")
+        // alert("Press")
+        if (checkBox === false) {
+            setCheckCheck(true);
+        } else {
+            console.log(waterLevel, "INI DRI REPORT GUYS WATER")
+            dispatch(reportDanger(waterLevel));
+            navigation.navigate('MainMenu', { screen: 'Home' })
+        }
 
     }
 
@@ -53,29 +66,40 @@ export default function Report({navigation}) {
                 <View style={ styles.subContainer }>
                     <Text style={ styles.subHeader }>Location</Text>
                 </View>
+                <View style={ styles.subContainer }>  
+                    <Text style={ styles.text }>Place</Text>
+                </View>
+
+                <TextInput 
+                    style={styles.textInput}
+                    value={location[0].name}
+                    onChangeText={handleOnChangeZipCode}
+                    placeholderTextColor='#C4C4C4'
+                    editable={ false }
+                />
+                <View style={ styles.subContainer }>  
+                    <Text style={ styles.text }>Area</Text>
+                </View>
+
+                <TextInput 
+                    style={styles.textInput}
+                    value={location[0].area}
+                    onChangeText={handleOnChangeZipCode}
+                    placeholder='Enter ZIP Code'
+                    placeholderTextColor='#C4C4C4'
+                    editable={ false }
+                />    
                 <View style={ styles.subContainer }>
                     <Text style={ styles.text } >City</Text>
                 </View>
                 <TextInput 
                     style={styles.textInput}
-                    value={city}
+                    value={location[0].city}
                     onChangeText={handleOnchangeCity}
                     placeholder='Enter City'
                     placeholderTextColor='#C4C4C4'
+                    editable={ false }
                 />
-
-                <View style={ styles.subContainer }>  
-                    <Text style={ styles.text }>ZIP code</Text>
-                </View>
-
-                <TextInput 
-                    style={styles.textInput}
-                    value={zipCode}
-                    onChangeText={handleOnChangeZipCode}
-                    placeholder='Enter ZIP Code'
-                    keyboardType= 'numeric'
-                    placeholderTextColor='#C4C4C4'
-                />    
 
                 <View style={ styles.subContainer }>
                     <Text style={ styles.text }>Water Level</Text>
@@ -102,9 +126,9 @@ export default function Report({navigation}) {
 
                
 
-                <View style={styles.inputName}>
-                    <Text>Image.png</Text>
-                </View>
+                {image.length > 0 && <View style={styles.inputName}>
+                    <Text>Image uploaded</Text>
+                </View>}
 
 
                     <View style={styles.checkboxContainer}>
@@ -114,8 +138,8 @@ export default function Report({navigation}) {
                             checked={checkBox}
                         />
                     </View>
-
-                     <View style={ styles.subContainer }>
+                    {checkcheck && <Text>ISI</Text>}
+                    <View style={ styles.subContainer }>
                         <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
                             <Text style={ styles.buttonText }>Alert Danger</Text>
                         </Pressable>

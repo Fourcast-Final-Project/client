@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_PHOTO } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
 import axios from 'axios';
 const baseUrl = 'http://192.168.0.27:3000'
 
@@ -37,11 +37,18 @@ export const setWeather = (weather) => {
   }
 }
 
-export const setPhoto = (photo) =>{
+export const setRawPhoto = (photo) =>{
     return {
-      type: SET_PHOTO,
+      type: SET_RAW_PHOTO,
       payload: photo
     }
+}
+
+export const setPhotoName = (name) => {
+  return {
+    type: SET_PHOTO_NAME,
+    payload: name
+  }
 }
 
 export const getToken = (user) => {
@@ -177,7 +184,10 @@ export const getWeather = (location) => {
     .then((res) => res.json())
     .then(data => {
       console.log(data, 'INI WEATHERRRRRRRRR');
-      dispatch(setWeather(data));
+      const newData = JSON.parse(JSON.stringify(data));
+      console.log(newData.main, "NEW")
+      newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
+      dispatch(setWeather(newData));
     })
     .catch((err) => {
       console.log(err);
@@ -185,8 +195,35 @@ export const getWeather = (location) => {
   }
 }
 
-export const getPhoto = (photo) => {
+export const getRawPhoto = (photo) => {
   return(dispatch) =>{
-    dispatch(setPhoto(photo))
+    dispatch(setRawPhoto(photo))
+  }
+}
+
+export const reportDanger = (waterLevel) => {
+  return (dispatch, getState) => {
+    const id = getState().usersReducer.location[0].id
+    console.log(getState().usersReducer.location, 'INI DRI REPORT DANGER')
+    axios({
+      method: 'put',
+      url: `${baseUrl}/locations/${id}`,
+      data: { 
+        image: getState().usersReducer.photoName,
+        waterLevel: Number(waterLevel)
+      },
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(({ data }) => {
+      console.log('MUAHAHAHAHAHHAHAHAHAHAHA', data);
+      const result = [];
+      result.push(data.result);
+      dispatch(setUserLocation(result));
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 }
