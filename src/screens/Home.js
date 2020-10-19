@@ -52,9 +52,14 @@ export default function Home({navigation}) {
     }, [location]);
 
     useEffect(() => {
-        // if (!firebase.apps.length) {
-        //     firebase.initializeApp(firebaseConfig);
-        // }
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        if (location.length > 0) {
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())
+            })
+        }
     }, [data])
 
     return (
