@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, TouchableOpacity, Button, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import CardComponent from '../components/CardComponent'
-// import firebase from 'firebase'
+import firebase from 'firebase'
 import database from '../config/firebase'
 import { getUserLocationSearch, getWeather, setWeather } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
@@ -19,7 +19,6 @@ export default function Home({navigation}) {
     
     function onPress(){
         navigation.navigate("Login")
-        
     }
 
     useEffect(() => {
@@ -58,8 +57,8 @@ export default function Home({navigation}) {
     }, [data])
 
     return (
-        <View style={ styles.pageContainer }>
-             <View>
+        <>
+            <View style={ styles.container }>
                 {/* <TouchableOpacity style={{ borderRadius:25 }}> */}
                 {/* <Button
                     onPress={() => onPress()}
@@ -84,22 +83,29 @@ export default function Home({navigation}) {
                         <Text>Sunny</Text>
                     </View>
                 </View> */}
-                <Text>waterLevel: { data.waterLevel }</Text>
                 {/* <CardComponent/> */}
+                <View style={ styles.levContainer }>
+                    <Text>Water Level</Text>
+                    <View style ={{ flexDirection: 'row' }}>
+                        <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
+                        <Text>cm</Text>
+                    </View>
+                    <View>
+                        <Text>SAFE</Text>
+                    </View>
+                </View>
             </View>
-        </View>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    pageContainer: {
-        marginTop: 70,
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 50,
-        display: 'flex',
-        flexDirection: 'column',
-        alignContent: 'center'
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: windowHeight * 1 / 10,
     },
     containerRounded: {
         backgroundColor: 'gray',
@@ -108,5 +114,8 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 20,
         paddingRight: 20
+    },
+    levContainer: {
+        backgroundColor: '#EAEAEA'
     }
 })

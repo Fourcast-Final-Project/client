@@ -120,7 +120,6 @@ export const addToSubscribed = (LocationId) => {
       method: 'post',
       url: `${baseUrl}/subscribes`,
       data: {
-        UserId: getState().usersReducer.user.id,
         LocationId
       },
       headers: {
