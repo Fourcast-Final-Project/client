@@ -11,7 +11,6 @@ export default function History({ route, navigation }) {
     const dataHistory = useSelector(state => state.dataReducer.history);
 
     useEffect(() => {
-        
         dispatch(getHistory(id))
     }, [id]);
 
