@@ -55,7 +55,7 @@ export default function MainMenu() {
             },
           }} />
 
-        <Tab.Screen 
+        {/* <Tab.Screen 
              name="Subscription" component={Subscription} options={{
             title: 'Subscription',
             tabBarIcon: ({size,focused,color}) => {
@@ -63,7 +63,7 @@ export default function MainMenu() {
                 <FontAwesome name="history" size={24} color="black" />
               );
             },
-          }} />
+          }} /> */}
 
             <Tab.Screen
              name="Account" component={Account} options={{
