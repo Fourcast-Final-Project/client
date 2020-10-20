@@ -85,18 +85,10 @@ export default function Home({navigation}) {
                         <Text>{ weather.weather[0].main }</Text>
                     </View>
                 ) : (
-                <View style={ styles.containerRounded }>
-                    <ActivityIndicator size="large" color="#00ff00"/>
+                <View>
+                    <ActivityIndicator size="small"/>
                 </View>)
                 }
-                {/* <View style={ styles.containerRounded }>
-                        <Text>Jakarta, Indonesia</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>26</Text>
-                        <Text>Sunny</Text>
-                    </View>
-                </View> */}
-                {/* <CardComponent/> */}
                 <View style={ styles.levContainer }>
                     <Text>Water Level from Firebase</Text>
                                        
@@ -112,15 +104,13 @@ export default function Home({navigation}) {
                         <Text>SAFE</Text>
                     </View>
                 </View>
-                <Text> dibawah ini data subscription</Text>
-            
+                {/* <Text> dibawah ini data subscription</Text> */}
                 {
-                        subscribed.map((location) => {
-                            return <CardSubs location={ location.id }  key={ location.id } /> 
-                        }) 
+                    subscribed.map((location) => {
+                        return <CardSubs location={ location.id }  key={ location.id } /> 
+                    }) 
                         
-                    }
-
+                }
             </View>
         </>
     )

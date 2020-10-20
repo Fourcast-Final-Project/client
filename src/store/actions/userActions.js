@@ -184,7 +184,7 @@ export const getUserLocationSearch = (place) => {
           if (data.length === 0) // kalo lokasi user tidak ada di database, set default location = Kebon Jeruk
           {
             result = [{
-              "id": 2,
+              "id": 29,
               "area": "West Jakarta",
               "name": "Kebon Jeruk",
               "city": "Jakarta"

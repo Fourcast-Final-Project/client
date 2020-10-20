@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     subHeader: {
         alignSelf: 'flex-start',
         // fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 18,
         color: '#9A9A9A'
     },
     text: {
