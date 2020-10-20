@@ -260,3 +260,18 @@ export const reportDanger = (waterLevel) => {
     })
   }
 }
+
+export const checkRedis = () => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/login`
+    })
+    .then(({ data }) => {
+      dispatch(setToken(data));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
