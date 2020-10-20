@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getHistory,setHistory } from '../store/actions/dataActions'
 import CardHistory from '../components/CardHistory'
 
-export default function History({ route, navigation }) {
-    const { id } = route.params
+export default function Subscription({ route, navigation }) {
+    //const { id } = route.params
+    const id = 1
     
     const dispatch = useDispatch();
     const dataHistory = useSelector(state => state.dataReducer.history);
@@ -24,7 +25,7 @@ export default function History({ route, navigation }) {
                 <TouchableOpacity style={{borderRadius:25}}>
                 <Button
                     onPress={() => onPress()}
-                    title="History"
+                    title="Subscription"
                     color=""
                     accessibilityLabel="Learn more about this purple button"
                 />

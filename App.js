@@ -10,6 +10,7 @@ import MainMenu from './src/pages/MainMenu'
 import Register from './src/pages/Register'
 import Login from './src/pages/Login'
 import CameraScreen from './src/screens/CameraScreen'
+import History from './src/screens/History'
 import Report from './src/pages/MainMenu'
 
 
@@ -35,6 +36,11 @@ export default function App() {
             options={{title: "Register"}}
           />
           <Stack.Screen
+            name= "History"
+            component={History}
+            options={{title: "History"}}
+          />   
+          <Stack.Screen
             name= "MainMenu"
             component={MainMenu}
             options={{title: "MainMenu"}}
@@ -44,7 +50,9 @@ export default function App() {
             name= "CameraScreen"
             component={CameraScreen}
             options={{title: "CameraScreen"}}
-          />     
+          />
+          
+           
 
           {/* <Stack.Screen
             name= "Report"

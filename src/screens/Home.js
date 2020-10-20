@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import CardComponent from '../components/CardComponent'
 import firebase from 'firebase'
 import database from '../config/firebase'
-import { getUserLocationSearch, getWeather, setWeather } from '../store/actions/userActions'
+ import CardSubs from '../components/CardSubs'
+import { getUserLocationSearch, getWeather, getAllSubscribed } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
 import axios from 'axios'
 
@@ -16,6 +16,8 @@ export default function Home({navigation}) {
     const [data, setData] = useState('');
     const location = useSelector(state => state.usersReducer.location);
     const weather = useSelector(state => state.usersReducer.weather);
+    
+    const subscribed = useSelector(state => state.usersReducer.subscribed);
     
     function onPress(){
         navigation.navigate("Login")
@@ -41,8 +43,12 @@ export default function Home({navigation}) {
     }, [])
 
     useEffect(() => {
+        dispatch(getAllSubscribed());
+    }, []);
+
+    useEffect(() => {
         if (location.length > 0) {
-            console.log(location, 'masuk kok')
+            //console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())  
@@ -73,13 +79,20 @@ export default function Home({navigation}) {
                 /> */}
                 {/* </TouchableOpacity> */}
                 {/* <Text>{JSON.stringify(location)}</Text> */}
-                {location.length > 0 && weather.main &&
+                {location.length > 0 && weather.main ? (
                     <View style={ styles.containerRounded }>
                         <Text>{ location[0].area }, Indonesia</Text>
                         <Text>{ location[0].name }</Text>
+                        <Image 
+                        style={{width: 100, height: 100}}
+                        source={{uri: `http://openweathermap.org/img/w/${ weather.weather[0].icon }.png`}} />
                         <Text>{ weather.main.temp }</Text>
                         <Text>{ weather.weather[0].main }</Text>
                     </View>
+                ) : (
+                <View style={ styles.containerRounded }>
+                    <ActivityIndicator size="large" color="#00ff00"/>
+                </View>)
                 }
                 {/* <View style={ styles.containerRounded }>
                         <Text>Jakarta, Indonesia</Text>
@@ -90,15 +103,29 @@ export default function Home({navigation}) {
                 </View> */}
                 {/* <CardComponent/> */}
                 <View style={ styles.levContainer }>
-                    <Text>Water Level</Text>
+                    <Text>Water Level from Firebase</Text>
+                                       
+                    <View>
+                         <Text>{ data.name }</Text>
+                    </View>
                     <View style ={{ flexDirection: 'row' }}>
+                        
                         <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
                         <Text>cm</Text>
-                    </View>
+                    </View> 
                     <View>
                         <Text>SAFE</Text>
                     </View>
                 </View>
+                <Text> dibawah ini data subscription</Text>
+            
+                {
+                        subscribed.map((location) => {
+                            return <CardSubs location={ location.id }  key={ location.id } /> 
+                        }) 
+                        
+                    }
+
             </View>
         </>
     )
