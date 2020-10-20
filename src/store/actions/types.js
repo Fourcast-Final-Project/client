@@ -14,3 +14,4 @@ export const SET_INO = 'SET_INO';
 export const SET_DATA = 'SET_DATA';
 export const SEARCH_DATA = 'SEARCH_DATA'
 export const SET_HISTORY = 'SET_HISTORY'
+export const SET_FILTERED_LOCATIONS = 'SET_FILTERED_LOCATIONS'
