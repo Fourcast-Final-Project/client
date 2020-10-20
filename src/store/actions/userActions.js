@@ -1,6 +1,8 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.27:3000'
+
+const baseUrl = 'http://192.168.0.14:3000'
+
 
 export const setToken = (token) => {
   return {
@@ -76,14 +78,15 @@ export const getToken = (user) => {
 }
 
 export const register = (user) => {
-  const { email, password } = user;
+  const { email, password, expoPushToken } = user;
   return (dispatch, getState) => {
     axios({
       method: 'post',
       url: baseUrl + '/register',
       data: {
         email,
-        password
+        password,
+        expoPushToken
       }
     })
     .then(({ data }) => {
