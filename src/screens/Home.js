@@ -47,7 +47,7 @@ export default function Home({navigation}) {
     }, []);
 
     useEffect(() => {
-        if (location.length > 0) {
+        if (location.length > 50) {
             //console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
@@ -67,9 +67,11 @@ export default function Home({navigation}) {
         }
     }, [data])
 
-    function onPressAlert(){
-        navigation.navigate("AlertDanger")
-    }
+    useEffect(() => {
+        if(data.waterLevel >= 50){
+            navigation.navigate("AlertDanger")
+        }
+    },[data.waterLevel])
 
     return (
         <>
@@ -123,7 +125,7 @@ export default function Home({navigation}) {
                 </View>
                 <Text> dibawah ini data subscription</Text>
 
-                <View style={{marginTop:20}}>
+                {/* <View style={{marginTop:20}}>
                 <TouchableOpacity style={{borderRadius:25}}>
                 <Button
                     onPress={() => onPressAlert()}
@@ -133,7 +135,7 @@ export default function Home({navigation}) {
                 />
                 </TouchableOpacity>
 
-            </View>
+            </View> */}
             
                 {
                         subscribed.map((location) => {
