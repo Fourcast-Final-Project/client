@@ -1,6 +1,6 @@
 import { SET_DATA, SEARCH_DATA, SET_HISTORY } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.14:3000'
+const baseUrl = 'http://192.168.0.27:3000'
 
 export const setData = (data) => {
   return {
@@ -19,7 +19,7 @@ export const setSearch = (payload) => {
 export const searchLocation = (place) => {
   console.log ("masuk userAction: ini search")
   return (dispatch) => {
-    fetch(`${baseUrl}/locations/find/${place}`)
+    fetch(`${baseUrl}/locations/search/${place}`)
       .then((res) => res.json())
       .then(({data}) => {
            console.log(data, 'INI DRI SEARCH LOC')
