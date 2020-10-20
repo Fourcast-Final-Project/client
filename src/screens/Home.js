@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import CardComponent from '../components/CardComponent'
 import firebase from 'firebase'
 import database from '../config/firebase'
-import { getUserLocation, getWeather, setWeather } from '../store/actions/userActions'
+ import CardSubs from '../components/CardSubs'
+import { getUserLocationSearch, getWeather, getAllSubscribed } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
 import axios from 'axios'
-// import firebase from 'firebase'
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Home({navigation}) {
@@ -17,6 +16,8 @@ export default function Home({navigation}) {
     const [data, setData] = useState('');
     const location = useSelector(state => state.usersReducer.location);
     const weather = useSelector(state => state.usersReducer.weather);
+    
+    const subscribed = useSelector(state => state.usersReducer.subscribed);
     
     function onPress(){
         navigation.navigate("Login")
@@ -28,12 +29,12 @@ export default function Home({navigation}) {
                 console.log(ip);
                 return axios({
                     method: 'get',
-                    url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
                 })
             })
             .then(data => {
                 console.log(data.data.city_name)
-                dispatch(getUserLocation(data.data.city_name));
+                dispatch(getUserLocationSearch(data.data.city_name));
             })
             .catch(error => {
                 console.log(error);
@@ -42,8 +43,12 @@ export default function Home({navigation}) {
     }, [])
 
     useEffect(() => {
+        dispatch(getAllSubscribed());
+    }, []);
+
+    useEffect(() => {
         if (location.length > 0) {
-            console.log(location, 'masuk kok')
+            //console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())  
@@ -68,13 +73,21 @@ export default function Home({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 /> */}
                 {/* </TouchableOpacity> */}
-                {location.length > 0 && weather.main &&
+                {/* <Text>{JSON.stringify(location)}</Text> */}
+                {location.length > 0 && weather.main ? (
                     <View style={ styles.containerRounded }>
                         <Text>{ location[0].area }, Indonesia</Text>
                         <Text>{ location[0].name }</Text>
+                        <Image 
+                        style={{width: 100, height: 100}}
+                        source={{uri: `http://openweathermap.org/img/w/${ weather.weather[0].icon }.png`}} />
                         <Text>{ weather.main.temp }</Text>
                         <Text>{ weather.weather[0].main }</Text>
                     </View>
+                ) : (
+                <View style={ styles.containerRounded }>
+                    <ActivityIndicator size="large" color="#00ff00"/>
+                </View>)
                 }
                 {/* <View style={ styles.containerRounded }>
                         <Text>Jakarta, Indonesia</Text>
@@ -85,15 +98,29 @@ export default function Home({navigation}) {
                 </View> */}
                 {/* <CardComponent/> */}
                 <View style={ styles.levContainer }>
-                    <Text>Water Level</Text>
+                    <Text>Water Level from Firebase</Text>
+                                       
+                    <View>
+                         <Text>{ data.name }</Text>
+                    </View>
                     <View style ={{ flexDirection: 'row' }}>
+                        
                         <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
                         <Text>cm</Text>
-                    </View>
+                    </View> 
                     <View>
                         <Text>SAFE</Text>
                     </View>
                 </View>
+                <Text> dibawah ini data subscription</Text>
+            
+                {
+                        subscribed.map((location) => {
+                            return <CardSubs location={ location.id }  key={ location.id } /> 
+                        }) 
+                        
+                    }
+
             </View>
         </>
     )

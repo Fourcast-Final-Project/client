@@ -1,4 +1,4 @@
-import { SET_DATA, SEARCH_DATA } from './types';
+import { SET_DATA, SEARCH_DATA, SET_HISTORY } from './types';
 import axios from 'axios';
 const baseUrl = 'http://192.168.1.177:3000'
 
@@ -29,4 +29,36 @@ export const searchLocation = (place) => {
           console.log(err)
       })
   }    
+}
+
+
+export const getHistory = (id) => {
+  console.log ("~~~~~~~~~~~~~")
+  console.log ("masuk get history")
+  return (dispatch,getState) => {
+    const token = getState().usersReducer.token;
+    fetch(`${baseUrl}/histories/${id}`, {
+      method: 'GET',
+      headers: {
+        access_token: token
+      },
+      redirect: 'follow'
+    })
+      .then((res) => res.json())
+      .then((data) => {
+          //console.log(data, 'INI DRI history')
+          dispatch(setHistory(data.result))
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }    
+}
+
+
+export const setHistory = (payload) => {
+  return {
+    type: SET_HISTORY,
+    payload
+  }
 }

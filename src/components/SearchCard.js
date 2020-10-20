@@ -1,27 +1,48 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Pressable, Alert  } from 'react-native'
 import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons'; 
 import { useDispatch } from 'react-redux'
 import  { addToSubscribed } from '../store/actions/userActions'
+import { setSearch } from '../store/actions/dataActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 
-export default function CardComponent(props) {
+
+export default function CardComponent( props) {
+    //console.log('==========')
+    //console.log(props.location.location,'propsy')
+    //console.log(props.location.navigation,'props.location.city')
     const dispatch = useDispatch()
 
     function subscribe () {
-        dispatch(addToSubscribed(props.location.id))
+        dispatch(addToSubscribed(props.location.location.id))
     }
+
+    function goToHistory () {
+        //alert(props.location.location.id)
+        let newArr = []
+        dispatch(setSearch(newArr))
+        props.location.navigation.navigate('History', { id : props.location.location.id});
+    }
+
 
     if (!props.location) return <></>
     return (
         <>
+            
+                    
+                
             <View style={ styles.infoContainer }>
                 <View style={ styles.cityContainer }>
-                    <Text style={ styles.city }> {props.location.name} </Text>
+                    <View>
+                        <Pressable onPress={() => goToHistory()}>
+                            <Text style={ styles.city }> {props.location.location.city} </Text>
+                            <Text style={ styles.city }> {props.location.location.name} </Text>                       
+                        </Pressable>
+                    </View>                    
                     <View style={ styles.pinContainer }>
                         <Pressable style={ styles.pin } onPress={ () => subscribe() }>
                             <AntDesign name='pushpino' size={ 32 } color='#686868' />
