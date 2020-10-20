@@ -121,7 +121,7 @@ export default function Login({navigation}) {
     }, [token])
 
     async function onPress(){
-        await schedulePushNotification(expoPushToken);
+        // await schedulePushNotification(expoPushToken);
         dispatch(getToken({ email, password }))
         setEmail('')
         setPassword('')
