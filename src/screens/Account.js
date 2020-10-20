@@ -8,7 +8,7 @@ export default function Account() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.usersReducer.user);
     const location = useSelector(state => state.usersReducer.location);
-    const subscribed = useSelector(state => state.usersReducer.subscribed);
+    const subscribed = useSelector(state => state.usersReducer.subscribed);  
     const [edit, setEdit] = useState(false);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function Account() {
                     <Text>Edit</Text> 
                     {/** ini buat nge delete */}
                 </Pressable>
-                <Text>{ JSON.stringify(subscribed) }</Text>
+                {/* <Text>{ JSON.stringify(subscribed) }</Text> */}
                 {
                     subscribed.map(location => {
                         return <CardComponent key={ location.id } id={ location.id } location={ location.Location } getWeather={ getWeather } edit={ edit } removeFromSubscribed={ removeFromSubscribed }/>
