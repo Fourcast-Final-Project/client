@@ -1,6 +1,6 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.27:3000'
+const baseUrl = 'http://192.168.0.14:3000'
 
 export const setToken = (token) => {
   return {
@@ -105,7 +105,8 @@ export const getAllSubscribed = () => {
       }
     })
     .then(({ data }) => {
-      console.log(data, 'INI SUBSCRIBED');
+      //console.log(data, 'INI SUBSCRIBED');
+      //alert("Success")
       dispatch(setSubscribed(data.results));
     })
     .catch(err => {
@@ -127,6 +128,7 @@ export const addToSubscribed = (LocationId) => {
       }
     })
     .then(_ => {
+      alert("Success")
       dispatch(getAllSubscribed());
     })
     .catch(err => {
@@ -170,13 +172,29 @@ export const getUserLocation = (place) => {
 }
 
 export const getUserLocationSearch = (place) => {
-  console.log ("masuk userAction: getUserLocation")
+  //console.log ("masuk userAction: getUserLocation")
+  //place = 'unknownPlace'
   return (dispatch) => {
     fetch(`${baseUrl}/locations/find/${place}`)
       .then((res) => res.json())
       .then(({data}) => {
-           console.log(data, 'INI DI FIND')
-          const result = data.filter(location => location.name === 'Kebon Jeruk');
+          console.log(data, 'INI DI FIND')
+          console.log(data.length)
+          let result =[]
+          if (data.length === 0) // kalo lokasi user tidak ada di database, set default location = Kebon Jeruk
+          {
+            result = [{
+              "id": 2,
+              "area": "West Jakarta",
+              "name": "Kebon Jeruk",
+              "city": "Jakarta"
+            }]
+          }
+          else {
+            result = data
+          }
+          //console.log(result)
+          //const result = data.filter(location => location.name === 'Kebon Jeruk');
           dispatch(setUserLocation(result))
       })
       .catch((err) => {
@@ -187,7 +205,7 @@ export const getUserLocationSearch = (place) => {
 
 export const getWeather = (location) => {
   return (dispatch, getState) => {
-    console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
+    //console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
     const token = getState().usersReducer.token;
     fetch(`${baseUrl}/weather/${location}`, {
       method: 'GET',
@@ -198,9 +216,9 @@ export const getWeather = (location) => {
     })
     .then((res) => res.json())
     .then(data => {
-      console.log(data, 'INI WEATHERRRRRRRRR');
+      //console.log(data, 'INI WEATHERRRRRRRRR');
       const newData = JSON.parse(JSON.stringify(data));
-      console.log(newData.main, "NEW")
+      //console.log(newData.main, "NEW")
       newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
       dispatch(setWeather(newData));
     })

@@ -6,6 +6,7 @@ import Account from '../screens/Account'
 import Home from '../screens/Home'
 import Report from '../screens/Report'
 import History from '../screens/History'
+import Subscription from '../screens/Subscription'
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,17 @@ export default function MainMenu() {
               );
             },
           }} />
+
+        <Tab.Screen 
+             name="Subscription" component={Subscription} options={{
+            title: 'Subscription',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <FontAwesome name="history" size={24} color="black" />
+              );
+            },
+          }} />
+
             <Tab.Screen
              name="Account" component={Account} options={{
             title: 'My Account',

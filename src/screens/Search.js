@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Dimensions, TextInput, Text } from 'react-native'
+import { View, StyleSheet, Dimensions, TextInput, Text,ActivityIndicator } from 'react-native'
 import { SearchBar} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 
-import { searchLocation } from '../store/actions/dataActions'
+import { searchLocation,setHistory } from '../store/actions/dataActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -12,14 +12,18 @@ const windowHeight = Dimensions.get("window").height;
 export default function Search({navigation}) {
     const dispatch = useDispatch()
     const [search, setSearch] = useState("")
-    const delay = 500
+    const delay = 100
     const debouncedSearchTerm = useDebounce(search, delay);
     const [isZero, setIsZero] = useState(true)
     let searchResults = useSelector(state => state.dataReducer.searchData)
 
+    
     useEffect(() => {
+        
+        let newArr = []
         if (debouncedSearchTerm) {
                 dispatch(searchLocation(search))
+                dispatch(setHistory(newArr))
               //console.log('debouncing')
             }
         },
@@ -58,8 +62,9 @@ export default function Search({navigation}) {
                     </Text>
                     {
                         searchResults.map((location) => {
-                            return <SearchCard location={ location } key={ location.id } /> 
+                            return <SearchCard location={ {location,navigation} }  key={ location.id } /> 
                         }) 
+                        
                     }
                 {/* <CardComponent/> */}
             </View>

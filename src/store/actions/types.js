@@ -13,3 +13,4 @@ export const SET_INO = 'SET_INO';
 // fake data
 export const SET_DATA = 'SET_DATA';
 export const SEARCH_DATA = 'SEARCH_DATA'
+export const SET_HISTORY = 'SET_HISTORY'
