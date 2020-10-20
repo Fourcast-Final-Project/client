@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Dimensions, TextInput, Text,ActivityIndicator } from 'react-native'
+import { View, StyleSheet, Dimensions, TextInput, Text,ActivityIndicator, Pressable, Modal } from 'react-native'
 import { SearchBar} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 
-import { searchLocation,setHistory } from '../store/actions/dataActions'
+import { searchLocation,setHistory, getByCity, getWeather } from '../store/actions/dataActions'
+import SearchByCity from '../components/SearchByCity';
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -12,14 +13,15 @@ const windowHeight = Dimensions.get("window").height;
 export default function Search({navigation}) {
     const dispatch = useDispatch()
     const [search, setSearch] = useState("")
+    const [city, setCity] = useState('')
     const delay = 100
     const debouncedSearchTerm = useDebounce(search, delay);
     const [isZero, setIsZero] = useState(true)
+    const [open, setOpen] = useState(false)
     let searchResults = useSelector(state => state.dataReducer.searchData)
-
+    let filteredLoc = useSelector(state => state.dataReducer.filteredByCity)
     
     useEffect(() => {
-        
         let newArr = []
         if (debouncedSearchTerm) {
                 dispatch(searchLocation(search))
@@ -30,9 +32,27 @@ export default function Search({navigation}) {
         [debouncedSearchTerm]
     );
 
+    useEffect(() => {
+        if (searchResults.length === 1) {
+            // console.log(searchResults, 'ini di if 1')
+            setCity(searchResults[0].city)
+        } else if (searchResults.length > 1) {
+            setCity('')
+        }
+    }, [searchResults])
+
     function handleOnChange (search) {
         setSearch(search)
         //console.log(search, 'searching')
+    }
+
+    function handleOnPress () {
+        dispatch(getByCity(city))
+        setOpen(true)
+    }
+
+    function falsingSetOpen () {
+        setOpen(false)
     }
 
     return (
@@ -55,18 +75,31 @@ export default function Search({navigation}) {
                         onChangeText={(event) => handleOnChange(event)}
                     />
                 </View>
-                    <Text>
-                        {/* {
-                            JSON.stringify(searchResults)
-                        } */}
-                    </Text>
+                <View style={ styles.search }>
+                    {
+                        city ? <Pressable onPress={() => handleOnPress()}>
+                            <Text  style={styles.textInput}>{ city }</Text>
+                        </Pressable> : <></>
+                    }
+                </View>
                     {
                         searchResults.map((location) => {
                             return <SearchCard location={ {location,navigation} }  key={ location.id } /> 
-                        }) 
-                        
+                        })  
                     }
-                {/* <CardComponent/> */}
+                { filteredLoc ? <Modal animationType="slide" transparent={false} visible={open}>
+                        {
+                            filteredLoc.map(location => {
+                                // return <Text>
+                                //     {
+                                //         JSON.stringify(location)
+                                //     }
+                                // </Text>
+                                return <SearchByCity falsingSetOpen={ falsingSetOpen } key={ location.id } id={ location.id } location={ location } getWeather={ getWeather } navigation={ navigation } />
+                            })
+                        }
+                    </Modal> : <></>
+                }
             </View>
         </>
     )
