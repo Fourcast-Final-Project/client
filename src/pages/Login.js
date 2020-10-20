@@ -108,9 +108,9 @@ export default function Login({navigation}) {
         };
     }, []);
 
-    useEffect(() => {
-        dispatch(checkRedis());
-    }, [token]);
+    // useEffect(() => {
+    //     dispatch(checkRedis());
+    // }, [token]);
 
     useEffect(() => {
         if (token) {

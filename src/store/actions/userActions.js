@@ -275,3 +275,9 @@ export const checkRedis = () => {
     })
   }
 }
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch(setToken(''));
+  }
+}
