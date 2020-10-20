@@ -1,6 +1,8 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
 import axios from 'axios';
+
 const baseUrl = 'http://192.168.0.14:3000'
+
 
 export const setToken = (token) => {
   return {
@@ -259,5 +261,26 @@ export const reportDanger = (waterLevel) => {
     .catch(err => {
       console.log(err);
     })
+  }
+}
+
+export const checkRedis = () => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/login`
+    })
+    .then(({ data }) => {
+      dispatch(setToken(data));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch(setToken(''));
   }
 }
