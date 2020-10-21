@@ -4,7 +4,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { StyleSheet, View, Text, TextInput, Pressable, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { getToken } from '../store/actions/userActions'
+import { getToken, checkRedis } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -34,12 +34,12 @@ async function registerForPushNotificationsAsync() {
         const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        finalStatus = status;
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
+            alert('Failed to get push token for push notification!');
+            return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
         console.log(token);
@@ -49,10 +49,10 @@ async function registerForPushNotificationsAsync() {
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
         });
     }
 
@@ -108,6 +108,10 @@ export default function Login({navigation}) {
         };
     }, []);
 
+    // useEffect(() => {
+    //     dispatch(checkRedis());
+    // }, [token]);
+
     useEffect(() => {
         if (token) {
             navigation.navigate("MainMenu")
@@ -117,7 +121,7 @@ export default function Login({navigation}) {
     }, [token])
 
     async function onPress(){
-        await schedulePushNotification(expoPushToken);
+        // await schedulePushNotification(expoPushToken);
         dispatch(getToken({ email, password }))
         setEmail('')
         setPassword('')

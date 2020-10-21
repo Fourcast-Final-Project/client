@@ -2,6 +2,8 @@ import { SET_DATA, SEARCH_DATA, SET_HISTORY, SET_FILTERED_LOCATIONS } from './ty
 import axios from 'axios';
 const baseUrl = 'http://192.168.100.28:3000'
 
+
+
 export const setData = (data) => {
   return {
     type: SET_DATA,

@@ -2,6 +2,7 @@ import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW
 import axios from 'axios';
 const baseUrl = 'http://192.168.100.28:3000'
 
+
 export const setToken = (token) => {
   return {
     type: SET_TOKEN,
@@ -76,14 +77,15 @@ export const getToken = (user) => {
 }
 
 export const register = (user) => {
-  const { email, password } = user;
+  const { email, password, expoPushToken } = user;
   return (dispatch, getState) => {
     axios({
       method: 'post',
       url: baseUrl + '/register',
       data: {
         email,
-        password
+        password,
+        expoPushToken
       }
     })
     .then(({ data }) => {
@@ -184,7 +186,7 @@ export const getUserLocationSearch = (place) => {
           if (data.length === 0) // kalo lokasi user tidak ada di database, set default location = Kebon Jeruk
           {
             result = [{
-              "id": 2,
+              "id": 29,
               "area": "West Jakarta",
               "name": "Kebon Jeruk",
               "city": "Jakarta"
@@ -258,5 +260,26 @@ export const reportDanger = (waterLevel) => {
     .catch(err => {
       console.log(err);
     })
+  }
+}
+
+export const checkRedis = () => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/login`
+    })
+    .then(({ data }) => {
+      dispatch(setToken(data));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch(setToken(''));
   }
 }

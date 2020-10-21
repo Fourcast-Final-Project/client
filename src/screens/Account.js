@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSubscribed, getWeather, removeFromSubscribed } from '../store/actions/userActions';
+import { getAllSubscribed, getWeather, removeFromSubscribed, logout } from '../store/actions/userActions';
 import CardComponent from '../components/CardComponent';
 
-export default function Account() {
+export default function Account({ navigation }) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.usersReducer.user);
     const location = useSelector(state => state.usersReducer.location);
@@ -20,6 +20,11 @@ export default function Account() {
         setEdit(true);
     }
 
+    const userLogout = () => {
+        dispatch(logout());
+        navigation.navigate('Login')
+    }
+
     return (
         <View style={ styles.pageContainer }>
             <View>
@@ -27,6 +32,9 @@ export default function Account() {
                 <Text style={[styles.darkGray, { fontSize: 24, marginBottom: 2 }]}>{ user.email }</Text>
                 <Text style={ styles.lightGray }>Currently at <Text style={[styles.lightGray, { fontWeight: '500' }]}>{ location[0].name }</Text></Text>
             </View>
+            <Pressable onPress={ userLogout }>
+                    <Text>Logout</Text> 
+                </Pressable>
             <View style={{ marginTop: 30 }}>
                 <Text style={[styles.evenDarkerGray, { fontSize: 32, fontWeight: 'bold', marginBottom: 10 }]}>Subscribed</Text>
                 <Pressable onPress={ toggleEdit }>
