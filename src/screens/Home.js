@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator, Button, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator, ImageBackground, Button, TouchableOpacity, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import firebase from 'firebase'
 import database from '../config/firebase'
@@ -30,7 +30,7 @@ export default function Home({navigation}) {
                 return axios({
                     method: 'get',
                     // url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
-                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=ZBE8IKOPXI`
                 })
             })
             .then(data => {
@@ -48,8 +48,9 @@ export default function Home({navigation}) {
     }, []);
 
     useEffect(() => {
-        if (location.length > 50) {
-            //console.log(location, 'masuk kok')
+        // console.log('masuk use effect hah', location)
+        if (location.length > 0) {
+            // console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())  
@@ -66,7 +67,7 @@ export default function Home({navigation}) {
                 setData(snapshoot.val())
             })
         }
-    }, [data])
+    }, [])
 
     useEffect(() => {
         if(data.waterLevel >= 50){
@@ -86,65 +87,49 @@ export default function Home({navigation}) {
                 /> */}
                 {/* </TouchableOpacity> */}
                 {/* <Text>{JSON.stringify(location)}</Text> */}
-                {location.length > 0 && weather.main ? (
-                    <View style={ styles.containerRounded }>
-                        <Text>{ location[0].area }, Indonesia</Text>
-                        <Text>{ location[0].name }</Text>
-                        <Image 
-                        style={{width: 100, height: 100}}
-                        source={{uri: `http://openweathermap.org/img/w/${ weather.weather[0].icon }.png`}} />
-                        <Text>{ weather.main.temp }</Text>
-                        <Text>{ weather.weather[0].main }</Text>
+                {/* <Text>{JSON.stringify(weather)}</Text> */}
+                {location.length > 0 && weather.main ? (<ImageBackground source={weather.weather[0].main === 'Haze' ? require('../../assets/haze.png') : (weather.weather[0].main === 'Sunny' ? require('../../assets/sunny.png') : require('../../assets/rain.png'))} style={{ width: '100%', height: '100%', flex: 1 }}>
+                    <View style={ styles.pageContainer }>
+                        <View style={ styles.constraints }>
+                            <Text style={{ color: 'white', fontSize: 54, fontWeight: '700', marginBottom: -10, textAlign: 'right' }}>{ weather.main.temp }°C</Text>
+                            <Text style={{ color: 'white', fontSize: 32, fontWeight: '500', textAlign: 'right' }}>{ weather.weather[0].main }</Text>
+                            <Text style={{ color: 'white', fontSize: 42, fontWeight: '600', textAlign: 'right', marginTop: 10 }}>{ location[0].name }</Text>
+                            <Text style={{ color: 'white', fontSize: 20, fontWeight: '400', textAlign: 'right' }}>{ location[0].area }, Indonesia</Text>
+                        </View>
+                        <View style={[styles.waterContainer, { marginTop: 20 }]}>
+                            {/* <Text>Water Level from Firebase</Text> */}
+                            {/* <Text>{ data.name }</Text> */}
+                            <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 20 }}>
+                                <Pressable style={{ alignItems: 'center', marginBottom: 20 }}>
+                                    <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View>
+                                </Pressable>
+                                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Statistics</Text>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>WATER LEVEL</Text>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 24, fontWeight: '500' }}>{ data.waterLevel ? data.waterLevel : 8.7 } cm</Text>
+                                    </View>
+                                    <View style={{ alignItems: 'flex-end' }}>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>STATUS</Text>
+                                        {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                        {/* <Text> dibawah ini data subscription</Text> */}
+                        {/* {
+                            subscribed.map((location) => {
+                                return <CardSubs location={ location.id }  key={ location.id } /> 
+                            }) 
+                                
+                        } */}
                     </View>
+                </ImageBackground>
                 ) : (
-                <View style={ styles.containerRounded }>
-                    <ActivityIndicator size="large" color="#00ff00"/>
-                </View>)
-                }
-                <View style={ styles.containerRounded }>
-                        <Text>Jakarta, Indonesia</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>26</Text>
-                        <Text>Sunny</Text>
-                    </View>
+                <View>
+                    <ActivityIndicator size="small"/>
                 </View>
-                {/* <CardComponent/> */}
-                <View style={ styles.levContainer }>
-                    <Text>Water Level from Firebase</Text>
-                                       
-                    <View>
-                         <Text>{ data.name }</Text>
-                    </View>
-                    <View style ={{ flexDirection: 'row' }}>
-                        
-                        <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
-                        <Text>cm</Text>
-                    </View> 
-                    <View>
-                        <Text>SAFE</Text>
-                    </View>
-                </View>
-                <Text> dibawah ini data subscription</Text>
-
-                {/* <View style={{marginTop:20}}>
-                <TouchableOpacity style={{borderRadius:25}}>
-                <Button
-                    onPress={() => onPressAlert()}
-                    title="To Alert Danger"
-                    color=""
-                    accessibilityLabel="Learn more about this purple button"
-                />
-                </TouchableOpacity>
-
-            </View> */}
-            
-                {
-                        subscribed.map((location) => {
-                            return <CardSubs location={ location.id }  key={ location.id } /> 
-                        }) 
-                        
-                    }
-
+                )}
             </View>
         </>
     )
@@ -156,7 +141,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        // paddingTop: windowHeight * 1 / 10,
+    },
+    pageContainer: {
+        // flex: 1,
+        // backgroundColor: '#fff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        paddingTop: windowHeight * 1 / 2.2,
+    },
+    constraints: {
+        marginRight: windowWidth / 15,
+        marginLeft: windowWidth / 15
+    },
+    waterContainer: {
+        backgroundColor: 'white',
+        height: windowHeight / 3
     },
     containerRounded: {
         backgroundColor: 'gray',
