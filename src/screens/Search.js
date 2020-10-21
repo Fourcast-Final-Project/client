@@ -73,6 +73,7 @@ export default function Search({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 />
                 </TouchableOpacity> */}
+                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Search</Text>
                 <View style={ styles.search }>
                     <TextInput 
                         style={styles.textInput}
@@ -120,9 +121,15 @@ export default function Search({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
+        backgroundColor: '#ffff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
         paddingTop: windowHeight * 1 / 10,
     },
     search: {
@@ -130,10 +137,11 @@ const styles = StyleSheet.create({
         borderRadius: 2
     },
     textInput: {
-        height: 40, 
-        paddingLeft: 20,
+        // height: 40, 
+        // paddingLeft: 20,
         paddingRight: 20,
-        fontWeight: 'bold',
+        fontSize: 24,
+        fontWeight: '400',
         backgroundColor: '#EAEAEA',
         borderRadius:15,
         width: windowWidth * 8.5 / 10,

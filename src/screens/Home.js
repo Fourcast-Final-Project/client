@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     },
     waterContainer: {
         backgroundColor: 'white',
+        borderRadius: 30,
         height: windowHeight / 3
     },
     containerRounded: {
