@@ -61,7 +61,7 @@ export const getHistory = (id) => {
     })
       .then((res) => res.json())
       .then((data) => {
-          //console.log(data, 'INI DRI history')
+          console.log(data, 'INI DRI history')
           dispatch(setHistory(data.result))
       })
       .catch((err) => {
@@ -74,7 +74,7 @@ export const getByCity = (cityName) => {
   console.log(cityName, 'nama city cuy')
   return (dispatch, getState) => {
     const token = getState().usersReducer.token;
-    fetch(`${baseUrl}/locations/city/${cityName}`, {
+    fetch(`${baseUrl}/locations/find/${cityName}`, {
       method: 'GET',
       headers: {
         access_token: token

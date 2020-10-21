@@ -6,6 +6,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { CheckBox } from 'react-native-elements'
 import { reportDanger } from '../store/actions/userActions';
+import firebase from 'firebase'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -47,6 +48,12 @@ async function registerForPushNotificationsAsync() {
     } else {
         alert('Must use physical device for Push Notifications');
     }
+
+    const res = await firebase
+        .firestore()
+        .collection('locations')
+        .doc(firebase.auth().currentUser.uid)
+        .set({ token }, { merge: true })
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
