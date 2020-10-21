@@ -1,5 +1,5 @@
 import React,{useEffect}from 'react'
-import { View, TouchableOpacity, Button,Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Button,Text, Pressable, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHistory } from '../store/actions/dataActions'
 import CardHistory from '../components/CardHistory'
@@ -25,30 +25,25 @@ export default function History({ route, navigation }) {
 
     if (!dataHistory) return <Text>Loading...</Text>
     return (
+        <ScrollView style={styles.scrollView}>
         <View style={ styles.container }>
-            <Pressable onPress={() => onPress()}>
-                <AntDesign name='arrowleft' size={ 32 } color='#686868'></AntDesign>
-            </Pressable>
-            <View style={{marginTop:20}}>
-                <TouchableOpacity style={{borderRadius:25}}>
-                <Button
-                    onPress={() => onPress()}
-                    title="History"
-                    color=""
-                    accessibilityLabel="Learn more about this purple button"
-                />
-                </TouchableOpacity>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                <Pressable onPress={() => onPress()}>
+                    <AntDesign name='arrowleft' size={ 32 } color='rgb(28, 28, 30)'></AntDesign>
+                </Pressable>
+                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10, marginLeft: 10, marginBottom: 20 }}>History</Text>
             </View>
             {/* <Text>{JSON.stringify(dataHistory[0])}</Text> */}
             <View>
-            {
-                dataHistory.length > 0 ? dataHistory.map((item) => {
-                    return <CardHistory location={ item }  key={ item.id } /> 
-                }) : <Text>fyuuuh, its so relieved that this place hasn't fluid history yet</Text>
-            }
+                {
+                    dataHistory.length > 0 ? dataHistory.map((item) => {
+                        return <CardHistory location={ item }  key={ item.id } /> 
+                    }) : <Text>fyuuuh, its so relieved that this place hasn't fluid history yet</Text>
+                }
             </View>
             {/* <Text>{JSON.stringify(dataHistory.result[0])}</Text> */}
         </View>
+        </ScrollView>
     )
 }
 
@@ -65,5 +60,8 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         paddingBottom: 50,
         paddingTop: windowHeight * 1 / 15,
+    },
+    scrollView: {
+        backgroundColor: 'white'
     }
 })
