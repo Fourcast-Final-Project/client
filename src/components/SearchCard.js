@@ -69,7 +69,7 @@ export default function CardComponent( props) {
 
 const styles = StyleSheet.create({
     infoContainer: {
-        backgroundColor: '#EAEAEA',
+        backgroundColor: 'whitesmoke',
         padding: '5%',
         width: windowWidth * 8.5 / 10,
         height: 320,

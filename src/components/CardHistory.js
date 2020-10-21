@@ -28,7 +28,7 @@ export default function CardHistory(props) {
 
 const styles = StyleSheet.create({
     containerRounded: {
-        backgroundColor: '#E5E5E5',
+        backgroundColor: 'whitesmoke',
         borderRadius: 15,
         paddingTop: 15,
         paddingBottom: 15,

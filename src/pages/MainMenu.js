@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'; 
+import { Entypo, Octicons, FontAwesome, MaterialIcons, SimpleLineIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'; 
 import Search from '../screens/Search'
 import Account from '../screens/Account'
 import Home from '../screens/Home'
@@ -18,7 +18,7 @@ export default function MainMenu() {
                     title: () => {return null},
                     tabBarIcon: ({size,focused,color}) => {
                         return (
-                            <Ionicons name="ios-home" size={24} color="black" />
+                            <SimpleLineIcons name="home" size={21} color="black" />
                         );
                     },
                 }} 
@@ -29,7 +29,7 @@ export default function MainMenu() {
                     title: () => {return null},
                     tabBarIcon: ({size,focused,color}) => {
                         return (
-                            <Ionicons name="ios-search" size={24} color="black" />
+                            <Ionicons name="ios-search" size={25} color="black" />
                         );
                     },
                 }} 
@@ -40,7 +40,7 @@ export default function MainMenu() {
                     title: () => {return null},
                     tabBarIcon: ({size,focused,color}) => {
                         return (
-                            <MaterialIcons name="report" size={24} color="black" />
+                            <Octicons name="report" size={22} color="black" />
                         );
                     },
                 }}
@@ -51,7 +51,7 @@ export default function MainMenu() {
                     title: () => {return null},
                     tabBarIcon: ({size,focused,color}) => {
                         return (
-                        <Ionicons name="ios-folder" size={24} color="black" />
+                        <MaterialCommunityIcons name="history" size={27} color="black" />
                         );
                     },
                 }} 
@@ -81,7 +81,7 @@ export default function MainMenu() {
             title: () => {return null},
             tabBarIcon: ({size,focused,color}) => {
               return (
-                <MaterialCommunityIcons name="account" size={24} color="black" />              );
+                <SimpleLineIcons name="user" size={21} color="black" />              );
             },
           }} />
       </Tab.Navigator>
