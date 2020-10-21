@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native'
+import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView, Keyboard, TouchableWithoutFeedback} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -9,6 +9,12 @@ import { reportDanger } from '../store/actions/userActions';
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
+const DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -153,7 +159,7 @@ export default function Report({navigation}) {
     useEffect(() => {
     },[])
     return (
-        <>
+        <DismissKeyboard>
         <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
             <View style={ styles.container }>
@@ -245,7 +251,7 @@ export default function Report({navigation}) {
             </View>
             </ScrollView>
             </SafeAreaView>
-        </>
+        </DismissKeyboard>
     )
 }
 

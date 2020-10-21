@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        fontSize: 42,
+        fontSize: 40,
         color: '#393939'
     },
     subHeader: {
@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
     register: {
         color: '#686868',
         fontWeight: '700',
-        fontSize: 20
+        fontSize: 22,
+        marginTop: 3
     }
   });
