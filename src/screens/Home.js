@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator, ImageBackground, Button, TouchableOpacity, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import firebase from 'firebase'
 import database from '../config/firebase'
@@ -29,11 +29,12 @@ export default function Home({navigation}) {
                 console.log(ip);
                 return axios({
                     method: 'get',
-                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    // url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=ZBE8IKOPXI`
                 })
             })
             .then(data => {
-                console.log(data.data.city_name)
+                console.log(data)
                 dispatch(getUserLocationSearch(data.data.city_name));
             })
             .catch(error => {
@@ -47,8 +48,9 @@ export default function Home({navigation}) {
     }, []);
 
     useEffect(() => {
+        // console.log('masuk use effect hah', location)
         if (location.length > 0) {
-            //console.log(location, 'masuk kok')
+            // console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())  
@@ -57,10 +59,21 @@ export default function Home({navigation}) {
     }, [location]);
 
     useEffect(() => {
-        // if (!firebase.apps.length) {
-        //     firebase.initializeApp(firebaseConfig);
-        // }
-    }, [data])
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        if (location.length > 0) {
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        if(data.waterLevel >= 50){
+            navigation.navigate("AlertDanger")
+        }
+    },[data.waterLevel])
 
     return (
         <>
@@ -74,6 +87,7 @@ export default function Home({navigation}) {
                 /> */}
                 {/* </TouchableOpacity> */}
                 {/* <Text>{JSON.stringify(location)}</Text> */}
+                {/* <Text>{JSON.stringify(weather)}</Text> */}
                 {location.length > 0 && weather.main ? (<ImageBackground source={weather.weather[0].main === 'Haze' ? require('../../assets/haze.png') : (weather.weather[0].main === 'Sunny' ? require('../../assets/sunny.png') : require('../../assets/rain.png'))} style={{ width: '100%', height: '100%', flex: 1 }}>
                     <View style={ styles.pageContainer }>
                         <View style={ styles.constraints }>
@@ -82,11 +96,25 @@ export default function Home({navigation}) {
                             <Text style={{ color: 'white', fontSize: 42, fontWeight: '600', textAlign: 'right', marginTop: 10 }}>{ location[0].name }</Text>
                             <Text style={{ color: 'white', fontSize: 20, fontWeight: '400', textAlign: 'right' }}>{ location[0].area }, Indonesia</Text>
                         </View>
-                        <View style={ styles.waterContainer }>
+                        <View style={[styles.waterContainer, { marginTop: 20 }]}>
                             {/* <Text>Water Level from Firebase</Text> */}
                             {/* <Text>{ data.name }</Text> */}
-                            <Text>{ data.waterLevel ? data.waterLevel : 8.7 } cm</Text>
-                            {data.waterLevel > 50 ? <Text>DANGER</Text> : (data.waterLevel > 5 ? <Text>WARNING</Text> : <Text>SAFE</Text>)}
+                            <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 20 }}>
+                                <Pressable style={{ alignItems: 'center', marginBottom: 20 }}>
+                                    <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View>
+                                </Pressable>
+                                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Statistics</Text>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>WATER LEVEL</Text>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 24, fontWeight: '500' }}>{ data.waterLevel ? data.waterLevel : 8.7 } cm</Text>
+                                    </View>
+                                    <View style={{ alignItems: 'flex-end' }}>
+                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>STATUS</Text>
+                                        {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
+                                    </View>
+                                </View>
+                            </View>
                         </View>
                         {/* <Text> dibawah ini data subscription</Text> */}
                         {/* {

@@ -12,7 +12,7 @@ export default function CardComponent({ navigation, location, falsingSetOpen }) 
     // }, []);
     function toHistory() {        
         falsingSetOpen(false)
-        navigation.navigate('MainMenu', { screen: 'History', params: { id: location.id } });
+        navigation.navigate('History', { params: { id: location.id } });
     }
 
     return (

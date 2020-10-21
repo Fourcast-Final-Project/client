@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY } from './types';
 import axios from 'axios';
 
 const baseUrl = 'http://192.168.0.27:3000'
@@ -50,6 +50,13 @@ export const setPhotoName = (name) => {
   return {
     type: SET_PHOTO_NAME,
     payload: name
+  }
+}
+
+export const setReportHistory = (payload) => {
+  return {
+    type: SET_REPORT_HISTORY,
+    payload
   }
 }
 
@@ -208,6 +215,7 @@ export const getUserLocationSearch = (place) => {
 
 export const getWeather = (location) => {
   return (dispatch, getState) => {
+    console.log('masuk weather')
     //console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
     const token = getState().usersReducer.token;
     fetch(`${baseUrl}/weather/${location}`, {
@@ -219,9 +227,9 @@ export const getWeather = (location) => {
     })
     .then((res) => res.json())
     .then(data => {
-      //console.log(data, 'INI WEATHERRRRRRRRR');
+      console.log(data, 'INI WEATHERRRRRRRRR');
       const newData = JSON.parse(JSON.stringify(data));
-      //console.log(newData.main, "NEW")
+      console.log(newData.main, "NEW")
       newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
       dispatch(setWeather(newData));
     })
@@ -260,6 +268,25 @@ export const reportDanger = (waterLevel) => {
     })
     .catch(err => {
       console.log(err);
+    })
+  }
+}
+
+export const getReportHistory = () =>{
+  return (dispatch, getState) => {
+    axios({
+      method: 'get',
+      url: `${baseUrl}/histories`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(result => {
+      console.log(result.data.results)
+      dispatch(setReportHistory(result.data.results))
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
 }
