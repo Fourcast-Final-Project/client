@@ -126,37 +126,8 @@ export default function Home({navigation}) {
                     </View>
                 </ImageBackground>
                 ) : (
-<<<<<<< HEAD
-                <View style={ styles.containerRounded }>
-                    <ActivityIndicator size="large" color="#00ff00"/>
-                </View>)
-                }
-                {/* <View style={ styles.containerRounded }>
-                        <Text>Jakarta, Indonesia</Text>
-                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>26</Text>
-                        <Text>Sunny</Text>
-                    </View>
-                </View> */}
-                {/* <CardComponent/> */}
-                <View style={ styles.levContainer }>
-                    <Text>Water Level from Firebase</Text>
-                                       
-                    <View>
-                         <Text>{ data.name }</Text>
-                    </View>
-                    <View style ={{ flexDirection: 'row' }}>
-                        
-                        <Text>{ data.waterLevel ? data.waterLevel : 8.7 }</Text>
-                        <Text>cm</Text>
-                    </View> 
-                    <View>
-                        <Text>{ data.danger ? 'danger' : 'safe' }</Text>
-                    </View>
-=======
                 <View>
                     <ActivityIndicator size="small"/>
->>>>>>> design
                 </View>
                 )}
             </View>
