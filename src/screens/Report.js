@@ -167,97 +167,68 @@ export default function Report({navigation}) {
     },[])
     return (
         <DismissKeyboard>
-        <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-            <View style={ styles.container }>
-                <View style={ styles.subContainer }>
-                    <Text style={ styles.header }>Report</Text>
-                </View>
-                <View style={ styles.subContainer }>
-                    <Text style={ styles.subHeader }>Location</Text>
-                </View>
-                <View style={ styles.subContainer }>  
-                    <Text style={ styles.text }>Place</Text>
-                </View>
-
-                <TextInput 
-                    style={styles.textInput}
-                    value={location[0].name}
-                    onChangeText={handleOnChangeZipCode}
-                    placeholderTextColor='#C4C4C4'
-                    editable={ false }
-                />
-                <View style={ styles.subContainer }>  
-                    <Text style={ styles.text }>Area</Text>
-                </View>
-
-                <TextInput 
-                    style={styles.textInput}
-                    value={location[0].area}
-                    onChangeText={handleOnChangeZipCode}
-                    placeholder='Enter ZIP Code'
-                    placeholderTextColor='#C4C4C4'
-                    editable={ false }
-                />    
-                <View style={ styles.subContainer }>
-                    <Text style={ styles.text } >City</Text>
-                </View>
-                <TextInput 
-                    style={styles.textInput}
-                    value={location[0].city}
-                    onChangeText={handleOnchangeCity}
-                    placeholder='Enter City'
-                    placeholderTextColor='#C4C4C4'
-                    editable={ false }
-                />
-
-                <View style={ styles.subContainer }>
-                    <Text style={ styles.text }>Water Level</Text>
-                </View>
-
-                <TextInput 
-                    style={styles.textInput}
-                    keyboardType= 'numeric'
-                    value={waterLevel}
-                    onChangeText={handleOnChangeWaterLevel}
-                    placeholder='in cm'
-                    placeholderTextColor='#C4C4C4'
-                />  
-                
-                <View style={ styles.subContainer }>
-                    <Text style={ styles.text }>Supporting Image</Text>
-                </View>
-
-                <View style={ styles.subContainer }>
-                <Pressable onPress={() => uploadImageButton()} style={ styles.button }>
-                    <Text style={ styles.buttonText }>Upload Image</Text>
-                </Pressable>
-                </View>
-
-               
-
-                {image.length > 0 && <View style={styles.inputName}>
-                    <Text>Image uploaded</Text>
-                </View>}
-
-
-                    <View style={styles.checkboxContainer}>
-                        <CheckBox
-                            title='I hereby confirm that the information above is true as agreed through the code of conduct.'
-                            onPress={onPressCheckBox}
-                            checked={checkBox}
+            {/* <SafeAreaView style={{ backgroundColor: 'white' }}>
+                <ScrollView style={styles.scrollView}> */}
+                    <View style={[styles.container]}>
+                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Report</Text>
+                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>PLACE</Text>
+                        <TextInput 
+                            style={[styles.textInput, { color: 'rgb(174, 174, 178)', borderBottomColor: 'rgb(174, 174, 178)' }]}
+                            value={location[0].name}
+                            onChangeText={handleOnChangeZipCode}
+                            placeholderTextColor='#C4C4C4'
+                            editable={ false }
+                        /> 
+                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>AREA</Text>
+                        <TextInput 
+                            style={[styles.textInput, { color: 'rgb(174, 174, 178)', borderBottomColor: 'rgb(174, 174, 178)' }]}
+                            value={location[0].area}
+                            onChangeText={handleOnChangeZipCode}
+                            placeholder='Enter ZIP Code'
+                            placeholderTextColor='#C4C4C4'
+                            editable={ false }
+                        />    
+                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>CITY</Text>
+                        <TextInput 
+                            style={[styles.textInput, { color: 'rgb(174, 174, 178)', borderBottomColor: 'rgb(174, 174, 178)' }]}
+                            value={location[0].city}
+                            onChangeText={handleOnchangeCity}
+                            placeholder='Enter City'
+                            placeholderTextColor='#C4C4C4'
+                            editable={ false }
                         />
-                    </View>
-                    {checkcheck && <Text>ISI</Text>}
-                    <View style={ styles.subContainer }>
-                        <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
-                            <Text style={ styles.buttonText }>Alert Danger</Text>
+                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>WATER LEVEL</Text>
+                        <TextInput 
+                            style={[styles.textInput, { width: '30%' }]}
+                            keyboardType= 'numeric'
+                            value={waterLevel}
+                            onChangeText={handleOnChangeWaterLevel}
+                            placeholder='in cm'
+                            placeholderTextColor='#C4C4C4'
+                        />  
+                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>SUPPORTING IMAGE</Text>
+                        <Pressable onPress={() => uploadImageButton()} style={ styles.button }>
+                            <Text style={ styles.buttonText }>UPLOAD IMAGE</Text>
                         </Pressable>
+                        {image.length > 0 && 
+                            <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 20, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
+                        }
+                        <View style={styles.checkboxContainer}>
+                            <CheckBox
+                                title='I hereby confirm that the information above is true as agreed through the code of conduct.'
+                                onPress={onPressCheckBox}
+                                checked={checkBox}
+                            />
+                        </View>
+                        {checkcheck && <Text>ISI</Text>}
+                        <View style={ styles.subContainer }>
+                            <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
+                                <Text style={[styles.buttonText, { color: '#FF6363' }]}>ALERT DANGER</Text>
+                            </Pressable>
+                        </View>
                     </View>
-                
-            </View>
-            </ScrollView>
-            </SafeAreaView>
+                {/* </ScrollView>
+            </SafeAreaView> */}
         </DismissKeyboard>
     )
 }
@@ -265,16 +236,22 @@ export default function Report({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        backgroundColor: '#ffff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        // alignContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
+        paddingTop: windowHeight * 1 / 15,
     },
-    subContainer: {
-        marginTop: 5,
-        alignSelf: 'center',
-        width: windowWidth * 8.5 / 10,
-    },
+    // subContainer: {
+    //     marginTop: 5,
+    //     alignSelf: 'center',
+    //     width: windowWidth * 8.5 / 10,
+    // },
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
@@ -299,49 +276,62 @@ const styles = StyleSheet.create({
         margin: "2%"
     },
     textInput: {
-        height: 40, 
-        paddingLeft: 20,
-        paddingRight: 20,
-        fontWeight: 'bold',
-        backgroundColor: '#EAEAEA',
-        borderRadius:15,
-        width: windowWidth * 8.5 / 10,
+        // height: 40, 
+        // paddingTop: 10,
+        paddingBottom: 2,
+        // paddingLeft: 10,
+        paddingRight: 10,
+        fontSize: 24,
+        fontWeight: '400',
+        color: 'rgb(72, 72, 74)',
+        // backgroundColor: 'whitesmoke',
+        borderBottomWidth: 2,
+        borderBottomColor: 'rgb(72, 72, 74)',
+        // borderRadius: 15,
+        // width: windowWidth * 8.5 / 10,
+        marginBottom: 25
     },
     checkboxContainer: {
         flexDirection: "row",
         marginBottom: 20,
         width: windowWidth * 8.5 / 10
     },
-    checkbox: {
-        alignSelf: "center",
-    },
-    label: {
-        paddingLeft: 8,
-    },
+    // checkbox: {
+    //     alignSelf: "center",
+    // },
+    // label: {
+    //     paddingLeft: 8,
+    // },
     button: {
-        backgroundColor: '#63B3FD',
-        width: windowWidth * 8.5 / 10,
+        // backgroundColor: '#63B3FD',
+        // width: windowWidth * 8.5 / 10,
         marginTop: '2%',
-        padding: '3%',
-        borderRadius: 15
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: 'rgb(28, 28, 30)'
     },
     buttonText: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
+        color: 'rgb(28, 28, 30)',
+        fontWeight: '500',
         alignSelf: 'center',
         fontSize: 18
     },
     buttonAlert: {
-        backgroundColor: '#FF6363',
-        width: windowWidth * 8.5 / 10,
+        // backgroundColor: '#FF6363',
+        borderColor: '#FF6363',
+        // width: windowWidth * 8.5 / 10,
         marginTop: '2%',
-        padding: '3%',
-        borderRadius: 15
+        borderRadius: 15,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 50,
+        borderWidth: 2,
     },
-    
-  scrollView: {
-    backgroundColor: 'pink',
-    marginHorizontal: 20,
-  }
+    scrollView: {
+        // backgroundColor: 'pink',
+        // marginHorizontal: 20,
+    }
   });
 

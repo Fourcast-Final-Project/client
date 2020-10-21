@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 
 import { searchLocation,setHistory, getByCity, getWeather } from '../store/actions/dataActions'
+import { Entypo, FontAwesome, AntDesign, MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'; 
 import SearchByCity from '../components/SearchByCity';
 
 const windowWidth = Dimensions.get("window").width;
@@ -78,28 +79,38 @@ export default function Search({navigation}) {
                     <TextInput 
                         style={styles.textInput}
                         value={search}
-                        placeholder='Search places...'
+                        placeholder='Enter location here'
                         placeholderTextColor='#BFBFBF'
                         onChangeText={(event) => handleOnChange(event)}
                     />
                 </View>
+                {/* {
+                    isValid ? <></> : <Text style={{ alignSelf: 'center', color: 'red' }}>Please Enter Your Specific Location First</Text>   
+                } */}
                 <View style={ styles.search }>
                     {
-                        city ? <Pressable onPress={() => handleOnPress()}>
-                            <Text  style={styles.textInput}>{ city }</Text>
-                        </Pressable> : <Pressable onPress={() => handleOnPress()}>
-                            <Text style={styles.textInput}>Please Enter Your Specific Location First</Text>
-                        </Pressable>
+                        city ? 
+                        <View>
+                            <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>CITY</Text>
+                            <Pressable onPress={() => handleOnPress()}>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Text style={[styles.textInput, { fontWeight: '600', color: 'rgb(58, 58, 60)' }]}>{ city }</Text>
+                                    <AntDesign name='arrowright' size={24} color='rgb(58, 58, 60)'/>
+                                </View>
+                            </Pressable>
+                        </View>
+                         : <View></View>
+                        // <Pressable onPress={() => handleOnPress()}>
+                        //     <Text style={styles.textInput}>Please Enter Your Specific Location First</Text>
+                        // </Pressable>
                     }
                 </View>
-                    {
-                        isValid ? <></> : <Text style={{ alignSelf: 'center', color: 'red' }}>Please Enter Your Specific Location First</Text>   
-                    }
-                    {
-                        isChange ? ( searchResults.length > 0 ? searchResults.map((location) => {
-                            return <SearchCard location={ {location,navigation} }  key={ location.id } /> 
-                        })  : <Text style={{ alignSelf: 'center', color: 'red' }}>Location not found</Text>) : <></>
-                    }
+                <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 10 }}>SEARCH RESULTS</Text>
+                {
+                    isChange ? ( searchResults.length > 0 ? searchResults.map((location) => {
+                        return <SearchCard location={ {location,navigation} }  key={ location.id } /> 
+                    })  : <Text style={{ alignSelf: 'center', textAlign: 'center', fontSize: 20, color: 'rgb(174, 174, 178)' }}>Sorry, location not found.</Text>) : <></>
+                }
                 { filteredLoc ? <Modal animationType="slide" transparent={false} visible={open}>
                         {
                             filteredLoc.map(location => {
@@ -130,7 +141,7 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         paddingBottom: 50,
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 15,
     },
     search: {
         marginBottom: '10%',
@@ -138,12 +149,17 @@ const styles = StyleSheet.create({
     },
     textInput: {
         // height: 40, 
-        // paddingLeft: 20,
-        paddingRight: 20,
+        // paddingTop: 10,
+        paddingBottom: 2,
+        // paddingLeft: 10,
+        paddingRight: 10,
         fontSize: 24,
         fontWeight: '400',
-        backgroundColor: '#EAEAEA',
-        borderRadius:15,
-        width: windowWidth * 8.5 / 10,
+        color: 'rgb(72, 72, 74)',
+        // backgroundColor: 'whitesmoke',
+        borderBottomWidth: 2,
+        borderBottomColor: 'rgb(72, 72, 74)',
+        // borderRadius: 15,
+        // width: windowWidth * 8.5 / 10,
     }
 })

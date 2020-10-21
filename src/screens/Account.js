@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         paddingBottom: 50,
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 15,
     },
     containerRounded: {
         backgroundColor: 'gray',
