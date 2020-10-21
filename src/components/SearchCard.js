@@ -69,7 +69,7 @@ export default function CardComponent( props) {
 
 const styles = StyleSheet.create({
     infoContainer: {
-        backgroundColor: '#EAEAEA',
+        backgroundColor: 'whitesmoke',
         padding: '5%',
         width: windowWidth * 8.5 / 10,
         height: 320,
@@ -136,5 +136,17 @@ const styles = StyleSheet.create({
     },
     pin: {
         alignSelf: 'flex-end'
+    },
+    darkGray: {
+        color: 'rgb(58, 58, 60)'
+    },
+    lightGray: {
+        color: 'rgb(174, 174, 178)'
+    },
+    mediumGray: {
+        color: '#858484'
+    },
+    evenDarkerGray: {
+        color: 'rgb(28, 28, 30)'
     }
 })

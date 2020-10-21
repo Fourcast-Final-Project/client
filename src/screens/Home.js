@@ -112,8 +112,8 @@ export default function Home({navigation}) {
                     <View style={ styles.pageContainer }>
                         <View style={ styles.constraints }>
                             <Text style={{ color: 'white', fontSize: 54, fontWeight: '700', marginBottom: -10, textAlign: 'right' }}>{ weather.main.temp }°C</Text>
-                            <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-                                <Text style={{ color: 'white', fontSize: 32, fontWeight: '500', textAlign: 'right' }}>{ weather.weather[0].main }  </Text>
+                            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 8 }}>
+                                <Text style={{ color: 'white', fontSize: 32, fontWeight: '500', textAlign: 'right', marginRight: 10 }}>{ weather.weather[0].main }</Text>
                                 <Fontisto style={{ alignSelf: 'flex-end' }} name={weatherIcon} size={34} color="white"/>
                             </View>
                             <Text style={{ color: 'white', fontSize: 42, fontWeight: '600', textAlign: 'right', marginTop: 10 }}>{ location[0].name }</Text>

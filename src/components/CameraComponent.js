@@ -96,39 +96,19 @@ export default function CameraComponent({navigation}) {
                     backgroundColor: 'transparent',
                     flexDirection: 'row',
                 }}>
-                <TouchableOpacity
-                    style={{
-                    flex: 0.1,
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    }}
-                    onPress={() =>handleCameraType()}
-                   >
-                    <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-                </TouchableOpacity>
                 </View>
-                <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
+                <View style={{flex:1, flexDirection:"row",justifyContent:"flex-start",margin:20}}>
                     <TouchableOpacity
                         style={{
                         alignSelf: 'flex-end',
                         alignItems: 'center',
-                        backgroundColor: 'transparent',                  
+                        backgroundColor: 'transparent',
+                        marginRight: 130               
                         }}
                         onPress={toReport}
                         >
                         <Ionicons
-                            name="ios-photos"
-                            style={{ color: "#fff", fontSize: 40}}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                        alignSelf: 'flex-end',
-                        alignItems: 'center',
-                        backgroundColor: 'transparent',                  
-                        }}>
-                        <Ionicons
-                            name="ios-photos"
+                            name="ios-arrow-back"
                             style={{ color: "#fff", fontSize: 40}}
                         />
                     </TouchableOpacity>
@@ -145,40 +125,29 @@ export default function CameraComponent({navigation}) {
                             style={{ color: "#fff", fontSize: 40}}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                        alignSelf: 'flex-end',
-                        alignItems: 'center',
-                        backgroundColor: 'transparent',
-                        }}>
-                        <MaterialCommunityIcons
-                            name="camera-switch"
-                            style={{ color: "#fff", fontSize: 40}}
-                        />
-                    </TouchableOpacity>
                 </View>
             </Camera>
             { 
             photo ? <Modal animationType="slide" transparent={false} visible={open}>
                     
                     <Image
-                        style={{width:"100%", height:"50%", borderRadius:20}}
+                        style={{width:"100%", height:"82%"}}
                         source={{ uri: photo }}
                     />
                     <View style={{flexDirection:"row"}}>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', margin:20}}>
                             <TouchableOpacity style={{margin:10}} onPress={()=> setOpen(false)}>
-                                <FontAwesome name="window-close" size={50} color="#FF0000"/>
+                                <Ionicons name="ios-close-circle" size={60} color="black"/>
                             </TouchableOpacity>
                         </View>
 
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', margin:20}}>
                             <TouchableOpacity style={{margin:10}} onPress={onHandleOk}>
-                                <AntDesign name="checksquare" size={50} color="#2c8f2c" />                   
+                                <Ionicons name="ios-checkmark-circle" size={60} color="black" />                   
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Modal> : <Text>Data tidak ada</Text>
+                </Modal> : <></>
              }
          </View>
     )
