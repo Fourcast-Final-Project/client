@@ -5,7 +5,7 @@ import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
 
 export default function CardComponent({ navigation, location, falsingSetOpen }) {
     const dispatch = useDispatch();
-    console.log(location, 'ini locatiooooooooooooooon')
+    // console.log(location, 'ini locatiooooooooooooooon')
     // const wea = useSelector(state => state.usersReducer.weather);
 
     // useEffect(() => {
@@ -13,7 +13,7 @@ export default function CardComponent({ navigation, location, falsingSetOpen }) 
     // }, []);
     function toHistory() {        
         falsingSetOpen(false)
-        console.log(location, 'ini to historyyyyyyyyyyyyyyyyyyyyy')
+        // console.log(location, 'ini to historyyyyyyyyyyyyyyyyyyyyy')
         navigation.navigate('History', { id: location.id });
     }
 

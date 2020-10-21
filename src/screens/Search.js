@@ -5,6 +5,7 @@ import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 
 import { searchLocation,setHistory, getByCity, getWeather } from '../store/actions/dataActions'
 import SearchByCity from '../components/SearchByCity';
+import { AntDesign } from '@expo/vector-icons'; 
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -42,9 +43,13 @@ export default function Search({navigation}) {
     }, [searchResults])
 
     function handleOnChange (search) {
-        setIsChange(true)
         setIsValid(true)
         setSearch(search)
+        if (!search) {
+            setIsChange(false)
+        } else {
+            setIsChange(true)
+        }
         //console.log(search, 'searching')
     }
 
@@ -100,7 +105,10 @@ export default function Search({navigation}) {
                         })  : <Text style={{ alignSelf: 'center', color: 'red' }}>Location not found</Text>) : <></>
                     }
                 { filteredLoc ? <Modal animationType="slide" transparent={false} visible={open}>
-                        {
+                        <Pressable onPress={ falsingSetOpen }>
+                            <AntDesign name='arrowleft' size={ 32 } color='#686868'></AntDesign>
+                        </Pressable>
+                        {   
                             filteredLoc.map(location => {
                                 // return <Text>
                                 //     {

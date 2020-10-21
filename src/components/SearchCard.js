@@ -32,9 +32,6 @@ export default function CardComponent( props) {
     if (!props.location) return <></>
     return (
         <>
-            
-                    
-                
             <View style={ styles.infoContainer }>
                 <View style={ styles.cityContainer }>
                     <View>
