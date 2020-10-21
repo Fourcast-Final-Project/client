@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Dimensions, TextInput, Text,ActivityIndicator, Pressable, Modal } from 'react-native'
-import { SearchBar} from 'react-native-elements';
+import { View, StyleSheet, Dimensions, TextInput, Text, Pressable, Modal } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import SearchCard from '../components/SearchCard'
 import useDebounce from '../hooks/useDebounce' 

@@ -30,7 +30,7 @@ export default function Home({navigation}) {
                 return axios({
                     method: 'get',
                     // url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
-                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
+                    url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=ZBE8IKOPXI`
                 })
             })
             .then(data => {
@@ -110,7 +110,7 @@ export default function Home({navigation}) {
                         <Text>cm</Text>
                     </View> 
                     <View>
-                        <Text>SAFE</Text>
+                        <Text>{ data.danger ? 'danger' : 'safe' }</Text>
                     </View>
                 </View>
                 <Text> dibawah ini data subscription</Text>
