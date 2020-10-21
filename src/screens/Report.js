@@ -271,7 +271,7 @@ export default function Report({navigation}) {
                                         auto={true}
                                         timeLeft={5}
                                         step={-1}
-                                        intervalText={(sec) => 'Term on condition'}
+                                        intervalText={(sec) => 'Term on condition must be check'}
                                     />}
                     {waterLevelCheck && <CountDownText
                                         style={styles.cd}
@@ -279,7 +279,7 @@ export default function Report({navigation}) {
                                         auto={true}
                                         timeLeft={5}
                                         step={-1}
-                                        intervalText={(sec) => 'Air Harus di atas 50 '}
+                                        intervalText={(sec) => 'water level at least 50 cm'}
                                     />}
                     {imageCheck && <CountDownText
                                         style={styles.cd}
@@ -287,7 +287,7 @@ export default function Report({navigation}) {
                                         auto={true}
                                         timeLeft={5}
                                         step={-1}
-                                        intervalText={(sec) => 'please upload foto'}
+                                        intervalText={(sec) => 'please upload your report photo'}
                                     /> } 
                     <View style={ styles.subContainer }>
                         <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
