@@ -96,12 +96,12 @@ export default function Home({navigation}) {
                             <Text style={{ color: 'white', fontSize: 42, fontWeight: '600', textAlign: 'right', marginTop: 10 }}>{ location[0].name }</Text>
                             <Text style={{ color: 'white', fontSize: 20, fontWeight: '400', textAlign: 'right' }}>{ location[0].area }, Indonesia</Text>
                         </View>
-                        <View style={[styles.waterContainer, { marginTop: 20 }]}>
+                        <View style={[styles.waterContainer, { marginTop: 35 }]}>
                             {/* <Text>Water Level from Firebase</Text> */}
                             {/* <Text>{ data.name }</Text> */}
-                            <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 20 }}>
+                            <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 10 }}>
                                 <Pressable style={{ alignItems: 'center', marginBottom: 18 }}>
-                                    <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View>
+                                    {/* <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View> */}
                                 </Pressable>
                                 <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Statistics</Text>
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>

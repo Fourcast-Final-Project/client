@@ -1,9 +1,12 @@
 import React,{useEffect}from 'react'
-import { View, TouchableOpacity, Button,Text, Pressable } from 'react-native'
+import { View, TouchableOpacity, Button,Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHistory } from '../store/actions/dataActions'
 import CardHistory from '../components/CardHistory'
 import { AntDesign } from '@expo/vector-icons'; 
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function History({ route, navigation }) {
     const { id } = route.params
@@ -22,7 +25,7 @@ export default function History({ route, navigation }) {
 
     if (!dataHistory) return <Text>Loading...</Text>
     return (
-        <View>
+        <View style={ styles.container }>
             <Pressable onPress={() => onPress()}>
                 <AntDesign name='arrowleft' size={ 32 } color='#686868'></AntDesign>
             </Pressable>
@@ -48,3 +51,19 @@ export default function History({ route, navigation }) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#ffff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
+        paddingTop: windowHeight * 1 / 15,
+    }
+})

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView, Keyboard, TouchableWithoutFeedback} from 'react-native'
+import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView, Keyboard, TouchableWithoutFeedback, ImageBackground} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -167,6 +167,7 @@ export default function Report({navigation}) {
     },[])
     return (
         <DismissKeyboard>
+            <ImageBackground source={require('../../assets/3.png')} style={{ width: '100%', height: '100%', flex: 1 }}>
             {/* <SafeAreaView style={{ backgroundColor: 'white' }}>
                 <ScrollView style={styles.scrollView}> */}
                     <View style={[styles.container]}>
@@ -229,6 +230,7 @@ export default function Report({navigation}) {
                     </View>
                 {/* </ScrollView>
             </SafeAreaView> */}
+            </ImageBackground>
         </DismissKeyboard>
     )
 }
@@ -236,7 +238,7 @@ export default function Report({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffff',
+        // backgroundColor: '#ffff',
         // alignItems: 'center',
         // justifyContent: 'flex-start',
         display: 'flex',
