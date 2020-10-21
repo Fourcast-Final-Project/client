@@ -6,6 +6,7 @@ import database from '../config/firebase'
  import CardSubs from '../components/CardSubs'
 import { getUserLocationSearch, getWeather, getAllSubscribed } from '../store/actions/userActions'
 import publicIP from 'react-native-public-ip'
+import { Fontisto } from '@expo/vector-icons'; 
 import axios from 'axios'
 
 const windowWidth = Dimensions.get('window').width;
@@ -16,6 +17,7 @@ export default function Home({navigation}) {
     const [data, setData] = useState('');
     const location = useSelector(state => state.usersReducer.location);
     const weather = useSelector(state => state.usersReducer.weather);
+    const [weatherIcon, setWeatherIcon] = useState('day-sunny')
     
     const subscribed = useSelector(state => state.usersReducer.subscribed);
     
@@ -70,6 +72,24 @@ export default function Home({navigation}) {
     }, [])
 
     useEffect(() => {
+        if (weather.weather) {
+            if (weather.weather[0].main === 'Rain') {
+                setWeatherIcon('rain')
+            } else if (weather.weather[0].main === 'Clouds') {
+                setWeatherIcon('cloudy')
+            } else if (weather.weather[0].main === 'Sunny') {
+                setWeatherIcon('day-sunny')
+            } else if (weather.weather[0].main === 'Thunderstorm') {
+                setWeatherIcon('lightning')
+            } else if (weather.weather[0].main === 'Haze') {
+                setWeatherIcon('day-haze')
+            } else {
+                setWeatherIcon('day-haze')
+            }
+        }
+    }, [weather.weather])
+
+    useEffect(() => {
         if(data.waterLevel >= 50){
             navigation.navigate("AlertDanger")
         }
@@ -92,7 +112,10 @@ export default function Home({navigation}) {
                     <View style={ styles.pageContainer }>
                         <View style={ styles.constraints }>
                             <Text style={{ color: 'white', fontSize: 54, fontWeight: '700', marginBottom: -10, textAlign: 'right' }}>{ weather.main.temp }°C</Text>
-                            <Text style={{ color: 'white', fontSize: 32, fontWeight: '500', textAlign: 'right' }}>{ weather.weather[0].main }</Text>
+                            <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
+                                <Text style={{ color: 'white', fontSize: 32, fontWeight: '500', textAlign: 'right' }}>{ weather.weather[0].main }  </Text>
+                                <Fontisto style={{ alignSelf: 'flex-end' }} name={weatherIcon} size={34} color="white"/>
+                            </View>
                             <Text style={{ color: 'white', fontSize: 42, fontWeight: '600', textAlign: 'right', marginTop: 10 }}>{ location[0].name }</Text>
                             <Text style={{ color: 'white', fontSize: 20, fontWeight: '400', textAlign: 'right' }}>{ location[0].area }, Indonesia</Text>
                         </View>
