@@ -1,7 +1,7 @@
 import React,{useEffect}from 'react'
 import { View, TouchableOpacity, Button,Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { getHistory,setHistory } from '../store/actions/dataActions'
+import { getHistory } from '../store/actions/dataActions'
 import CardHistory from '../components/CardHistory'
 
 export default function History({ route, navigation }) {

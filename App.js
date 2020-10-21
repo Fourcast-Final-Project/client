@@ -10,7 +10,7 @@ import MainMenu from './src/pages/MainMenu'
 import Register from './src/pages/Register'
 import Login from './src/pages/Login'
 import CameraScreen from './src/screens/CameraScreen'
-import History from './src/screens/History'
+import History from './src/pages/History'
 import Report from './src/pages/MainMenu'
 import AlertDanger from './src/pages/AlertDanger'
 

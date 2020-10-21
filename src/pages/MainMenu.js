@@ -5,8 +5,8 @@ import Search from '../screens/Search'
 import Account from '../screens/Account'
 import Home from '../screens/Home'
 import Report from '../screens/Report'
-import History from '../screens/History'
 import Subscription from '../screens/Subscription'
+import ReportHistory from '../screens/ReportHistory'
 
 const Tab = createBottomTabNavigator();
 
@@ -46,14 +46,23 @@ export default function MainMenu() {
             /> 
 
             <Tab.Screen 
-             name="History" component={History} options={{
-            title: 'History',
-            tabBarIcon: ({size,focused,color}) => {
-              return (
-                <FontAwesome name="history" size={24} color="black" />
-              );
-            },
-          }} />
+                name="Report History" component={ReportHistory} options={{
+              title: 'Report History',
+              tabBarIcon: ({size,focused,color}) => {
+                return (
+                  <FontAwesome name="history" size={24} color="black" />
+                );
+              },
+            }} />
+
+//              name="History" component={History} options={{
+//             title: 'History',
+//             tabBarIcon: ({size,focused,color}) => {
+//               return (
+//                 <FontAwesome name="history" size={24} color="black" />
+//               );
+//             },
+//           }} />
 
         {/* <Tab.Screen 
              name="Subscription" component={Subscription} options={{

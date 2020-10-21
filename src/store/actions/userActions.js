@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY } from './types';
 import axios from 'axios';
 const baseUrl = 'http://192.168.100.28:3000'
 
@@ -49,6 +49,13 @@ export const setPhotoName = (name) => {
   return {
     type: SET_PHOTO_NAME,
     payload: name
+  }
+}
+
+export const setReportHistory = (payload) => {
+  return {
+    type: SET_REPORT_HISTORY,
+    payload
   }
 }
 
@@ -262,6 +269,24 @@ export const reportDanger = (waterLevel) => {
     })
   }
 }
+
+export const getReportHistory = () =>{
+  return (dispatch, getState) => {
+    axios({
+      method: 'get',
+      url: `${baseUrl}/histories`,
+      headers: {
+        access_token: getState().usersReducer.token
+      }
+    })
+    .then(result => {
+      console.log(result.data.results)
+      dispatch(setReportHistory(result.data.results))
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
 export const checkRedis = () => {
   return (dispatch, getState) => {

@@ -29,11 +29,12 @@ export default function Home({navigation}) {
                 console.log(ip);
                 return axios({
                     method: 'get',
+                    // url: `https://cors-anywhere.herokuapp.com/https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
                     url: `https://api.ip2location.com/v2/?package=WS24&ip=${ip}&format=json&key=LYDJRXN1GG`
                 })
             })
             .then(data => {
-                console.log(data.data.city_name)
+                console.log(data)
                 dispatch(getUserLocationSearch(data.data.city_name));
             })
             .catch(error => {
