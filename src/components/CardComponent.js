@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-native'
 import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
+import firebase from 'firebase'
+import database from '../config/firebase'
 // import { ScrollView } from 'react-native-gesture-handler';
 
 export default function CardComponent(props) {
@@ -9,8 +11,48 @@ export default function CardComponent(props) {
     const wea = useSelector(state => state.usersReducer.weather);
 
     useEffect(() => {
-        dispatch(props.getWeather(props.location.name));
+        const token = getState().usersReducer.token;
+        fetch(`${baseUrl}/weather/${location}`, {
+            method: 'GET',
+            headers: {
+                access_token: token
+            },
+                redirect: 'follow'
+        })
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data, 'INI WEATHERRRRRRRRR');
+            const newData = JSON.parse(JSON.stringify(data));
+            console.log(newData.main, "NEW")
+            newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
+            dispatch(setWeather(newData));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }, []);
+
+    useEffect(() => {
+        // console.log('masuk use effect hah', location)
+        // if (location.length > 0) {
+            // console.log(location, 'masuk kok')
+            dispatch(getWeather(props.location.city));
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())  
+            })
+        // }
+    }, [location]);
+
+    useEffect(() => {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        if (location.length > 0) {
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())
+            })
+        }
+    }, [])
 
     const deleteFromSubscribed = () => {
         dispatch(props.removeFromSubscribed(props.id));
