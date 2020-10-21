@@ -83,7 +83,12 @@ export default function Login({navigation}) {
     const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [checkEmail, setcheckEmail] = useState(false)
+    const [checkPassword, setCheckPassword] = useState(false)
     const token = useSelector(state => state.usersReducer.token)
+    const errorLogin = useSelector(state =>state.usersReducer.errorLogin)
+
+    // console.log(error, "eroror")
 
     // Expo
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -122,9 +127,20 @@ export default function Login({navigation}) {
 
     async function onPress(){
         // await schedulePushNotification(expoPushToken);
-        dispatch(getToken({ email, password }))
-        setEmail('')
-        setPassword('')
+        setcheckEmail(false)
+        setCheckPassword(false)
+
+        if (!email) {
+            setcheckEmail(true);
+        } 
+        if(!password) {
+            setCheckPassword(true);
+        }
+        if(email && password) {
+            dispatch(getToken({ email, password }))
+            setEmail('')
+            setPassword('')
+        }
     }
 
     function handleOnChangeEmail(email){
@@ -156,12 +172,13 @@ export default function Login({navigation}) {
                 onChangeText={handleOnChangeEmail}
                 placeholder="Enter email"
             />
-
+            { checkEmail && <View style={ styles.errorContainer }>
+                <Text style={ styles.errorText }>Email must be filled</Text> 
+            </View>}
             <View style={styles.subContainer}>
                 <Text style={ styles.subHeader }>PASSWORD</Text>
             </View>
-
-            
+               
             <TextInput 
                 style={styles.textInput}
                 value={password}
@@ -169,6 +186,13 @@ export default function Login({navigation}) {
                 onChangeText={handleOnChangePassword}
                 placeholder="Enter password"
             />
+            { checkPassword && <View style={ styles.errorContainer }>
+                <Text style={styles.errorText}>password must be filled</Text> 
+            </View>}
+
+            { errorLogin && <View style={ styles.errorContainerInvalidEmailPassword }>
+                <Text style={styles.errorTextInvalidEmailPassword}>Invalid Email or Password</Text> 
+            </View>}
 
             <View>
                 <Pressable onPress={() => onPress()} style={ styles.button }>
@@ -261,5 +285,26 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 22,
         marginTop: 3
+    },
+    errorText: {
+        alignSelf: 'flex-start',
+        fontWeight: '600',
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 5
+    },
+    errorContainer: {
+        alignSelf: 'center',
+        width: windowWidth * 8.5 / 10,
+    },
+    errorTextInvalidEmailPassword: {
+        alignSelf: 'flex-start',
+        fontWeight: '600',
+        fontSize: 14,
+        color: 'red',
+    },
+    errorContainerInvalidEmailPassword: {
+        alignSelf: 'center',
+        width: windowWidth * 8.5 / 10,
     }
   });
