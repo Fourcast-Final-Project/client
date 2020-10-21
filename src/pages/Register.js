@@ -1,19 +1,71 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { StyleSheet, View, Text, TextInput, Dimensions, Pressable } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { register } from '../store/actions/userActions'
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
+async function registerForPushNotificationsAsync() {
+    
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+        });
+    }
+
+    return token;
+}
+
+
 export default function Register({navigation}) {
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const notificationListener = useRef();
+    const responseListener = useRef();
     const dispatch = useDispatch()
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    
+    
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    }, [])
 
 
     function onPress(){
-        dispatch(register({ email, password }))
+        dispatch(register({ email, password, expoPushToken }))
         navigation.navigate("Login")   
         setEmail('')
         setPassword('')
@@ -65,9 +117,12 @@ export default function Register({navigation}) {
                     <Text style={ styles.buttonText }>Register</Text>
                 </Pressable>
             </View>
+            <View style={{marginTop:20}}>
+                <Text style={ styles.ask }>Nevermind, I do have an account.</Text>
+            </View>
             <View>
-                <Pressable onPress={() => toLogin()} style={ styles.cancelButton }>
-                    <Text style={ styles.buttonText }>Cancel</Text>
+                <Pressable onPress={() => toLogin()}>
+                    <Text style={ styles.register }>Login</Text>
                 </Pressable>
             </View>
 
@@ -82,7 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 12,
     },
     headerContainer: {
         alignSelf: 'center',
@@ -96,14 +151,15 @@ const styles = StyleSheet.create({
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        fontSize: 42,
+        fontSize: 40,
         color: '#393939'
     },
     subHeader: {
         alignSelf: 'flex-start',
-        // fontWeight: 'bold',
-        fontSize: 20,
-        color: '#9A9A9A'
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#9A9A9A',
+        marginBottom: 5
     },
     text: {
         alignSelf: 'flex-start',
@@ -114,7 +170,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#63B3FD',
         width: windowWidth * 8.5 / 10,
-        marginTop: '15%',
+        marginTop: '10%',
         padding: '3%',
         borderRadius: 15
     }, 
@@ -122,7 +178,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontWeight: 'bold',
         alignSelf: 'center',
-        fontSize: 18
+        fontSize: 22
     },
     cancelButton: {
         backgroundColor: '#F36162',
@@ -132,11 +188,14 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     textInput: {
-        height: 40, 
-        fontWeight: 'bold',
-        backgroundColor: '#EAEAEA',
-        paddingLeft: 20,
+        fontSize: 18,
+        paddingLeft: 15,
         paddingRight: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
+        fontWeight: '400',
+        backgroundColor: '#EAEAEA',
+        color: '#353535',
         borderRadius:15,
         width: windowWidth * 8.5 / 10,
     },
@@ -148,7 +207,8 @@ const styles = StyleSheet.create({
     register: {
         color: '#686868',
         fontWeight: '700',
-        fontSize: 20
+        fontSize: 22,
+        marginTop: 3
     },
     address: {
         fontSize: 26,

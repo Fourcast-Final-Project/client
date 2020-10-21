@@ -1,6 +1,8 @@
 import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.177:3000'
+
+const baseUrl = 'http://192.168.0.27:3000'
+
 
 export const setToken = (token) => {
   return {
@@ -83,14 +85,15 @@ export const getToken = (user) => {
 }
 
 export const register = (user) => {
-  const { email, password } = user;
+  const { email, password, expoPushToken } = user;
   return (dispatch, getState) => {
     axios({
       method: 'post',
       url: baseUrl + '/register',
       data: {
         email,
-        password
+        password,
+        expoPushToken
       }
     })
     .then(({ data }) => {
@@ -212,6 +215,7 @@ export const getUserLocationSearch = (place) => {
 
 export const getWeather = (location) => {
   return (dispatch, getState) => {
+    console.log('masuk weather')
     //console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
     const token = getState().usersReducer.token;
     fetch(`${baseUrl}/weather/${location}`, {
@@ -223,9 +227,9 @@ export const getWeather = (location) => {
     })
     .then((res) => res.json())
     .then(data => {
-      //console.log(data, 'INI WEATHERRRRRRRRR');
+      console.log(data, 'INI WEATHERRRRRRRRR');
       const newData = JSON.parse(JSON.stringify(data));
-      //console.log(newData.main, "NEW")
+      console.log(newData.main, "NEW")
       newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
       dispatch(setWeather(newData));
     })
@@ -284,5 +288,26 @@ export const getReportHistory = () =>{
     .catch(err => {
       console.log(err)
     })
+  }
+}
+
+export const checkRedis = () => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}/login`
+    })
+    .then(({ data }) => {
+      dispatch(setToken(data));
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch(setToken(''));
   }
 }

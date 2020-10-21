@@ -4,7 +4,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { StyleSheet, View, Text, TextInput, Pressable, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { getToken } from '../store/actions/userActions'
+import { getToken, checkRedis } from '../store/actions/userActions'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -34,12 +34,12 @@ async function registerForPushNotificationsAsync() {
         const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        finalStatus = status;
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
+            alert('Failed to get push token for push notification!');
+            return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
         console.log(token);
@@ -49,10 +49,10 @@ async function registerForPushNotificationsAsync() {
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
         });
     }
 
@@ -108,6 +108,10 @@ export default function Login({navigation}) {
         };
     }, []);
 
+    // useEffect(() => {
+    //     dispatch(checkRedis());
+    // }, [token]);
+
     useEffect(() => {
         if (token) {
             navigation.navigate("MainMenu")
@@ -117,7 +121,7 @@ export default function Login({navigation}) {
     }, [token])
 
     async function onPress(){
-        await schedulePushNotification(expoPushToken);
+        // await schedulePushNotification(expoPushToken);
         dispatch(getToken({ email, password }))
         setEmail('')
         setPassword('')
@@ -150,6 +154,7 @@ export default function Login({navigation}) {
                 style={styles.textInput}
                 value={email}
                 onChangeText={handleOnChangeEmail}
+                placeholder="Enter email"
             />
 
             <View style={styles.subContainer}>
@@ -162,6 +167,7 @@ export default function Login({navigation}) {
                 value={password}
                 secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
+                placeholder="Enter password"
             />
 
             <View>
@@ -173,7 +179,7 @@ export default function Login({navigation}) {
           
 
             <View style={{marginTop:20}}>
-                <Text style={ styles.ask }>Don't have an account ? </Text>
+                <Text style={ styles.ask }>Don't have an account? </Text>
             </View>
             <Pressable styles={{fontSize:20}} onPress={handelOnPressTextRegister}>
                 <View>
@@ -190,7 +196,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 12,
     },
     headerContainer: {
         alignSelf: 'center',
@@ -204,14 +210,15 @@ const styles = StyleSheet.create({
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        fontSize: 42,
+        fontSize: 40,
         color: '#393939'
     },
     subHeader: {
         alignSelf: 'flex-start',
-        // fontWeight: 'bold',
-        fontSize: 20,
-        color: '#9A9A9A'
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#9A9A9A',
+        marginBottom: 5
     },
     text: {
         alignSelf: 'flex-start',
@@ -222,7 +229,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#63B3FD',
         width: windowWidth * 8.5 / 10,
-        marginTop: '15%',
+        marginTop: '10%',
         padding: '3%',
         borderRadius: 15
     }, 
@@ -230,14 +237,17 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontWeight: 'bold',
         alignSelf: 'center',
-        fontSize: 18
+        fontSize: 22
     },
     textInput: {
-        height: 40, 
-        paddingLeft: 20,
+        fontSize: 18,
+        paddingLeft: 15,
         paddingRight: 20,
-        fontWeight: 'bold',
+        paddingTop: 15,
+        paddingBottom: 15,
+        fontWeight: '400',
         backgroundColor: '#EAEAEA',
+        color: '#353535',
         borderRadius:15,
         width: windowWidth * 8.5 / 10,
     },
@@ -249,6 +259,7 @@ const styles = StyleSheet.create({
     register: {
         color: '#686868',
         fontWeight: '700',
-        fontSize: 20
+        fontSize: 22,
+        marginTop: 3
     }
   });
