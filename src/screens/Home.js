@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, Dimensions,Image,ActivityIndicator, Button, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import firebase from 'firebase'
 import database from '../config/firebase'
@@ -48,7 +48,7 @@ export default function Home({navigation}) {
     }, []);
 
     useEffect(() => {
-        if (location.length > 0) {
+        if (location.length > 50) {
             //console.log(location, 'masuk kok')
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
@@ -58,10 +58,21 @@ export default function Home({navigation}) {
     }, [location]);
 
     useEffect(() => {
-        // if (!firebase.apps.length) {
-        //     firebase.initializeApp(firebaseConfig);
-        // }
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        if (location.length > 0) {
+            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())
+            })
+        }
     }, [data])
+
+    useEffect(() => {
+        if(data.waterLevel >= 50){
+            navigation.navigate("AlertDanger")
+        }
+    },[data.waterLevel])
 
     return (
         <>
@@ -90,13 +101,13 @@ export default function Home({navigation}) {
                     <ActivityIndicator size="large" color="#00ff00"/>
                 </View>)
                 }
-                {/* <View style={ styles.containerRounded }>
+                <View style={ styles.containerRounded }>
                         <Text>Jakarta, Indonesia</Text>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>26</Text>
                         <Text>Sunny</Text>
                     </View>
-                </View> */}
+                </View>
                 {/* <CardComponent/> */}
                 <View style={ styles.levContainer }>
                     <Text>Water Level from Firebase</Text>
@@ -114,6 +125,18 @@ export default function Home({navigation}) {
                     </View>
                 </View>
                 <Text> dibawah ini data subscription</Text>
+
+                {/* <View style={{marginTop:20}}>
+                <TouchableOpacity style={{borderRadius:25}}>
+                <Button
+                    onPress={() => onPressAlert()}
+                    title="To Alert Danger"
+                    color=""
+                    accessibilityLabel="Learn more about this purple button"
+                />
+                </TouchableOpacity>
+
+            </View> */}
             
                 {
                         subscribed.map((location) => {

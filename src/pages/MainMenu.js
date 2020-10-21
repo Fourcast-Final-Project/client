@@ -55,6 +55,25 @@ export default function MainMenu() {
               },
             }} />
 
+//              name="History" component={History} options={{
+//             title: 'History',
+//             tabBarIcon: ({size,focused,color}) => {
+//               return (
+//                 <FontAwesome name="history" size={24} color="black" />
+//               );
+//             },
+//           }} />
+
+        {/* <Tab.Screen 
+             name="Subscription" component={Subscription} options={{
+            title: 'Subscription',
+            tabBarIcon: ({size,focused,color}) => {
+              return (
+                <FontAwesome name="history" size={24} color="black" />
+              );
+            },
+          }} /> */}
+
             <Tab.Screen
              name="Account" component={Account} options={{
             title: 'My Account',

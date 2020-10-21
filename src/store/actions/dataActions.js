@@ -1,6 +1,8 @@
 import { SET_DATA, SEARCH_DATA, SET_HISTORY, SET_FILTERED_LOCATIONS } from './types';
 import axios from 'axios';
-const baseUrl = 'http://192.168.1.177:3000'
+const baseUrl = 'http://192.168.100.28:3000'
+
+
 
 export const setData = (data) => {
   return {

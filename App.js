@@ -12,6 +12,8 @@ import Login from './src/pages/Login'
 import CameraScreen from './src/screens/CameraScreen'
 import History from './src/pages/History'
 import Report from './src/pages/MainMenu'
+import AlertDanger from './src/pages/AlertDanger'
+
 
 
 const Stack = createStackNavigator()
@@ -52,7 +54,11 @@ export default function App() {
             options={{title: "CameraScreen"}}
           />
           
-           
+          <Stack.Screen
+            name= "AlertDanger"
+            component={AlertDanger}
+            options={{title: "AlertDanger"}}
+          />
 
           {/* <Stack.Screen
             name= "Report"
