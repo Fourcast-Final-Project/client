@@ -100,17 +100,17 @@ export default function Home({navigation}) {
                             {/* <Text>Water Level from Firebase</Text> */}
                             {/* <Text>{ data.name }</Text> */}
                             <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 20 }}>
-                                <Pressable style={{ alignItems: 'center', marginBottom: 20 }}>
+                                <Pressable style={{ alignItems: 'center', marginBottom: 18 }}>
                                     <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View>
                                 </Pressable>
                                 <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Statistics</Text>
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View>
-                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>WATER LEVEL</Text>
+                                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600' }}>WATER LEVEL</Text>
                                         <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 24, fontWeight: '500' }}>{ data.waterLevel ? data.waterLevel : 8.7 } cm</Text>
                                     </View>
                                     <View style={{ alignItems: 'flex-end' }}>
-                                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 14, fontWeight: '600' }}>STATUS</Text>
+                                        <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600' }}>STATUS</Text>
                                         {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
                                     </View>
                                 </View>
