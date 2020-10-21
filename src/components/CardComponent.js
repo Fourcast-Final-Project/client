@@ -8,56 +8,61 @@ import database from '../config/firebase'
 
 export default function CardComponent(props) {
     const dispatch = useDispatch();
-    const wea = useSelector(state => state.usersReducer.weather);
-
+    const [wea, setWea] = useState('')
+    const [data, setData] = useState('')
+    console.log(props.location, 'masuk card componeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeent')
+    const token = useSelector(state => state.usersReducer.token)
     useEffect(() => {
-        const token = getState().usersReducer.token;
-        fetch(`${baseUrl}/weather/${location}`, {
-            method: 'GET',
-            headers: {
-                access_token: token
-            },
-                redirect: 'follow'
-        })
-        .then((res) => res.json())
-        .then(data => {
-            console.log(data, 'INI WEATHERRRRRRRRR');
-            const newData = JSON.parse(JSON.stringify(data));
-            console.log(newData.main, "NEW")
-            newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
-            dispatch(setWeather(newData));
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        
     }, []);
 
     useEffect(() => {
         // console.log('masuk use effect hah', location)
         // if (location.length > 0) {
             // console.log(location, 'masuk kok')
-            dispatch(getWeather(props.location.city));
-            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
-                setData(snapshoot.val())  
+        if (token) {
+            fetch(`http://192.168.1.177:3000/weather/${props.location.city}`, {
+                method: 'GET',
+                headers: {
+                    access_token: token
+                },
+                    redirect: 'follow'
             })
+            .then((res) => res.json())
+            .then(data => {
+                console.log(data, 'INI WEATHERRRRRRRRR CCCCC');
+                const newData = JSON.parse(JSON.stringify(data));
+                console.log(newData.main, "NEW")
+                newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
+                setWea(newData)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+            
+        database.ref(`Location/${props.location.id}`).orderByKey().on('value',snapshoot => {
+            setData(snapshoot.val())  
+        })
         // }
-    }, [location]);
+    }, []);
 
     useEffect(() => {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        if (location.length > 0) {
-            database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
+        // if (location.length > 0) {
+            database.ref(`Location/${props.location.id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())
             })
-        }
+        // }
     }, [])
 
     const deleteFromSubscribed = () => {
         dispatch(props.removeFromSubscribed(props.id));
     }
 
+    if (!wea.main) return <Text>Loading...</Text>
     return (
         <View style={ styles.containerRounded }>
             {props.edit === true && 
@@ -70,14 +75,26 @@ export default function CardComponent(props) {
             {/* {props.location.waterLevel <= 10 && <View style={[styles.green, { width: 47, height: 17, borderStyle: 'solid', borderRadius: 100, position: 'absolute', right: 19, top: 19 }]}></View>}
             {(props.location.waterLevel < 20) && (props.location.waterLevel > 10) && <View style={[styles.yellow, { width: 50, height: 20, borderStyle: 'solid', borderRadius: 100, position: 'absolute', right: 19, top: 19 }]}></View>}
             {props.location.waterLevel > 20 && <View style={[styles.red, { width: 47, height: 17, borderStyle: 'solid', borderRadius: 100, position: 'absolute', right: 19, top: 19 }]}></View>} */}
-            <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 38 }]}>{ props.location.waterLevel }<Text style={[styles.lightGray, { fontSize: 22 }]}> cm</Text></Text>
+            <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 38 }]}>{ data.waterLevel }<Text style={[styles.lightGray, { fontSize: 22 }]}> cm</Text></Text>
             <Text style={[styles.darkGray, { fontSize: 24, fontWeight: '500' }]}>{ props.location.name }</Text>
             <Text style={[styles.lightGray, { fontSize: 16, marginBottom: 5 }]}>{ props.location.area }</Text>
             <View style={ styles.row }>
             <Text style={[styles.mediumGray, { fontSize: 22, fontWeight: '500' }]}>{ wea.main.temp }°C</Text>
-            {props.location.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (props.location.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
+            {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
             </View>
         </View>
+        // <>
+        // <Text>
+        //     {
+        //         JSON.stringify(wea)
+        //     }
+        // </Text>
+        //  <Text>
+        //  {
+        //      JSON.stringify(data)
+        //  }
+        // </Text>
+        // </>
     )
 }
 
