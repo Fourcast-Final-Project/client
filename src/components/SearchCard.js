@@ -66,6 +66,7 @@ export default function CardComponent( props) {
     }, [])
 
     function subscribe () {
+        console.log('Subscribe!')
         dispatch(addToSubscribed(props.location.location.id))
     }
 
@@ -116,13 +117,13 @@ export default function CardComponent( props) {
         // </>
         // <>
             <View style={ styles.containerRounded }>
-                <View style={ styles.pinContainer }>
-                    <Pressable style={{ position: 'absolute', right: 0, top: 0 }} onPress={ () => subscribe() }>
+                <Pressable style={[styles.pinContainer, { position: 'absolute', right: 19, top: 19, zIndex: 12 }]} onPress={ () => subscribe() }>
+                    {/* <View style={ styles.pinContainer }> */}
                         <AntDesign name='pushpino' size={ 26 } color='#686868' />
-                    </Pressable>
-                </View>
+                    {/* </View> */}
+                </Pressable>
                 <View>
-                    <Pressable onPress={() => goToHistory()}>
+                    <Pressable style={{ width: 245 }} onPress={() => goToHistory()}>
                         <Text style={[styles.darkGray, { fontSize: 24, fontWeight: '500' }]}>{props.location.location.name}</Text>                      
                         <Text style={[styles.mediumGray, { fontSize: 16, marginBottom: 5 }]}>{props.location.location.city}</Text>
                     </Pressable>
@@ -229,7 +230,8 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     pinContainer: {
-        alignItems: 'flex-end'
+        // alignItems: 'flex-end'
+        // backgroundColor: 'blue'
     },
     pin: {
         alignSelf: 'flex-end'

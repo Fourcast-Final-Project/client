@@ -143,6 +143,7 @@ export const getAllSubscribed = () => {
 }
 
 export const addToSubscribed = (LocationId) => {
+  console.log('masuk subscribed', LocationId)
   return (dispatch, getState) => {
     axios({
       method: 'post',
