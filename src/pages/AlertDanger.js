@@ -1,10 +1,13 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function AlertDanger({navigation}) {
+    const waterLevel = useSelector(state => state.usersReducer.waterLevel)
+    console.log(waterLevel,"waterLevel")
     function AlertDanger(){
         navigation.navigate("Home")
     }
@@ -17,7 +20,7 @@ export default function AlertDanger({navigation}) {
                 </View>
             <View style={ styles.subContainerCircle }>
                 <Pressable style={ styles.button }>
-                    <Text style={ styles.buttonTextRed }>15,2 cm</Text>
+                    <Text style={ styles.buttonTextRed }>{waterLevel} cm</Text>
                 </Pressable>
                 </View>
 

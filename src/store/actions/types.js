@@ -7,6 +7,8 @@ export const SET_WEATHER = 'SET_WEATHER';
 export const SET_RAW_PHOTO = 'SET_RAW_PHOTO';
 export const SET_PHOTO_NAME = 'SET_PHOTO_NAME';
 export const SET_REPORT_HISTORY = 'SET_REPORT_HISTORY';
+export const SET_WATER_LEVEL = 'SET_WATER_LEVEL';
+export const SET_ERROR_LOGIN = 'SET_ERROR_LOGIN';
 
 // arduino
 export const SET_INO = 'SET_INO';

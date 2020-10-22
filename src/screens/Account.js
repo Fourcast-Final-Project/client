@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
+import { Entypo, FontAwesome, MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'; 
 import { getAllSubscribed, getWeather, removeFromSubscribed, logout } from '../store/actions/userActions';
 import CardComponent from '../components/CardComponent';
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Account({ navigation }) {
     const dispatch = useDispatch();
@@ -10,6 +14,9 @@ export default function Account({ navigation }) {
     const location = useSelector(state => state.usersReducer.location);
     const subscribed = useSelector(state => state.usersReducer.subscribed);  
     const [edit, setEdit] = useState(false);
+    // const waterLevel = useSelector(state => state.usersReducer.waterLevel)
+    // console.log(waterLevel,"waterLevel")
+
 
     useEffect(() => {
         dispatch(getAllSubscribed());
@@ -17,7 +24,7 @@ export default function Account({ navigation }) {
 
 
     const toggleEdit = () => {
-        setEdit(true);
+        setEdit(!edit);
     }
 
     const userLogout = () => {
@@ -26,21 +33,25 @@ export default function Account({ navigation }) {
     }
 
     return (
-        <View style={ styles.pageContainer }>
+        <View style={ styles.container }>
             <View>
-                <Text style={[styles.evenDarkerGray, { fontSize: 32, fontWeight: 'bold', }]}>Profile</Text>
+                <Text style={[styles.evenDarkerGray, { fontSize: 28, fontWeight: '600', marginBottom: 10 }]}>Profile</Text>
                 <Text style={[styles.darkGray, { fontSize: 24, marginBottom: 2 }]}>{ user.email }</Text>
-                <Text style={ styles.lightGray }>Currently at <Text style={[styles.lightGray, { fontWeight: '500' }]}>{ location[0].name }</Text></Text>
+                <Text style={[styles.lightGray, { fontSize: 16 }]}>currently at <Text style={[styles.lightGray, { fontWeight: '500' }]}>{ location[0].name }</Text></Text>
             </View>
-            <Pressable onPress={ userLogout }>
-                    <Text>Logout</Text> 
-                </Pressable>
+            <Pressable 
+                style={{ marginTop: 5 }}
+                onPress={ userLogout }>
+                <Text style={{ fontSize: 16 }}>Logout</Text> 
+            </Pressable>
             <View style={{ marginTop: 30 }}>
-                <Text style={[styles.evenDarkerGray, { fontSize: 32, fontWeight: 'bold', marginBottom: 10 }]}>Subscribed</Text>
-                <Pressable onPress={ toggleEdit }>
-                    <Text>Edit</Text> 
-                    {/** ini buat nge delete */}
-                </Pressable>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text style={[styles.evenDarkerGray, { fontSize: 28, fontWeight: '600', marginBottom: 10 }]}>Subscribed</Text>
+                    <Pressable onPress={ toggleEdit }>
+                        <Text style={{ color: 'rgb(142, 142, 147)', fontSize: 16, fontWeight: '600', marginTop: 10 }}>EDIT</Text>
+                        {/** ini buat nge delete */}
+                    </Pressable>
+                </View>
                 {/* <Text>{ JSON.stringify(subscribed) }</Text> */}
                 {
                     subscribed.map(location => {
@@ -54,13 +65,26 @@ export default function Account({ navigation }) {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        marginTop: 70,
+        marginTop: 50,
         marginLeft: 30,
         marginRight: 30,
         marginBottom: 50,
         display: 'flex',
         flexDirection: 'column',
         alignContent: 'center'
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#ffff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
+        paddingTop: windowHeight * 1 / 10,
     },
     containerRounded: {
         backgroundColor: 'gray',
@@ -71,15 +95,15 @@ const styles = StyleSheet.create({
         paddingRight: 20
     },
     darkGray: {
-        color: '#616161'
+        color: 'rgb(58, 58, 60)'
     },
     lightGray: {
-        color: '#B0B0B0'
+        color: 'rgb(174, 174, 178)'
     },
     mediumGray: {
         color: '#858484'
     },
     evenDarkerGray: {
-        color: '#353535'
+        color: 'rgb(28, 28, 30)'
     }
 })
