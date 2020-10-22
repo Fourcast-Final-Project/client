@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, StyleSheet, Pressable } from 'react-native'
-import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
+import { SearchBar, Card, CardItem} from 'react-native-elements';
+import { Storage } from '../config/firebase';
+
 
 export default function CardHistory(props) {
     const dispatch = useDispatch();
+    const [img, setImg] = useState('')
 
-    
+    useEffect(() => {
+        const imageRef = Storage.ref(`/images/${props.location.image}`)
+        imageRef.getDownloadURL().then(function(url) {
+            setImg(url)
+            console.log(url, 'url<<<<<<<<<<<<<<<');
+        }, function(error){
+            console.log(error, "<<<<<<<<<<<<< error");
+        });
+    }, [])
+    // const srcImages = (image) => {
+    //     // let newURL = ''
+        
+    //     return newURL
+    // }
 
     return (
         <View style={ styles.containerRounded }>
@@ -21,7 +37,13 @@ export default function CardHistory(props) {
                 
                 {/* GATAU INI JADI GA */}
                 <Text style={[styles.mediumGray, { fontSize: 30, position: 'absolute', right: 0, bottom: 0 }]}>{ props.location.waterLevel }<Text style={[styles.lightGray, { fontSize: 22 }]}> cm</Text></Text>
-                
+                {/* <Image source={ srcImages(props.location.image) } /> */}
+                <Image
+                    style={styles.tinyLogo}
+                    source={{
+                    uri: img
+                    }}
+                />
             </View>
         </View>
     )
@@ -58,5 +80,9 @@ const styles = StyleSheet.create({
     },
     yellow: {
         backgroundColor: '#FAB86A'
-    }
+    },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+      },
 })
