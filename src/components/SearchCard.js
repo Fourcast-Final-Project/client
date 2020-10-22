@@ -28,7 +28,7 @@ export default function CardComponent( props) {
         // if (location.length > 0) {
             // console.log(location, 'masuk kok')
         if (token) {
-            fetch(`http://192.168.1.177:3000/weather/${props.location.location.city}`, {
+            fetch(`http://192.168.0.27:3000/weather/${props.location.location.city}`, {
                 method: 'GET',
                 headers: {
                     access_token: token
