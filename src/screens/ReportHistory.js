@@ -15,6 +15,8 @@ function ReportHistory () {
         dispatch(getReportHistory());
     }, [])
 
+  
+
     return (
         <ImageBackground source={require('../../assets/4.png')} style={{ width: '100%', height: '100%', flex: 1 }}>
             {/* <Text>
@@ -26,7 +28,10 @@ function ReportHistory () {
             <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 15 }}>Past Reports</Text>
             {
                 userReportHistory && userReportHistory.map((item) => {
-                    return <CardHistory location={ item }  key={ item.id } /> 
+                    return <CardHistory 
+                    location={ item }  
+                    key={ item.id }
+                    />
                 }) 
             }
             </View>

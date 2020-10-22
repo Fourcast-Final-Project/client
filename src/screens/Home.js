@@ -108,7 +108,7 @@ export default function Home({navigation}) {
                 {/* </TouchableOpacity> */}
                 {/* <Text>{JSON.stringify(location)}</Text> */}
                 {/* <Text>{JSON.stringify(weather)}</Text> */}
-                {location.length > 0 && weather.main ? (<ImageBackground source={weather.weather[0].main === 'Haze' ? require('../../assets/haze.png') : (weather.weather[0].main === 'Sunny' ? require('../../assets/sunny.png') : require('../../assets/rain.png'))} style={{ width: '100%', height: '100%', flex: 1 }}>
+                {location.length > 0 && weather.main ? (<ImageBackground source={weather.weather[0].main === 'Haze' ? require('../../assets/haze.png') : ((weather.weather[0].main === 'Sunny' || weather.weather[0].main === 'Clear') ? require('../../assets/sunny.png') : require('../../assets/rain.png'))} style={{ width: '100%', height: '100%', flex: 1 }}>
                     <View style={ styles.pageContainer }>
                         <View style={ styles.constraints }>
                             <Text style={{ color: 'white', fontSize: 54, fontWeight: '700', marginBottom: -10, textAlign: 'right' }}>{ weather.main.temp }°C</Text>

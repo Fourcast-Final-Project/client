@@ -80,40 +80,61 @@ export default function CardComponent( props) {
     if (!props.location) return <></>
     if (!wea.main) return <Text>Loading...</Text>
     return (
-        <>
-            <View style={ styles.infoContainer }>
-                <View style={ styles.cityContainer }>
-                    <View>
-                        <Pressable onPress={() => goToHistory()}>
-                            <Text style={ styles.city }> {props.location.location.city} </Text>
-                            <Text style={ styles.city }> {props.location.location.name} </Text>                       
-                        </Pressable>
-                    </View>                    
-                    <View style={ styles.pinContainer }>
-                        <Pressable style={ styles.pin } onPress={ () => subscribe() }>
-                            <AntDesign name='pushpino' size={ 32 } color='#686868' />
-                        </Pressable>
-                    </View>
+        // <>
+        //     <View style={ styles.infoContainer }>
+        //         <View style={ styles.cityContainer }>
+        //             <View>
+        //                 <Pressable onPress={() => goToHistory()}>
+        //                     <Text style={ styles.city }> {props.location.location.city} </Text>
+        //                     <Text style={ styles.city }> {props.location.location.name} </Text>                       
+        //                 </Pressable>
+        //             </View>                    
+        //             <View style={ styles.pinContainer }>
+        //                 <Pressable style={ styles.pin } onPress={ () => subscribe() }>
+        //                     <AntDesign name='pushpino' size={ 32 } color='#686868' />
+        //                 </Pressable>
+        //             </View>
+        //         </View>
+        //         <View style={ styles.waterLevel }>
+        //             <Text style={ styles.value }>{data.waterLevel}</Text>
+        //             <View style={ styles.unitContainer }>
+        //                 <Text style={ styles.unit }> cm</Text>
+        //             </View>
+        //         </View>
+        //         <View style={ styles.statusContainer }>
+        //             {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
+        //             {/* <Text style={ styles.status }>DANGER</Text> */}
+        //         </View>
+        //         <View style={ styles.weatherContainer }>
+        //             <Text style={ styles.weather }>{ wea.weather[0].main }</Text>
+        //         </View>
+        //         <View style={ styles.temperatureContainer }>
+        //             <Text style={ styles.tempValue }>{ wea.main.temp }</Text>
+        //             <Text style={ styles.degree }>o</Text>
+        //         </View>
+        //     </View>
+        // </>
+        // <>
+            <View style={ styles.containerRounded }>
+                <View style={ styles.pinContainer }>
+                    <Pressable style={{ position: 'absolute', right: 0, top: 0 }} onPress={ () => subscribe() }>
+                        <AntDesign name='pushpino' size={ 26 } color='#686868' />
+                    </Pressable>
                 </View>
-                <View style={ styles.waterLevel }>
-                    <Text style={ styles.value }>{data.waterLevel}</Text>
-                    <View style={ styles.unitContainer }>
-                        <Text style={ styles.unit }> cm</Text>
-                    </View>
-                </View>
-                <View style={ styles.statusContainer }>
+                <View>
+                    <Pressable onPress={() => goToHistory()}>
+                        <Text style={[styles.darkGray, { fontSize: 24, fontWeight: '500' }]}>{props.location.location.name}</Text>                      
+                        <Text style={[styles.mediumGray, { fontSize: 16, marginBottom: 5 }]}>{props.location.location.city}</Text>
+                    </Pressable>
+                </View>                    
+                <Text style={[styles.weather, { color: 'rgb(174, 174, 178)' }]}>{ wea.weather[0].main }</Text>
+                <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 70 }]}>{data.waterLevel} cm</Text>
+                <View style={ styles.row }>
+                    <Text style={[styles.mediumGray, { fontSize: 22, fontWeight: '500' }]}>{ wea.main.temp }°C</Text>
                     {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
-                    {/* <Text style={ styles.status }>DANGER</Text> */}
-                </View>
-                <View style={ styles.weatherContainer }>
-                    <Text style={ styles.weather }>{ wea.weather[0].main }</Text>
-                </View>
-                <View style={ styles.temperatureContainer }>
-                    <Text style={ styles.tempValue }>{ wea.main.temp }</Text>
-                    <Text style={ styles.degree }>o</Text>
                 </View>
             </View>
-        </>
+        // </>
         // <>
         // <Text>
         //     {
@@ -130,6 +151,20 @@ export default function CardComponent( props) {
 }
 
 const styles = StyleSheet.create({
+    containerRounded: {
+        backgroundColor: 'whitesmoke',
+        borderRadius: 15,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 20,
+        paddingRight: 20,
+        marginBottom: 15
+    },
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     infoContainer: {
         backgroundColor: 'whitesmoke',
         padding: '5%',

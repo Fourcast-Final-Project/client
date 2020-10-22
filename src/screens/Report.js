@@ -166,8 +166,8 @@ export default function Report({navigation}) {
     useEffect(() => {
     },[])
     return (
-        <DismissKeyboard>
-            <ImageBackground source={require('../../assets/3.png')} style={{ width: '100%', height: '100%', flex: 1 }}>
+        <ImageBackground source={require('../../assets/3.png')} style={{ width: '100%', height: '100%', flex: 1 }}>
+            <DismissKeyboard>
             {/* <SafeAreaView style={{ backgroundColor: 'white' }}>
                 <ScrollView style={styles.scrollView}> */}
                     <View style={[styles.container]}>
@@ -212,7 +212,7 @@ export default function Report({navigation}) {
                             <Text style={ styles.buttonText }>UPLOAD IMAGE</Text>
                         </Pressable>
                         {image.length > 0 && 
-                            <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 20, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
+                            <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 0, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
                         }
                         {/* <View style={styles.checkboxContainer}> */}
                             <CheckBox
@@ -220,7 +220,7 @@ export default function Report({navigation}) {
                                 onPress={onPressCheckBox}
                                 checked={checkBox}
                                 textStyle={{ fontSize: 12, fontWeight: '300' }}
-                                containerStyle={{ marginLeft: 0, width: '100%', marginTop: 30 }}
+                                containerStyle={{ marginLeft: 0, width: '100%', marginTop: 25 }}
                                 checkedColor='black'
                             />
                         {/* </View> */}
@@ -236,8 +236,8 @@ export default function Report({navigation}) {
                     </View>
                 {/* </ScrollView>
             </SafeAreaView> */}
-            </ImageBackground>
         </DismissKeyboard>
+    </ImageBackground>
     )
 }
 
