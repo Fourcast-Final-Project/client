@@ -54,8 +54,6 @@ export default function Home({navigation}) {
             dispatch(getWeather(location[0].city));
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())
-                // dispatch(getWaterLevel(snapshoot.val()))
-                dispatch(getWaterLevel({waterLevel:100}))
             })
         }
     }, [location]);
@@ -67,8 +65,6 @@ export default function Home({navigation}) {
         if (location.length > 0) {
             database.ref(`Location/${location[0].id}`).orderByKey().on('value',snapshoot => {
                 setData(snapshoot.val())
-                // dispatch(getWaterLevel(snapshoot.val()))
-                dispatch(getWaterLevel({waterLevel:100}))
             })
         }
     }, [])
@@ -77,6 +73,7 @@ export default function Home({navigation}) {
         if(data.waterLevel >= 50){
             navigation.navigate("AlertDanger")
         }
+        dispatch(getWaterLevel(data.waterLevel))
     },[data.waterLevel])
 
     return (

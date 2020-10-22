@@ -64,7 +64,7 @@ export const setReportHistory = (payload) => {
 export const setWaterLevel = (water) => {
   return {
     type: SET_WATER_LEVEL,
-    payload: water.waterLevel
+    payload: water
   }
 }
 

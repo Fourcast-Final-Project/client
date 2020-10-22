@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
     case SET_REPORT_HISTORY:
       return { ...state, reportHistory: action.payload };
     case SET_WATER_LEVEL:
-      return { ...state, waterLevel: action.payload.waterLevel };
+      return { ...state, waterLevel: action.payload };
     case SET_ERROR_LOGIN:
       return { ...state, errorLogin: action.payload}
     default:

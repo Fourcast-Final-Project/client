@@ -6,7 +6,8 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function AlertDanger({navigation}) {
-    let waterLevel = useSelector(state => state.waterLevel)
+    const waterLevel = useSelector(state => state.usersReducer.waterLevel)
+    console.log(waterLevel,"waterLevel")
     function AlertDanger(){
         navigation.navigate("Home")
     }
