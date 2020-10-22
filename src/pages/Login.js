@@ -83,7 +83,12 @@ export default function Login({navigation}) {
     const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [checkEmail, setcheckEmail] = useState(false)
+    const [checkPassword, setCheckPassword] = useState(false)
     const token = useSelector(state => state.usersReducer.token)
+    const errorLogin = useSelector(state =>state.usersReducer.errorLogin)
+
+    // console.log(error, "eroror")
 
     // Expo
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -122,9 +127,20 @@ export default function Login({navigation}) {
 
     async function onPress(){
         // await schedulePushNotification(expoPushToken);
-        dispatch(getToken({ email, password }))
-        setEmail('')
-        setPassword('')
+        setcheckEmail(false)
+        setCheckPassword(false)
+
+        if (!email) {
+            setcheckEmail(true);
+        } 
+        if(!password) {
+            setCheckPassword(true);
+        }
+        if(email && password) {
+            dispatch(getToken({ email, password }))
+            setEmail('')
+            setPassword('')
+        }
     }
 
     function handleOnChangeEmail(email){
@@ -154,19 +170,29 @@ export default function Login({navigation}) {
                 style={styles.textInput}
                 value={email}
                 onChangeText={handleOnChangeEmail}
+                placeholder="Enter email"
             />
-
+            { checkEmail && <View style={ styles.errorContainer }>
+                <Text style={ styles.errorText }>Email must be filled</Text> 
+            </View>}
             <View style={styles.subContainer}>
                 <Text style={ styles.subHeader }>PASSWORD</Text>
             </View>
-
-            
+               
             <TextInput 
                 style={styles.textInput}
                 value={password}
                 secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
+                placeholder="Enter password"
             />
+            { checkPassword && <View style={ styles.errorContainer }>
+                <Text style={styles.errorText}>password must be filled</Text> 
+            </View>}
+
+            { errorLogin && <View style={ styles.errorContainerInvalidEmailPassword }>
+                <Text style={styles.errorTextInvalidEmailPassword}>Invalid Email or Password</Text> 
+            </View>}
 
             <View>
                 <Pressable onPress={() => onPress()} style={ styles.button }>
@@ -177,7 +203,7 @@ export default function Login({navigation}) {
           
 
             <View style={{marginTop:20}}>
-                <Text style={ styles.ask }>Don't have an account ? </Text>
+                <Text style={ styles.ask }>Don't have an account? </Text>
             </View>
             <Pressable styles={{fontSize:20}} onPress={handelOnPressTextRegister}>
                 <View>
@@ -194,7 +220,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 12,
     },
     headerContainer: {
         alignSelf: 'center',
@@ -208,14 +234,15 @@ const styles = StyleSheet.create({
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        fontSize: 42,
+        fontSize: 40,
         color: '#393939'
     },
     subHeader: {
         alignSelf: 'flex-start',
-        // fontWeight: 'bold',
-        fontSize: 20,
-        color: '#9A9A9A'
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#9A9A9A',
+        marginBottom: 5
     },
     text: {
         alignSelf: 'flex-start',
@@ -226,7 +253,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#63B3FD',
         width: windowWidth * 8.5 / 10,
-        marginTop: '15%',
+        marginTop: '10%',
         padding: '3%',
         borderRadius: 15
     }, 
@@ -234,14 +261,17 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontWeight: 'bold',
         alignSelf: 'center',
-        fontSize: 18
+        fontSize: 22
     },
     textInput: {
-        height: 40, 
-        paddingLeft: 20,
+        fontSize: 18,
+        paddingLeft: 15,
         paddingRight: 20,
-        fontWeight: 'bold',
+        paddingTop: 15,
+        paddingBottom: 15,
+        fontWeight: '400',
         backgroundColor: '#EAEAEA',
+        color: '#353535',
         borderRadius:15,
         width: windowWidth * 8.5 / 10,
     },
@@ -253,6 +283,28 @@ const styles = StyleSheet.create({
     register: {
         color: '#686868',
         fontWeight: '700',
-        fontSize: 20
+        fontSize: 22,
+        marginTop: 3
+    },
+    errorText: {
+        alignSelf: 'flex-start',
+        fontWeight: '600',
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 5
+    },
+    errorContainer: {
+        alignSelf: 'center',
+        width: windowWidth * 8.5 / 10,
+    },
+    errorTextInvalidEmailPassword: {
+        alignSelf: 'flex-start',
+        fontWeight: '600',
+        fontSize: 14,
+        color: 'red',
+    },
+    errorContainerInvalidEmailPassword: {
+        alignSelf: 'center',
+        width: windowWidth * 8.5 / 10,
     }
   });

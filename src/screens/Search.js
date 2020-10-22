@@ -20,7 +20,7 @@ export default function Search({navigation}) {
     const [open, setOpen] = useState(false)
     let searchResults = useSelector(state => state.dataReducer.searchData)
     let filteredLoc = useSelector(state => state.dataReducer.filteredByCity)
-    
+   
     useEffect(() => {
         let newArr = []
         if (debouncedSearchTerm) {

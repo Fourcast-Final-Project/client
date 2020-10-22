@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_RAW_PHOTO, SET_WEATHER, SET_PHOTO_NAME, SET_REPORT_HISTORY } from '../actions/types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_RAW_PHOTO, SET_WEATHER, SET_PHOTO_NAME, SET_REPORT_HISTORY, SET_WATER_LEVEL, SET_ERROR_LOGIN } from '../actions/types';
 
 const initialState = {
   token: '',
@@ -8,10 +8,13 @@ const initialState = {
   weather: {},
   rawPhoto: '',
   photoName: '',
-  reportHistory: []
+  reportHistory: [],
+  waterLevel:0, 
+  errorLogin:null
 }
 
 export default (state = initialState, action) => {
+  console.log(action.payload,'inia action reducer')
   switch (action.type) {
     case SET_TOKEN:
       return { ...state, token: action.payload };
@@ -29,7 +32,12 @@ export default (state = initialState, action) => {
       return { ...state, photoName: action.payload };
     case SET_REPORT_HISTORY:
       return { ...state, reportHistory: action.payload };
+    case SET_WATER_LEVEL:
+      return { ...state, waterLevel: action.payload.waterLevel };
+    case SET_ERROR_LOGIN:
+      return { ...state, errorLogin: action.payload}
     default:
       return state;
   }
+  
 }

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native'
+import { StyleSheet, View, Text, Button, TextInput, Dimensions, Pressable, TouchableOpacity, ScrollView, SafeAreaView, Keyboard, TouchableWithoutFeedback} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -7,9 +7,17 @@ import * as Permissions from 'expo-permissions';
 import { CheckBox } from 'react-native-elements'
 import { reportDanger } from '../store/actions/userActions';
 import firebase from 'firebase'
+import {CountDownText} from 'react-native-countdown-timer-text';
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
+const DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -94,9 +102,11 @@ export default function Report({navigation}) {
     const [ waterLevel, setWaterLevel ] = useState('')
     const [ checkBox, setCheckBox ] = useState(false);
     const [ checkcheck, setCheckCheck ] = useState(false);
+    const [ waterLevelCheck, setWaterLevelCheck ] = useState(false);
+    const [ imageCheck, setImageCheck ] = useState(false);
     const image = useSelector(state => state.usersReducer.rawPhoto);
     const location = useSelector(state => state.usersReducer.location);
-
+ 
     // Expo
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
@@ -145,22 +155,39 @@ export default function Report({navigation}) {
     }
 
     async function onPressButtonAlert () {
-        // alert("Press")
+        setCheckCheck(false);
+        setWaterLevelCheck(false);
+        setImageCheck(false);
+
         if (checkBox === false) {
             setCheckCheck(true);
-        } else {
-            console.log(waterLevel, "INI DRI REPORT GUYS WATER")
-            dispatch(reportDanger(waterLevel));
-            await sendPushNotification(expoPushToken);
-            navigation.navigate('MainMenu', { screen: 'Home' })
+            console.log(checkcheck, "checcheck")
+        }
+        if(waterLevel === '' || waterLevel < 50){
+            setWaterLevelCheck(true);
+            console.log(waterLevelCheck, " water level checcheck")
+        }
+        if(!image){
+            setImageCheck(true);
+            console.log(imageCheck, `imagecheck`)
+        }
+         if(checkcheck && waterLevelCheck && imageCheck ) {
+             alert('berhasil')
+             setWaterLevel('')
+             setCheckBox(false)
+            // console.log(waterLevel, "INI DRI REPORT GUYS WATER")
+            // dispatch(reportDanger(waterLevel));
+            // await sendPushNotification(expoPushToken);
+            // navigation.navigate('MainMenu', { screen: 'Home' })
         }
 
+        
     }
 
     useEffect(() => {
     },[])
     return (
-        <>
+        <DismissKeyboard>
         <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
             <View style={ styles.container }>
@@ -217,6 +244,7 @@ export default function Report({navigation}) {
                     placeholder='in cm'
                     placeholderTextColor='#C4C4C4'
                 />  
+                 {waterLevelCheck && <Text style={{color: 'red'}}>water level at least 50 cm</Text>}
                 
                 <View style={ styles.subContainer }>
                     <Text style={ styles.text }>Supporting Image</Text>
@@ -234,6 +262,7 @@ export default function Report({navigation}) {
                     <Text>Image uploaded</Text>
                 </View>}
 
+                {imageCheck && <Text style={{color: 'red'}}>please upload your report photo</Text>} 
 
                     <View style={styles.checkboxContainer}>
                         <CheckBox
@@ -242,7 +271,9 @@ export default function Report({navigation}) {
                             checked={checkBox}
                         />
                     </View>
-                    {checkcheck && <Text>ISI</Text>}
+                    {checkcheck && <Text style={{color: 'red'}}>Term on condition must be check</Text>}
+                   
+                    
                     <View style={ styles.subContainer }>
                         <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
                             <Text style={ styles.buttonText }>Alert Danger</Text>
@@ -252,7 +283,7 @@ export default function Report({navigation}) {
             </View>
             </ScrollView>
             </SafeAreaView>
-        </>
+        </DismissKeyboard>
     )
 }
 

@@ -1,5 +1,6 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY, SET_WATER_LEVEL, SET_ERROR_LOGIN } from './types';
 import axios from 'axios';
+
 const baseUrl = 'http://192.168.100.28:3000'
 
 
@@ -59,6 +60,21 @@ export const setReportHistory = (payload) => {
   }
 }
 
+
+export const setWaterLevel = (water) => {
+  return {
+    type: SET_WATER_LEVEL,
+    payload: water.waterLevel
+  }
+}
+
+export const setErrorLogin = (err) => {
+  return {
+    type: SET_ERROR_LOGIN,
+    payload: err
+  }
+}
+
 export const getToken = (user) => {
   const { email, password } = user;
   return (dispatch, getState) => {
@@ -72,13 +88,15 @@ export const getToken = (user) => {
     })
     .then(({ data }) => {
       dispatch(setToken(data.access_token));
+      dispatch(setErrorLogin(null))
       dispatch(setUser({
         email: data.email,
         id: data.id
       }));
     })
     .catch(err => {
-      console.log(err);
+      dispatch(setErrorLogin(err))
+      console.log(err, 'errro login,,,,,,,,');
     });
   }
 }
@@ -214,6 +232,7 @@ export const getUserLocationSearch = (place) => {
 
 export const getWeather = (location) => {
   return (dispatch, getState) => {
+    console.log('masuk weather')
     //console.log(getState().usersReducer.token, 'INI TOKEEEENNNNNN')
     const token = getState().usersReducer.token;
     fetch(`${baseUrl}/weather/${location}`, {
@@ -225,9 +244,9 @@ export const getWeather = (location) => {
     })
     .then((res) => res.json())
     .then(data => {
-      //console.log(data, 'INI WEATHERRRRRRRRR');
+      console.log(data, 'INI WEATHERRRRRRRRR');
       const newData = JSON.parse(JSON.stringify(data));
-      //console.log(newData.main, "NEW")
+      console.log(newData.main, "NEW")
       newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
       dispatch(setWeather(newData));
     })
@@ -287,6 +306,7 @@ export const getReportHistory = () =>{
       console.log(err)
     })
   }
+}
 
 export const checkRedis = () => {
   return (dispatch, getState) => {
@@ -306,5 +326,13 @@ export const checkRedis = () => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(setToken(''));
+  }
+}
+
+
+export const getWaterLevel = (water) => {
+  return(dispatch) =>{
+    console.log(water,`dari action <<<<<<<<<<<<<`)
+    dispatch(setWaterLevel(water));
   }
 }
