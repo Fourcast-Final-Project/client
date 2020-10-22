@@ -12,6 +12,8 @@ function ReportHistory () {
         dispatch(getReportHistory())
     }, [])
 
+  
+
     return (
         <>
             {/* <Text>
@@ -22,7 +24,10 @@ function ReportHistory () {
             <View>
             {
                 userReportHistory && userReportHistory.map((item) => {
-                    return <CardHistory location={ item }  key={ item.id } /> 
+                    return <CardHistory 
+                    location={ item }  
+                    key={ item.id }
+                    />
                 }) 
             }
             </View>

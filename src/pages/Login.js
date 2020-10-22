@@ -154,6 +154,7 @@ export default function Login({navigation}) {
                 style={styles.textInput}
                 value={email}
                 onChangeText={handleOnChangeEmail}
+                placeholder="Enter email"
             />
 
             <View style={styles.subContainer}>
@@ -166,6 +167,7 @@ export default function Login({navigation}) {
                 value={password}
                 secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
+                placeholder="Enter password"
             />
 
             <View>
@@ -177,7 +179,7 @@ export default function Login({navigation}) {
           
 
             <View style={{marginTop:20}}>
-                <Text style={ styles.ask }>Don't have an account ? </Text>
+                <Text style={ styles.ask }>Don't have an account? </Text>
             </View>
             <Pressable styles={{fontSize:20}} onPress={handelOnPressTextRegister}>
                 <View>
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: windowHeight * 1 / 10,
+        paddingTop: windowHeight * 1 / 12,
     },
     headerContainer: {
         alignSelf: 'center',
@@ -208,14 +210,15 @@ const styles = StyleSheet.create({
     header: {
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        fontSize: 42,
+        fontSize: 40,
         color: '#393939'
     },
     subHeader: {
         alignSelf: 'flex-start',
-        // fontWeight: 'bold',
-        fontSize: 20,
-        color: '#9A9A9A'
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#9A9A9A',
+        marginBottom: 5
     },
     text: {
         alignSelf: 'flex-start',
@@ -226,7 +229,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#63B3FD',
         width: windowWidth * 8.5 / 10,
-        marginTop: '15%',
+        marginTop: '10%',
         padding: '3%',
         borderRadius: 15
     }, 
@@ -234,14 +237,17 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontWeight: 'bold',
         alignSelf: 'center',
-        fontSize: 18
+        fontSize: 22
     },
     textInput: {
-        height: 40, 
-        paddingLeft: 20,
+        fontSize: 18,
+        paddingLeft: 15,
         paddingRight: 20,
-        fontWeight: 'bold',
+        paddingTop: 15,
+        paddingBottom: 15,
+        fontWeight: '400',
         backgroundColor: '#EAEAEA',
+        color: '#353535',
         borderRadius:15,
         width: windowWidth * 8.5 / 10,
     },
@@ -253,6 +259,7 @@ const styles = StyleSheet.create({
     register: {
         color: '#686868',
         fontWeight: '700',
-        fontSize: 20
+        fontSize: 22,
+        marginTop: 3
     }
   });
