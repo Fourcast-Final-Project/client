@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Image, TouchableOpacity } from 'react-native'
 import { SearchBar, Card, CardItem} from 'react-native-elements';
 import { Storage } from '../config/firebase';
+import Lightbox from 'react-native-lightbox'
 
 
 export default function CardHistory(props) {
@@ -37,13 +38,22 @@ export default function CardHistory(props) {
                 
                 {/* GATAU INI JADI GA */}
                 <Text style={[styles.mediumGray, { fontSize: 30, position: 'absolute', right: 0, bottom: 0 }]}>{ props.location.waterLevel }<Text style={[styles.lightGray, { fontSize: 22 }]}> cm</Text></Text>
-                {/* <Image source={ srcImages(props.location.image) } /> */}
-                <Image
+
+                <Lightbox renderContent={()=> {
+                    return(
+                        <Image
+                        source={{ uri: img }}
+                        style={styles.bigLogo}
+                        resizeMode='center'
+                        />
+                    )
+                    }}>
+                    <Image
+                    source={{ uri: img }}
                     style={styles.tinyLogo}
-                    source={{
-                    uri: img
-                    }}
-                />
+                    resizeMode='center'
+                    />
+                </Lightbox>
             </View>
         </View>
     )
@@ -84,5 +94,10 @@ const styles = StyleSheet.create({
     tinyLogo: {
         width: 50,
         height: 50,
-      },
+    },
+    bigLogo: {
+        width: 400,
+        height: 400,
+    }
+      
 })
