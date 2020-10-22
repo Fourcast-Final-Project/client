@@ -14,6 +14,9 @@ export default function Account({ navigation }) {
     const location = useSelector(state => state.usersReducer.location);
     const subscribed = useSelector(state => state.usersReducer.subscribed);  
     const [edit, setEdit] = useState(false);
+    // const waterLevel = useSelector(state => state.usersReducer.waterLevel)
+    // console.log(waterLevel,"waterLevel")
+
 
     useEffect(() => {
         dispatch(getAllSubscribed());

@@ -1,4 +1,4 @@
-import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY } from './types';
+import { SET_TOKEN, SET_USER, SET_SUBSCRIBED, SET_LOCATION, SET_WEATHER, SET_RAW_PHOTO, SET_PHOTO_NAME, SET_REPORT_HISTORY, SET_WATER_LEVEL, SET_ERROR_LOGIN } from './types';
 import axios from 'axios';
 
 const baseUrl = 'http://192.168.0.27:3000'
@@ -60,6 +60,21 @@ export const setReportHistory = (payload) => {
   }
 }
 
+
+export const setWaterLevel = (water) => {
+  return {
+    type: SET_WATER_LEVEL,
+    payload: water
+  }
+}
+
+export const setErrorLogin = (err) => {
+  return {
+    type: SET_ERROR_LOGIN,
+    payload: err
+  }
+}
+
 export const getToken = (user) => {
   const { email, password } = user;
   return (dispatch, getState) => {
@@ -73,13 +88,15 @@ export const getToken = (user) => {
     })
     .then(({ data }) => {
       dispatch(setToken(data.access_token));
+      dispatch(setErrorLogin(null))
       dispatch(setUser({
         email: data.email,
         id: data.id
       }));
     })
     .catch(err => {
-      console.log(err);
+      dispatch(setErrorLogin(err))
+      console.log(err, 'errro login,,,,,,,,');
     });
   }
 }
@@ -309,5 +326,13 @@ export const checkRedis = () => {
 export const logout = () => {
   return (dispatch) => {
     dispatch(setToken(''));
+  }
+}
+
+
+export const getWaterLevel = (water) => {
+  return(dispatch) =>{
+    console.log(water,`dari action <<<<<<<<<<<<<`)
+    dispatch(setWaterLevel(water));
   }
 }

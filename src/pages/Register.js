@@ -57,6 +57,8 @@ export default function Register({navigation}) {
     const dispatch = useDispatch()
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    const [checkEmail, setcheckEmail] = useState(false)
+    const [checkPassword, setCheckPassword] = useState(false)
     
     
     useEffect(() => {
@@ -65,16 +67,30 @@ export default function Register({navigation}) {
 
 
     function onPress(){
-        dispatch(register({ email, password, expoPushToken }))
-        navigation.navigate("Login")   
-        setEmail('')
-        setPassword('')
+
+        setcheckEmail(false)
+        setCheckPassword(false)
+
+        if (!email) {
+            setcheckEmail(true);
+        } 
+        if(!password) {
+            setCheckPassword(true);
+        }
+        if(email && password){
+            dispatch(register({ email, password, expoPushToken }))
+            navigation.navigate("Login")   
+            setEmail('')
+            setPassword('')
+        }
     }
 
     function toLogin(){
+
         navigation.navigate("Login")
         setEmail('')
         setPassword('')
+        
     }
 
     function handleOnChangePassword(password){
@@ -100,7 +116,9 @@ export default function Register({navigation}) {
                 value={email}
                 onChangeText={handleOnChangeEmail}
             />
-
+            { checkEmail && <View style={ styles.errorContainer }>
+                <Text style={ styles.error }>Email must be filled</Text> 
+            </View>}
             <View style={ styles.subContainer }>
                 <Text style={ styles.subHeader }>PASSWORD</Text>
             </View>
@@ -111,6 +129,9 @@ export default function Register({navigation}) {
                 secureTextEntry={true}
                 onChangeText={handleOnChangePassword}
             />
+              { checkPassword && <View style={ styles.errorContainer }>
+                <Text style={styles.error}>password must be filled</Text> 
+            </View>}
 
             <View>
                 <Pressable onPress={() => onPress()} style={ styles.button }>
@@ -215,5 +236,16 @@ const styles = StyleSheet.create({
         color: '#393939',
         fontWeight: '700',
         marginTop: '7%'
+    },
+    error: {
+        alignSelf: 'flex-start',
+        fontWeight: '600',
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 5
+    },
+    errorContainer: {
+        alignSelf: 'center',
+        width: windowWidth * 8.5 / 10,
     }
   });

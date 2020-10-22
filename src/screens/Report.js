@@ -7,6 +7,8 @@ import * as Permissions from 'expo-permissions';
 import { CheckBox } from 'react-native-elements'
 import { reportDanger } from '../store/actions/userActions';
 import firebase from 'firebase'
+// import {CountDownText} from 'react-native-countdown-timer-text';
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -100,9 +102,11 @@ export default function Report({navigation}) {
     const [ waterLevel, setWaterLevel ] = useState('')
     const [ checkBox, setCheckBox ] = useState(false);
     const [ checkcheck, setCheckCheck ] = useState(false);
+    const [ waterLevelCheck, setWaterLevelCheck ] = useState(false);
+    const [ imageCheck, setImageCheck ] = useState(false);
     const image = useSelector(state => state.usersReducer.rawPhoto);
     const location = useSelector(state => state.usersReducer.location);
-
+ 
     // Expo
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
@@ -151,16 +155,33 @@ export default function Report({navigation}) {
     }
 
     async function onPressButtonAlert () {
-        // alert("Press")
+        setCheckCheck(false);
+        setWaterLevelCheck(false);
+        setImageCheck(false);
+
         if (checkBox === false) {
             setCheckCheck(true);
-        } else {
-            console.log(waterLevel, "INI DRI REPORT GUYS WATER")
-            dispatch(reportDanger(waterLevel));
-            await sendPushNotification(expoPushToken);
-            navigation.navigate('MainMenu', { screen: 'Home' })
+            console.log(checkcheck, "checcheck")
+        }
+        if(waterLevel === '' || waterLevel < 50){
+            setWaterLevelCheck(true);
+            console.log(waterLevelCheck, " water level checcheck")
+        }
+        if(!image){
+            setImageCheck(true);
+            console.log(imageCheck, `imagecheck`)
+        }
+         if(checkcheck && waterLevelCheck && imageCheck ) {
+             alert('berhasil')
+             setWaterLevel('')
+             setCheckBox(false)
+            // console.log(waterLevel, "INI DRI REPORT GUYS WATER")
+            // dispatch(reportDanger(waterLevel));
+            // await sendPushNotification(expoPushToken);
+            // navigation.navigate('MainMenu', { screen: 'Home' })
         }
 
+        
     }
 
     useEffect(() => {
@@ -207,6 +228,7 @@ export default function Report({navigation}) {
                             placeholder='in cm'
                             placeholderTextColor='#C4C4C4'
                         />  
+                        {waterLevelCheck && <Text style={{color: 'red'}}>water level at least 50 cm</Text>}
                         <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>SUPPORTING IMAGE</Text>
                         <Pressable onPress={() => uploadImageButton()} style={ styles.button }>
                             <Text style={ styles.buttonText }>UPLOAD IMAGE</Text>
@@ -214,6 +236,15 @@ export default function Report({navigation}) {
                         {image.length > 0 && 
                             <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 0, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
                         }
+                        {imageCheck && <Text style={{color: 'red'}}>please upload your report photo</Text>} 
+                        <View style={styles.checkboxContainer}>
+                            <CheckBox
+                                title='I hereby confirm that the information above is true as agreed through the code of conduct.'
+                                onPress={onPressCheckBox}
+                                checked={checkBox}
+                            />
+                        </View>
+                        {checkcheck && <Text style={{color: 'red'}}>Term on condition must be check</Text>}
                         {/* <View style={styles.checkboxContainer}> */}
                             <CheckBox
                                 title='I hereby confirm that the information above is true as agreed through the code of conduct.'

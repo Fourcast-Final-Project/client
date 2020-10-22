@@ -1,38 +1,47 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function AlertDanger({navigation}) {
+    const waterLevel = useSelector(state => state.usersReducer.waterLevel)
+    console.log(waterLevel,"waterLevel")
     function AlertDanger(){
         navigation.navigate("Home")
     }
     return (
-        <View style={{height:"100%", backgroundColor:"#DF6F6F"}}>
-             <View style={ styles.danger }>
-                <Pressable style={ styles.button }>
-                    <Text style={ styles.buttonTextRed }>Danger</Text>
-                </Pressable>
-                </View>
-            <View style={ styles.subContainerCircle }>
-                <Pressable style={ styles.button }>
-                    <Text style={ styles.buttonTextRed }>15,2 cm</Text>
-                </Pressable>
-                </View>
-
+        <View style={[styles.container, {height:"100%", backgroundColor:"#DF6F6F"}]}>
+            <Text style={{ color: 'white', fontWeight: '400', fontSize: 50, marginBottom: -10, marginTop: 80 }}>OH NO,</Text>
+            <Text style={{ color: 'white', fontWeight: '800', fontSize: 60 }}>DANGER!</Text>
+            <Text style={{ color: 'white', fontSize: 28, marginTop: 60 }}>CURRENT WATER LEVEL</Text>
+            <Text style={{ color: 'white', fontWeight: '800', fontSize: 60 }}>{waterLevel} cm</Text>
             <View style={ styles.subContainer }>
                 <Pressable onPress={() => AlertDanger()} style={ styles.button }>
-                    <Text style={ styles.buttonText }>to home</Text>
+                    <Text style={ styles.buttonText }>TO HOME</Text>
                 </Pressable>
-                </View>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // backgroundColor: '#ffff',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 50,
+        paddingTop: windowHeight * 1 / 15,
+    },
     subContainer: {
-        marginTop: windowWidth * 2 / 10,
+        marginTop: 20,
         alignSelf: 'center',
         width: windowWidth * 8.5 / 10,
     },
@@ -52,14 +61,18 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     button: {
-        width: windowWidth * 8.5 / 10,
+        // backgroundColor: '#63B3FD',
+        // width: windowWidth * 8.5 / 10,
         marginTop: '2%',
-        padding: '3%',
-        borderRadius: 15
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: 'white'
     },
     buttonText: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
+        color: 'white',
+        fontWeight: '500',
         alignSelf: 'center',
         fontSize: 18
     },

@@ -22,7 +22,7 @@ export default function Search({navigation}) {
     const [isValid, setIsValid] = useState(true)
     let searchResults = useSelector(state => state.dataReducer.searchData)
     let filteredLoc = useSelector(state => state.dataReducer.filteredByCity)
-    
+   
     useEffect(() => {
         let newArr = []
         if (debouncedSearchTerm) {
