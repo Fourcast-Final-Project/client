@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Dimensions, Pressable, Alert  } from 'react-native'
 import { SearchBar, Card, Image, CardItem} from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons'; 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import  { addToSubscribed } from '../store/actions/userActions'
 import { setSearch } from '../store/actions/dataActions'
+import firebase from 'firebase'
+import database from '../config/firebase'
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -16,6 +18,52 @@ export default function CardComponent( props) {
     //console.log(props.location.location,'propsy')
     //console.log(props.location.navigation,'props.location.city')
     const dispatch = useDispatch()
+    const [wea, setWea] = useState('')
+    const [data, setData] = useState('')
+    console.log(props.location.location, 'masuk card componeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeent')
+    const token = useSelector(state => state.usersReducer.token)
+
+    useEffect(() => {
+        // console.log('masuk use effect hah', location)
+        // if (location.length > 0) {
+            // console.log(location, 'masuk kok')
+        if (token) {
+            fetch(`http://192.168.1.177:3000/weather/${props.location.location.city}`, {
+                method: 'GET',
+                headers: {
+                    access_token: token
+                },
+                    redirect: 'follow'
+            })
+            .then((res) => res.json())
+            .then(data => {
+                console.log(data, 'INI WEATHERRRRRRRRR CCCCC');
+                const newData = JSON.parse(JSON.stringify(data));
+                console.log(newData.main, "NEW")
+                newData.main.temp = Math.round((Number(newData.main.temp) - 273.15) * 10) / 10;
+                setWea(newData)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+
+        database.ref(`Location/${props.location.location.id}`).orderByKey().on('value',snapshoot => {
+            setData(snapshoot.val())  
+        })
+        // }
+    }, []);
+
+    useEffect(() => {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        // if (location.length > 0) {
+            database.ref(`Location/${props.location.location.id}`).orderByKey().on('value',snapshoot => {
+                setData(snapshoot.val())
+            })
+        // }
+    }, [])
 
     function subscribe () {
         dispatch(addToSubscribed(props.location.location.id))
@@ -30,6 +78,7 @@ export default function CardComponent( props) {
 
 
     if (!props.location) return <></>
+    if (!wea.main) return <Text>Loading...</Text>
     return (
         <>
             <View style={ styles.infoContainer }>
@@ -47,23 +96,36 @@ export default function CardComponent( props) {
                     </View>
                 </View>
                 <View style={ styles.waterLevel }>
-                    <Text style={ styles.value }>{props.location.waterLevel}</Text>
+                    <Text style={ styles.value }>{data.waterLevel}</Text>
                     <View style={ styles.unitContainer }>
                         <Text style={ styles.unit }> cm</Text>
                     </View>
                 </View>
                 <View style={ styles.statusContainer }>
-                    <Text style={ styles.status }>DANGER</Text>
+                    {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}
+                    {/* <Text style={ styles.status }>DANGER</Text> */}
                 </View>
                 <View style={ styles.weatherContainer }>
-                    <Text style={ styles.weather }>Thunderstorm</Text>
+                    <Text style={ styles.weather }>{ wea.weather[0].main }</Text>
                 </View>
                 <View style={ styles.temperatureContainer }>
-                    <Text style={ styles.tempValue }>24</Text>
+                    <Text style={ styles.tempValue }>{ wea.main.temp }</Text>
                     <Text style={ styles.degree }>o</Text>
                 </View>
             </View>
         </>
+        // <>
+        // <Text>
+        //     {
+        //         JSON.stringify(wea)
+        //     }
+        // </Text>
+        //  <Text>
+        //  {
+        //      JSON.stringify(data)
+        //  }
+        // </Text>
+        // </>
     )
 }
 
