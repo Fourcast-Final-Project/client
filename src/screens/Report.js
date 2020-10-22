@@ -237,13 +237,6 @@ export default function Report({navigation}) {
                             <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 0, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
                         }
                         {imageCheck && <Text style={{color: 'red'}}>please upload your report photo</Text>} 
-                        <View style={styles.checkboxContainer}>
-                            <CheckBox
-                                title='I hereby confirm that the information above is true as agreed through the code of conduct.'
-                                onPress={onPressCheckBox}
-                                checked={checkBox}
-                            />
-                        </View>
                         {checkcheck && <Text style={{color: 'red'}}>Term on condition must be check</Text>}
                         {/* <View style={styles.checkboxContainer}> */}
                             <CheckBox
