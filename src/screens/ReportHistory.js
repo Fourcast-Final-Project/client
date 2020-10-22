@@ -12,7 +12,7 @@ function ReportHistory () {
     let userReportHistory = useSelector(state => state.usersReducer.reportHistory)
     
     useEffect(() => {
-        dispatch(getReportHistory())
+        dispatch(getReportHistory());
     }, [])
 
     return (
