@@ -129,7 +129,8 @@ export default function CardComponent( props) {
                     </Pressable>
                 </View>                    
                 <Text style={[styles.weather, { color: 'rgb(174, 174, 178)' }]}>{ wea.weather[0].main }</Text>
-                <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 70 }]}>{data.waterLevel} cm</Text>
+            <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 65 }]}>{ data.waterLevel }<Text style={[styles.lightGray, { fontSize: 22 }]}> cm</Text></Text>
+                {/* <Text style={[styles.mediumGray, { fontSize: 26, position: 'absolute', right: 19, top: 70 }]}>{data.waterLevel} cm</Text> */}
                 <View style={ styles.row }>
                     <Text style={[styles.mediumGray, { fontSize: 22, fontWeight: '500' }]}>{ wea.main.temp }°C</Text>
                     {data.waterLevel > 50 ? <Text style={{ color: '#FF6363', fontSize: 22, fontWeight: '600' }}>DANGER</Text> : (data.waterLevel > 5 ? <Text style={{ color: '#FAB86A', fontSize: 20, fontWeight: '600' }}>WARNING</Text> : <Text style={{ color: '#5CC55A', fontSize: 20, fontWeight: '600' }}>SAFE</Text>)}

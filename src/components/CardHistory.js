@@ -52,8 +52,8 @@ export default function CardHistory(props) {
                         }
                         <View style={{ marginLeft: 10, marginTop: 3 }}>
                             <Text style={[styles.lightGray, { fontSize: 16, marginBottom: 5 }]}>{ props.location.updatedAt.split("T")[0] } { props.location.updatedAt.split("T")[1].substring(0, 8) } </Text>
-                            <Text style={[styles.darkGray, { fontSize: 24, fontWeight: '500', marginBottom: 8 }]}>{ props.location.Location.name }</Text>
-                            <Text style={[styles.mediumGray, { fontSize: 14, fontWeight: '600' }]}>WATER LEVEL</Text>
+                            <Text style={[styles.darkGray, { fontSize: 24, fontWeight: '500', marginBottom: 15 }]}>{ props.location.Location.name }</Text>
+                            <Text style={[styles.mediumGray, { fontSize: 14, fontWeight: '600', bottom: 0 }]}>WATER LEVEL</Text>
                         </View>
                     </View>
                     <View style={ styles.row }>
