@@ -80,7 +80,7 @@ export default function Search({navigation}) {
                     accessibilityLabel="Learn more about this purple button"
                 />
                 </TouchableOpacity> */}
-                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Search</Text>
+                <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 12 }}>Search</Text>
                 <View style={ styles.search }>
                     <TextInput 
                         style={styles.textInput}

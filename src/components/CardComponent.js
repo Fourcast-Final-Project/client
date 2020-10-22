@@ -21,7 +21,7 @@ export default function CardComponent(props) {
         // if (location.length > 0) {
             // console.log(location, 'masuk kok')
         if (token) {
-            fetch(`http://192.168.1.177:3000/weather/${props.location.city}`, {
+            fetch(`http://192.168.0.27:3000/weather/${props.location.city}`, {
                 method: 'GET',
                 headers: {
                     access_token: token
@@ -67,8 +67,8 @@ export default function CardComponent(props) {
         <View style={ styles.containerRounded }>
             {props.edit === true && 
                 <Pressable onPress={ deleteFromSubscribed }>
-                    <View style={{ backgroundColor: 'rgb(174, 174, 178)', width: 40, height: 15, position: 'absolute', right: 0, top: -20, borderRadius: 100 }}>
-                        <View style={{ backgroundColor: 'rgb(72, 72, 74)', width: 20, height: 5, position: 'absolute', right: 9.5, top: 5, borderRadius: 100 }}></View>
+                    <View style={{ backgroundColor: 'rgb(199, 199, 204)', width: 40, height: 15, position: 'absolute', right: 0, top: -20, borderRadius: 100 }}>
+                        <View style={{ backgroundColor: 'rgb(142, 142, 147)', width: 20, height: 5, position: 'absolute', right: 9.5, top: 5, borderRadius: 100 }}></View>
                     </View>
                 </Pressable>
             }

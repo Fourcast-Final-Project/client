@@ -171,7 +171,7 @@ export default function Report({navigation}) {
             {/* <SafeAreaView style={{ backgroundColor: 'white' }}>
                 <ScrollView style={styles.scrollView}> */}
                     <View style={[styles.container]}>
-                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Report</Text>
+                        <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 15 }}>Report</Text>
                         <Text style={{ color: 'rgb(99, 99, 102)', fontSize: 14, fontWeight: '600', marginBottom: 5 }}>PLACE</Text>
                         <TextInput 
                             style={[styles.textInput, { color: 'rgb(174, 174, 178)', borderBottomColor: 'rgb(174, 174, 178)' }]}
@@ -214,13 +214,19 @@ export default function Report({navigation}) {
                         {image.length > 0 && 
                             <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 20, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
                         }
-                        <View style={styles.checkboxContainer}>
+                        {/* <View style={styles.checkboxContainer}> */}
                             <CheckBox
                                 title='I hereby confirm that the information above is true as agreed through the code of conduct.'
                                 onPress={onPressCheckBox}
                                 checked={checkBox}
+                                textStyle={{ fontSize: 12, fontWeight: '300' }}
+                                containerStyle={{ marginLeft: 0, width: '100%', marginTop: 30 }}
+                                checkedColor='black'
                             />
-                        </View>
+                        {/* </View> */}
+                        {/* <View style={{ display: 'flex', flexDirection: 'row' }}>
+                            <Text>I hereby confirm that the information above is true as agreed through the code of conduct.</Text>
+                        </View> */}
                         {checkcheck && <Text>ISI</Text>}
                         <View style={ styles.subContainer }>
                             <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>

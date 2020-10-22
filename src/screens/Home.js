@@ -123,7 +123,7 @@ export default function Home({navigation}) {
                             {/* <Text>Water Level from Firebase</Text> */}
                             {/* <Text>{ data.name }</Text> */}
                             <View style={{ paddingLeft: windowWidth / 15, paddingRight: windowWidth / 15, paddingTop: 10 }}>
-                                <Pressable style={{ alignItems: 'center', marginBottom: 18 }}>
+                                <Pressable style={{ alignItems: 'center', marginBottom: 12 }}>
                                     {/* <View style={{ width: 50, height: 3, borderStyle: 'solid', borderRadius: 100, backgroundColor: 'rgb(28, 28, 30)' }}></View> */}
                                 </Pressable>
                                 <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Statistics</Text>

@@ -23,7 +23,7 @@ function ReportHistory () {
                 }
             </Text> */}
             <View style={ styles.container }>
-            <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 10 }}>Report History</Text>
+            <Text style={{ color: 'rgb(28, 28, 30)', fontSize: 28, fontWeight: '600', marginBottom: 15 }}>Past Reports</Text>
             {
                 userReportHistory && userReportHistory.map((item) => {
                     return <CardHistory location={ item }  key={ item.id } /> 
