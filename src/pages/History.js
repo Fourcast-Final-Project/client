@@ -47,7 +47,8 @@ export default function History({ route, navigation }) {
         navigation.navigate('MainMenu', { screen: 'Search' });
     }
 
-    if (!dataHistory) return <Text>Loading...</Text>
+    // if (!dataHistory) return <Text>Loading...</Text>
+    if (!dataHistory) return <></>
     return (
         <ScrollView style={styles.scrollView}>
         <View style={ styles.container }>

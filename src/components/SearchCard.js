@@ -79,7 +79,8 @@ export default function CardComponent( props) {
 
 
     if (!props.location) return <></>
-    if (!wea.main) return <Text>Loading...</Text>
+    // if (!wea.main) return <Text>Loading...</Text>
+    if (!wea.main) return <></>
     return (
         // <>
         //     <View style={ styles.infoContainer }>

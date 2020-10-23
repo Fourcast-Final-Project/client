@@ -155,31 +155,33 @@ export default function Report({navigation}) {
     }
 
     async function onPressButtonAlert () {
-        setCheckCheck(false);
-        setWaterLevelCheck(false);
-        setImageCheck(false);
+        console.log('masuk alert!!!!!')
+        setCheckCheck(true);
+        setWaterLevelCheck(true);
+        setImageCheck(true);
 
-        if (checkBox === false) {
-            setCheckCheck(true);
-            console.log(checkcheck, "checcheck")
-        }
-        if(waterLevel === '' || waterLevel < 50){
-            setWaterLevelCheck(true);
-            console.log(waterLevelCheck, " water level checcheck")
-        }
-        if(!image){
-            setImageCheck(true);
-            console.log(imageCheck, `imagecheck`)
-        }
-         if(checkcheck && waterLevelCheck && imageCheck ) {
+        // if (checkBox === false) {
+        //     setCheckCheck(true);
+        //     console.log(checkcheck, "checcheck")
+        // }
+        // if(waterLevel === '' || waterLevel < 50){
+        //     setWaterLevelCheck(true);
+        //     console.log(waterLevelCheck, " water level checcheck")
+        // }
+        // if(!image){
+        //     setImageCheck(true);
+        //     console.log(imageCheck, `imagecheck`)
+        // }
+        // console.log(checkcheck, waterLevelCheck, imageCheck, 'INI CONSTRAINTS')
+        //  if(checkcheck && waterLevelCheck && imageCheck ) {
              alert('berhasil')
              setWaterLevel('')
              setCheckBox(false)
             // console.log(waterLevel, "INI DRI REPORT GUYS WATER")
-            // dispatch(reportDanger(waterLevel));
-            // await sendPushNotification(expoPushToken);
-            // navigation.navigate('MainMenu', { screen: 'Home' })
-        }
+            dispatch(reportDanger(waterLevel));
+            await sendPushNotification(expoPushToken);
+            navigation.navigate('MainMenu', { screen: 'Home' })
+        // }
 
         
     }
@@ -236,8 +238,8 @@ export default function Report({navigation}) {
                         {image.length > 0 && 
                             <Text style={{ textAlign: 'center', marginTop: 10, marginBottom: 0, color: 'rgb(199, 199, 204)' }}>Image uploaded</Text>
                         }
-                        {imageCheck && <Text style={{color: 'red'}}>please upload your report photo</Text>} 
-                        {checkcheck && <Text style={{color: 'red'}}>Term on condition must be check</Text>}
+                        {/* {imageCheck && <Text style={{color: 'red'}}>please upload your report photo</Text>} 
+                        {checkcheck && <Text style={{color: 'red'}}>Term on condition must be check</Text>} */}
                         {/* <View style={styles.checkboxContainer}> */}
                             <CheckBox
                                 title='I hereby confirm that the information above is true as agreed through the code of conduct.'
@@ -251,12 +253,12 @@ export default function Report({navigation}) {
                         {/* <View style={{ display: 'flex', flexDirection: 'row' }}>
                             <Text>I hereby confirm that the information above is true as agreed through the code of conduct.</Text>
                         </View> */}
-                        {checkcheck && <Text>ISI</Text>}
-                        <View style={ styles.subContainer }>
+                        {/* {checkcheck && <Text>ISI</Text>} */}
+                        {/* <View style={ styles.subContainer }> */}
                             <Pressable onPress={() => onPressButtonAlert()} style={ styles.buttonAlert }>
                                 <Text style={[styles.buttonText, { color: '#FF6363' }]}>ALERT DANGER</Text>
                             </Pressable>
-                        </View>
+                        {/* </View> */}
                     </View>
                 {/* </ScrollView>
             </SafeAreaView> */}

@@ -62,7 +62,8 @@ export default function CardComponent(props) {
         dispatch(props.removeFromSubscribed(props.id));
     }
 
-    if (!wea.main) return <Text>Loading...</Text>
+    // if (!wea.main) return <Text>Loading...</Text>
+    if (!wea.main) return <></>
     return (
         <View style={ styles.containerRounded }>
             {props.edit === true && 

@@ -264,6 +264,7 @@ export const getRawPhoto = (photo) => {
 }
 
 export const reportDanger = (waterLevel) => {
+  console.log('masuk REPORT DANGER BROH')
   return (dispatch, getState) => {
     const id = getState().usersReducer.location[0].id
     console.log(getState().usersReducer.location, 'INI DRI REPORT DANGER')
